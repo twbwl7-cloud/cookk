@@ -10,9 +10,9 @@ export function PsychStrip() {
   );
 
   return (
-    <section className="border-y border-gold-1/30 bg-gradient-to-l from-white via-pink-wash/70 to-pink-soft">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-11 sm:grid-cols-3 sm:px-6 sm:py-12">
-        <div>
+    <section className="relative border-b border-white/40 bg-transparent">
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-3 sm:gap-8 sm:px-6 sm:py-12">
+        <div className="glass-chip rounded-2xl p-5">
           <p className="font-display text-2xl tracking-[-0.02em] text-ink">
             צילומים מהסטודיו
           </p>
@@ -20,7 +20,7 @@ export function PsychStrip() {
             כל עוגה באתר צולמה אחרי אפייה. בלי סטוק ובלי הבטחות ריקות.
           </p>
         </div>
-        <div>
+        <div className="glass-chip rounded-2xl p-5">
           <p className="font-display text-2xl tracking-[-0.02em] text-ink">
             ממחיר <bdi>{formatIls(fromPrice)}</bdi>
           </p>
@@ -28,7 +28,7 @@ export function PsychStrip() {
             Builder מבסיס <bdi>₪250</bdi> — רואות מחיר לפני שמשלמות.
           </p>
         </div>
-        <div>
+        <div className="glass-chip rounded-2xl p-5">
           <p className="font-display text-2xl tracking-[-0.02em] text-ink">
             עד 5 עוגות מורכבות ביום
           </p>

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: `%s · ${siteSettings.brandName}`,
   },
   description:
-    "LALIBAKERY — עוגות גן, עוגות מספרים ועוגות מעוצבות. אפייה מהלב. הזמנות: 050-8739090",
+    "LALIBAKERY — דף נחיתה לבוטיק עוגות בנתניה. עוגות גן, מספרים ומעוצבות. מחיר לפני תשלום. 050-8739090",
   metadataBase: new URL("https://lalibakery.co.il"),
 };
 

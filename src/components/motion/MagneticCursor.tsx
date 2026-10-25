@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
+/** Dual-ring gold cursor — trail + magnetic scale on interactive targets. */
 export function MagneticCursor() {
-  const dot = useRef<HTMLDivElement>(null);
+  const core = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -16,6 +18,8 @@ export function MagneticCursor() {
     let y = 0;
     let cx = 0;
     let cy = 0;
+    let rx = 0;
+    let ry = 0;
     let scale = 1;
     let label = "";
     let raf = 0;
@@ -26,9 +30,8 @@ export function MagneticCursor() {
       const target = (e.target as HTMLElement | null)?.closest(
         "[data-magnetic]",
       ) as HTMLElement | null;
-      // Cursor scales only — do not translate targets (keeps hit-targets stable at 60FPS).
       if (target) {
-        scale = 2.4;
+        scale = 2.8;
         label = target.dataset.cursorLabel ?? "";
       } else {
         scale = 1;
@@ -37,12 +40,20 @@ export function MagneticCursor() {
     };
 
     const loop = () => {
-      cx += (x - cx) * 0.18;
-      cy += (y - cy) * 0.18;
-      if (dot.current) {
-        dot.current.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%) scale(${scale})`;
-        dot.current.dataset.label = label;
-        dot.current.setAttribute("data-has-label", label ? "true" : "false");
+      cx += (x - cx) * 0.28;
+      cy += (y - cy) * 0.28;
+      rx += (x - rx) * 0.12;
+      ry += (y - ry) * 0.12;
+
+      if (core.current) {
+        core.current.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%) scale(${scale})`;
+        core.current.setAttribute("data-has-label", label ? "true" : "false");
+        const span = core.current.querySelector("span");
+        if (span) span.textContent = label;
+      }
+      if (ring.current) {
+        ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${1 + (scale - 1) * 0.35})`;
+        ring.current.style.opacity = scale > 1.2 ? "0.35" : "0.7";
       }
       raf = requestAnimationFrame(loop);
     };
@@ -61,15 +72,20 @@ export function MagneticCursor() {
   if (!enabled) return null;
 
   return (
-    <div
-      ref={dot}
-      aria-hidden
-      data-has-label="false"
-      className="pointer-events-none fixed top-0 left-0 z-[100] hidden h-3 w-3 rounded-full border border-ink/40 bg-gold-2/40 mix-blend-multiply backdrop-blur-sm transition-[width,height] duration-200 md:block data-[has-label=true]:h-12 data-[has-label=true]:w-12 data-[has-label=true]:border-gold-1"
-    >
-      <span className="absolute inset-0 hidden items-center justify-center text-[9px] font-bold tracking-wide text-ink [[data-has-label=true]_&]:flex">
-        {/* filled via CSS attr fallback text from parent dataset visually */}
-      </span>
-    </div>
+    <>
+      <div
+        ref={ring}
+        aria-hidden
+        className="pointer-events-none fixed top-0 left-0 z-[99] hidden h-10 w-10 rounded-full border border-gold-1/50 md:block"
+      />
+      <div
+        ref={core}
+        aria-hidden
+        data-has-label="false"
+        className="pointer-events-none fixed top-0 left-0 z-[100] hidden h-3 w-3 rounded-full border border-gold-1/80 bg-gold-1/50 shadow-[0_0_20px_rgb(212_175_55_/_0.45)] backdrop-blur-sm transition-[width,height] duration-200 md:block data-[has-label=true]:h-14 data-[has-label=true]:w-14 data-[has-label=true]:bg-gold-1/30"
+      >
+        <span className="absolute inset-0 hidden items-center justify-center text-[9px] font-extrabold tracking-wide text-ink [[data-has-label=true]_&]:flex" />
+      </div>
+    </>
   );
 }
