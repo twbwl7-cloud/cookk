@@ -114,8 +114,11 @@ export function ProductDetail({ product }: { product: Product }) {
             onClick={() => setCustomizeMode("inspire")}
           >
             <Sparkles size={16} className="text-gold-2" />
-            לקחתי השראה · שילוב AI + הערות
+            לקחתי השראה · עוגה אחת משולבת
           </button>
+          <p className="text-center text-[11px] font-bold text-ink/45">
+            עוגה אחת מחוברת · גן × מעוצבת · מחיר אחד
+          </p>
           <a
             href={wa}
             target="_blank"
