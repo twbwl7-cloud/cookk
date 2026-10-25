@@ -113,23 +113,23 @@ export function CakeCustomizeModal({
   };
 
   const submit = () => {
-    const hybridSpec =
+    const hybridSpec: CakeCustomization["hybridSpec"] =
       mode === "inspire" && mergeProduct
         ? {
-            kind: "hybrid" as const,
+            kind: "hybrid",
             hybridMode: true,
             baseStyle: {
               category: product.category,
-              frost: "ivory" as const,
-              piping: "shell" as const,
-              accents: "none" as const,
+              frost: "ivory",
+              piping: "shell",
+              accents: "none",
               label: product.title,
             },
             secondaryStyle: {
               category: mergeProduct.category,
-              frost: "blush" as const,
-              piping: "lambeth" as const,
-              accents: "goldLeaf" as const,
+              frost: "blush",
+              piping: "lambeth",
+              accents: "goldLeaf",
               label: mergeProduct.title,
             },
             fusionRatio: 0.55,
