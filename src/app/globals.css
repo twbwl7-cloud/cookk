@@ -69,15 +69,22 @@ html.lenis body {
 }
 
 body {
-  background:
+  /* Hard lock light atelier — never inherit OS dark chrome */
+  background-color: #fffaf8 !important;
+  background-image:
     radial-gradient(1000px 520px at 92% -4%, #ffe8ef 0%, transparent 48%),
     radial-gradient(820px 440px at 0% 12%, #fff5e8 0%, transparent 42%),
     radial-gradient(700px 380px at 50% 100%, #f2c4ce55 0%, transparent 50%),
     linear-gradient(180deg, #fffaf8 0%, #f7d6de 38%, #fff7f9 100%);
   background-attachment: fixed;
-  color: var(--foreground);
+  color: var(--ink) !important;
   font-family: var(--font-heebo), system-ui, sans-serif;
   min-height: 100dvh;
+}
+
+main {
+  background: transparent;
+  color: var(--ink);
 }
 
 ::selection {
