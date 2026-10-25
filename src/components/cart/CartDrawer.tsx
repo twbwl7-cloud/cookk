@@ -50,7 +50,7 @@ export function CartDrawer() {
             <div className="py-16 text-center">
               <p className="font-display text-2xl">העגלה ריקה</p>
               <p className="mt-2 text-sm text-ink-muted">
-                בחרי עוגה — או לקחי השראה ושילבי שתיים.
+                בחרי עוגה — או ״לקחתי השראה״ לעוגה אחת משולבת.
               </p>
               <Link
                 href="/shop"

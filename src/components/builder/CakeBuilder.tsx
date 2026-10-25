@@ -116,7 +116,7 @@ export function CakeBuilder() {
       <div>
         <BuilderCakePreview />
         <p className="mt-3 text-center text-xs font-semibold text-ink/50">
-          Hybrid Style Fusion · בסיס גן + קוטור עליון — עוגה אחת
+          עוגה אחת משולבת · גן × מעוצבת · סטודיו
         </p>
       </div>
 
@@ -125,10 +125,10 @@ export function CakeBuilder() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-gold-2">
-              Hybrid Mode
+              עוגה אחת · גן × מעוצבת
             </p>
             <p className="mt-1 font-display text-xl font-bold text-ink">
-              שילוב סגנונות
+              עוגה אחת מחוברת
             </p>
           </div>
           <button
@@ -151,8 +151,8 @@ export function CakeBuilder() {
         {hybridMode && (
           <div>
             <label className="text-xs font-extrabold text-ink" htmlFor="fusion">
-              יחס שילוב · fusionRatio{" "}
-              <bdi>{Math.round(fusionRatio * 100)}%</bdi> קוטור
+              יחס אריגה ·{" "}
+              <bdi>{Math.round(fusionRatio * 100)}%</bdi> קוטור על הבסיס
             </label>
             <input
               id="fusion"
@@ -172,7 +172,7 @@ export function CakeBuilder() {
 
         {/* Base layer */}
         <section className="rounded-2xl border border-white/60 bg-white/50 p-4">
-          <p className="text-xs font-extrabold text-gold-2">שכבת בסיס</p>
+          <p className="text-xs font-extrabold text-gold-2">בסיס עוגת גן</p>
           <ChipRow
             options={CATS}
             labels={CATEGORY_LABEL}
@@ -211,7 +211,7 @@ export function CakeBuilder() {
         {hybridMode && (
           <section className="rounded-2xl border border-gold-1/30 bg-pink-soft/30 p-4">
             <p className="text-xs font-extrabold text-gold-2">
-              שכבת קוטור עליונה
+              אלמנט קוטור על אותה עוגה
             </p>
             <ChipRow
               options={CATS}
@@ -313,7 +313,7 @@ export function CakeBuilder() {
             </bdi>
           </div>
           <p className="mt-1 text-[10px] text-pink-soft/60">
-            סופי מאומת בשרת · Hybrid craft fee כלול
+            סופי מאומת בשרת · מחיר עוגה אחת משולבת
           </p>
         </div>
 

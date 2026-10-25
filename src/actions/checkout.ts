@@ -47,21 +47,22 @@ export async function submitCheckout(
       const bits = [
         `• ${priced?.title ?? raw.productId} (${priced?.variantLabel ?? ""}) ×${raw.quantity} — ₪${priced?.lineTotalIls ?? "?"}`,
       ];
-      if (c?.mode === "inspire") bits.push("  מצב: לקחתי השראה / Hybrid");
+      if (c?.mode === "inspire" || c?.hybridSpec) {
+        bits.push("  ★ מוצר אחד: עוגה אחת משולבת · גן × מעוצבת");
+      }
       if (c?.inspireNotes)
         bits.push(`  מה להוסיף/להוריד/לשנות: ${c.inspireNotes}`);
       if (c?.hybridSpec) {
         bits.push(
-          `  Hybrid: ${c.hybridSpec.baseStyle.label} × ${c.hybridSpec.secondaryStyle.label} (fusion ${(c.hybridSpec.fusionRatio * 100).toFixed(0)}%)`,
+          `  מפרט מחובר: ${c.hybridSpec.baseStyle.label} + ${c.hybridSpec.secondaryStyle.label} (יחס ${(c.hybridSpec.fusionRatio * 100).toFixed(0)}%)`,
         );
       }
       if (c?.plaqueText) bits.push(`  טקסט על העוגה: ${c.plaqueText}`);
       if (c?.numbersText) bits.push(`  מספרים: ${c.numbersText}`);
       if (c?.sugarSheet === "wanted")
         bits.push(`  דף סוכר: כן${c.sugarNote ? ` — ${c.sugarNote}` : ""}`);
-      if (c?.mergeProductId) bits.push(`  שילוב עם מוצר: ${c.mergeProductId}`);
       if (c?.mergePreviewUrl)
-        bits.push(`  תמונת שילוב: ${c.mergePreviewUrl}`);
+        bits.push(`  תמונת העוגה האחת: ${c.mergePreviewUrl}`);
       return bits.join("\n");
     }),
     `סה״כ לתשלום: ₪${quote.totalIls}`,

@@ -117,17 +117,17 @@ export function formatHybridWhatsApp(opts: {
   const { quote } = opts;
   const s = quote.spec;
   const lines = [
-    `היי LALIBAKERY! הזמנת Hybrid Style Fusion`,
+    `היי LALIBAKERY! הזמנת עוגה אחת משולבת · גן × מעוצבת`,
     ``,
     s.hybridMode
-      ? `מצב: שילוב היברידי (עוגה אחת משתי סגנונות)`
+      ? `★ מוצר אחד: עוגה אחת מחוברת (בסיס גן + אלמנט קוטור)`
       : `מצב: עוגה יחידה`,
     `בסיס: ${s.baseStyle.category} · ${s.baseStyle.frost} · ${s.baseStyle.piping} · ${s.baseStyle.accents}`,
   ];
   if (s.hybridMode) {
     lines.push(
-      `קוטור עליון: ${s.secondaryStyle.category} · ${s.secondaryStyle.frost} · ${s.secondaryStyle.piping} · ${s.secondaryStyle.accents}`,
-      `יחס שילוב fusionRatio: ${(s.fusionRatio * 100).toFixed(0)}%`,
+      `קוטור משולב: ${s.secondaryStyle.category} · ${s.secondaryStyle.frost} · ${s.secondaryStyle.piping} · ${s.secondaryStyle.accents}`,
+      `יחס שילוב: ${(s.fusionRatio * 100).toFixed(0)}%`,
     );
   }
   if (s.plaqueText) lines.push(`טקסט: ${s.plaqueText}`);

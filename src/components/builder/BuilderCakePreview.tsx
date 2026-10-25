@@ -35,7 +35,7 @@ export function BuilderCakePreview() {
         />
       </Canvas>
       <p className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-white/80 px-3 py-1 text-[10px] font-extrabold text-ink">
-        סובבו בעדינות · Hybrid Preview
+        סובבו בעדינות · עוגה אחת מחוברת
       </p>
     </div>
   );

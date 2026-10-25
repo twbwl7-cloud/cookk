@@ -27,14 +27,14 @@ export async function POST(req: Request) {
 
     if (!base || !merge) {
       return NextResponse.json(
-        { ok: false, error: "חסרות שתי עוגות לשילוב" },
+        { ok: false, error: "חסרים בסיס וסגנון קוטור לאריגת עוגה אחת" },
         { status: 400 },
       );
     }
 
     if (base.id === merge.id) {
       return NextResponse.json(
-        { ok: false, error: "בחרי עוגה שנייה שונה לשילוב" },
+        { ok: false, error: "בחרי סגנון קוטור שונה מהבסיס" },
         { status: 400 },
       );
     }

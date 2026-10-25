@@ -9,7 +9,7 @@ import { siteSettings } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/builder", label: "בונה Hybrid" },
+  { href: "/builder", label: "עוגה אחת משולבת" },
   { href: "/collections/gan", label: "עוגות גן" },
   { href: "/collections/misparim", label: "עוגות מספרים" },
   { href: "/collections/meutzavot", label: "עוגות מעוצבות" },
@@ -73,7 +73,7 @@ export function Header() {
               data-magnetic
               data-cursor-label="בונה"
             >
-              לבנות Hybrid
+              עוגה אחת
             </Link>
             <button
               type="button"

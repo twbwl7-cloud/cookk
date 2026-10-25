@@ -13,12 +13,11 @@ export function estimateCart(lines: CartLine[], couponCode?: string) {
     subtotalIls += lineTotal;
     const customBits: string[] = [];
     const c = line.customization;
-    if (c?.mode === "inspire") customBits.push("לקחתי השראה");
-    if (c?.hybridSpec) customBits.push("Hybrid · עוגה אחת משולבת");
+    if (c?.mode === "inspire" || c?.hybridSpec)
+      customBits.push("עוגה אחת משולבת · גן × מעוצבת");
     if (c?.plaqueText) customBits.push(`טקסט: ${c.plaqueText}`);
     if (c?.numbersText) customBits.push(`מספרים: ${c.numbersText}`);
     if (c?.sugarSheet === "wanted") customBits.push("דף סוכר");
-    if (c?.mergeProductId) customBits.push("שילוב עוגות");
     if (c?.inspireNotes) customBits.push("הערות התאמה");
 
     return {
