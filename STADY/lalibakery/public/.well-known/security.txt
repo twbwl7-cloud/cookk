@@ -1,5 +1,0 @@
-Contact: mailto:orders@lalibakery.co.il
-Contact: https://wa.me/972508739090
-Preferred-Languages: he, en
-Canonical: https://lalibakery.co.il/.well-known/security.txt
-Expires: 2027-12-31T23:59:59.000Z
