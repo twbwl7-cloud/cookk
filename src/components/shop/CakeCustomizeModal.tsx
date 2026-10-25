@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { X, Sparkles, ShoppingBag } from "lucide-react";
 import type { CakeCustomization, Product } from "@/types/commerce";
 import { products } from "@/data/products";
@@ -29,6 +29,7 @@ export function CakeCustomizeModal({
   const [mergePreview, setMergePreview] = useState<string | null>(null);
   const [mergeBusy, setMergeBusy] = useState(false);
   const [mergeError, setMergeError] = useState<string | null>(null);
+  const [pairLabel, setPairLabel] = useState<string | null>(null);
 
   const [plaqueText, setPlaqueText] = useState("");
   const [numbersText, setNumbersText] = useState("");
@@ -36,9 +37,19 @@ export function CakeCustomizeModal({
   const [sugarNote, setSugarNote] = useState("");
 
   const others = useMemo(
-    () => products.filter((p) => p.id !== product.id).slice(0, 12),
+    () => products.filter((p) => p.id !== product.id),
     [product.id],
   );
+
+  // Lock page scroll; modal uses clean native/finger scroll (no fat bar)
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
   if (!open || !variant) return null;
 
@@ -62,6 +73,7 @@ export function CakeCustomizeModal({
       const data = (await res.json()) as {
         ok: boolean;
         url?: string;
+        pair?: string;
         error?: string;
       };
       if (!data.ok || !data.url) {
@@ -69,6 +81,7 @@ export function CakeCustomizeModal({
         return;
       }
       setMergePreview(data.url);
+      setPairLabel(data.pair ?? null);
     } catch {
       setMergeError("הרשת נכשלה — נסי שוב");
     } finally {
@@ -112,7 +125,7 @@ export function CakeCustomizeModal({
       <div
         role="dialog"
         aria-modal
-        className="relative z-10 max-h-[92svh] w-full max-w-lg overflow-y-auto rounded-t-[1.75rem] border border-white/70 bg-[#fffaf8] p-5 shadow-[0_30px_80px_-24px_rgba(13,13,13,0.4)] sm:rounded-[1.75rem] sm:p-6"
+        className="modal-scroll-clean relative z-10 max-h-[92svh] w-full max-w-lg rounded-t-[1.75rem] border border-white/70 bg-[#fffaf8] p-5 shadow-[0_30px_80px_-24px_rgba(13,13,13,0.4)] sm:rounded-[1.75rem] sm:p-6"
       >
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -146,7 +159,8 @@ export function CakeCustomizeModal({
           />
           {mergePreview && (
             <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-extrabold text-ink">
-              הדמיית שילוב AI · סטודיו
+              עוגה אחת משולבת
+              {pairLabel ? ` · ${pairLabel}` : ""} · סטודיו
             </span>
           )}
         </div>
@@ -170,33 +184,51 @@ export function CakeCustomizeModal({
 
             <div>
               <p className="text-xs font-extrabold text-ink">
-                לשלב עם עוגה שנייה · הבינה תיצור הדמיה חדשה
+                לשלב עם עוגה שנייה · גן × מעוצבת / מספרים / אותו סוג — עוגה אחת
               </p>
-              <div className="mt-2 grid grid-cols-4 gap-2">
-                {others.map((p) => (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => {
-                      setMergeId(p.id);
-                      setMergePreview(null);
-                    }}
-                    className={`relative aspect-square overflow-hidden rounded-xl border-2 ${
-                      mergeId === p.id
-                        ? "border-gold-1"
-                        : "border-transparent opacity-80"
-                    }`}
-                  >
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </button>
-                ))}
-              </div>
+              {(
+                [
+                  { key: "gan", label: "עוגות גן" },
+                  { key: "meutzavot", label: "מעוצבות" },
+                  { key: "misparim", label: "מספרים" },
+                ] as const
+              ).map((group) => {
+                const list = others.filter((p) => p.category === group.key);
+                if (list.length === 0) return null;
+                return (
+                  <div key={group.key} className="mt-3">
+                    <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-gold-2">
+                      {group.label}
+                    </p>
+                    <div className="grid grid-cols-4 gap-2">
+                      {list.slice(0, 8).map((p) => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => {
+                            setMergeId(p.id);
+                            setMergePreview(null);
+                            setPairLabel(null);
+                          }}
+                          className={`relative aspect-square overflow-hidden rounded-xl border-2 ${
+                            mergeId === p.id
+                              ? "border-gold-1"
+                              : "border-transparent opacity-80"
+                          }`}
+                        >
+                          <Image
+                            src={p.image}
+                            alt={p.title}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
               <button
                 type="button"
                 onClick={runCombine}
@@ -206,7 +238,9 @@ export function CakeCustomizeModal({
                 data-cursor-label="שילוב"
               >
                 <Sparkles size={16} className="text-gold-2" />
-                {mergeBusy ? "יוצרים שילוב…" : "צרי עוגה משולבת עם AI"}
+                {mergeBusy
+                  ? "אורגים עוגה אחת…"
+                  : "צרי שילוב אמיתי · עוגה אחת"}
               </button>
               {mergeError && (
                 <p className="mt-2 text-xs font-bold text-red-700">{mergeError}</p>

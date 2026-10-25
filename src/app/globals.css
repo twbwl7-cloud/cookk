@@ -275,6 +275,20 @@ main {
   font-weight: 800;
 }
 
+/* Modal: normal finger/wheel scroll, no fat OS scrollbar chrome */
+.modal-scroll-clean {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.modal-scroll-clean::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 .skip-link:focus {
   top: 1rem;
 }
