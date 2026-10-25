@@ -25,7 +25,7 @@ const FLOATERS: Floater[] = [
   },
   {
     src: "/cakes/gan/photo-libby-8.jpg",
-    className: "start-[12%] bottom-[22%] h-11 w-11 sm:h-13 sm:w-13",
+    className: "start-[12%] bottom-[22%] h-11 w-11 sm:h-12 sm:w-12",
     delay: 1.4,
     duration: 5.8,
   },
