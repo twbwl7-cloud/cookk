@@ -26,7 +26,7 @@ export function CategoryCircle({ collections }: { collections: Collection[] }) {
             href={`/collections/${c.slug}`}
             className="group relative mx-auto block aspect-square w-full"
             data-magnetic
-            data-cursor-label="OPEN"
+            data-cursor-label="פתיחה"
           >
             <span
               aria-hidden

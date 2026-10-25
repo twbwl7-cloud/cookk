@@ -96,7 +96,7 @@ export function ProductDetail({ product }: { product: Product }) {
             size="lg"
             className="flex-1"
             data-magnetic
-            data-cursor-label="ADD"
+            data-cursor-label="הוספה"
             disabled={!variant || variant.stock < 1}
             onClick={() => variant && addItem(product.id, variant.id, 1)}
           >

@@ -66,7 +66,7 @@ export function ProductCard({ product }: { product: Product }) {
           size="sm"
           className="w-full"
           data-magnetic
-          data-cursor-label="ADD"
+          data-cursor-label="הוספה"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

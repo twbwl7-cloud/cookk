@@ -39,7 +39,7 @@ export function Header() {
             href="/"
             className="flex items-center gap-2"
             data-magnetic
-            data-cursor-label="HOME"
+            data-cursor-label="בית"
           >
             <Image
               src="/cakes/brand/logo.jpg"
@@ -79,7 +79,7 @@ export function Header() {
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 bg-white/70"
               aria-label="עגלה"
               data-magnetic
-              data-cursor-label="BAG"
+              data-cursor-label="עגלה"
             >
               <ShoppingBag size={18} />
               {totalUnits > 0 && (

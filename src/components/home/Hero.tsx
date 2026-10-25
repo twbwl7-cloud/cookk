@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
+import { JellyButton } from "@/components/motion/JellyButton";
 
 /**
  * Full-bleed psych hero — cake edge-to-edge · free text RIGHT · NO card.
@@ -96,21 +96,17 @@ export function Hero() {
             72 שעות מהקמח עד הקופסה · עד 5 עוגות מורכבות ביום
           </p>
 
-          {/* P03 + P35 */}
+          {/* P03 + P35 — jelly dough CTA */}
           <div className="mt-8 flex flex-col items-end gap-3">
-            <Link
-              href="/shop"
-              data-magnetic
-              data-cursor-label="MINE"
-              className="btn-gold contact-shadow inline-flex h-14 min-h-12 min-w-[240px] items-center justify-center rounded-full px-9 text-base font-extrabold tracking-[-0.02em] text-ink"
-            >
+            <JellyButton href="/shop" magneticLabel="שלי">
               לבחור את העוגה שלי
-            </Link>
+            </JellyButton>
             <a
               href={wa}
               target="_blank"
               rel="noopener noreferrer"
               data-magnetic
+              data-cursor-label="וואטסאפ"
               className="text-sm font-bold text-ink/70 underline decoration-gold-1/70 underline-offset-4 hover:text-ink"
             >
               או וואטסאפ אנושי · <bdi>{siteSettings.phone}</bdi>

@@ -84,7 +84,7 @@ export function MagneticCursor() {
         data-has-label="false"
         className="pointer-events-none fixed top-0 left-0 z-[100] hidden h-3 w-3 rounded-full border border-gold-1/80 bg-gold-1/50 shadow-[0_0_20px_rgb(212_175_55_/_0.45)] backdrop-blur-sm transition-[width,height] duration-200 md:block data-[has-label=true]:h-14 data-[has-label=true]:w-14 data-[has-label=true]:bg-gold-1/30"
       >
-        <span className="absolute inset-0 hidden items-center justify-center text-[9px] font-extrabold tracking-wide text-ink [[data-has-label=true]_&]:flex" />
+        <span className="absolute inset-0 hidden items-center justify-center px-1 text-center text-[10px] font-extrabold leading-tight tracking-wide text-ink [[data-has-label=true]_&]:flex" />
       </div>
     </>
   );

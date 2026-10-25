@@ -7,6 +7,13 @@ import { CategoryCircle } from "@/components/home/CategoryCircle";
 import { PsychGarden } from "@/components/home/PsychGarden";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { Reveal } from "@/components/motion/Reveal";
+import { FloatingDecor } from "@/components/motion/FloatingDecor";
+import { JellyButton } from "@/components/motion/JellyButton";
+import { PlatePopUp } from "@/components/motion/PlatePopUp";
+import {
+  StaggerReveal,
+  StaggerItem,
+} from "@/components/motion/StaggerReveal";
 import {
   collections,
   getProductsByCategory,
@@ -14,7 +21,7 @@ import {
 import { reviews, siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
 
-/** Landing page — glass atelier · circles · psych garden · marquee. */
+/** Landing — cream atelier · Hebrew cursor · luxury bakery motion. */
 export default function HomePage() {
   const wa = whatsappLink(
     siteSettings.whatsapp,
@@ -30,12 +37,13 @@ export default function HomePage() {
       <TrustMarquee />
       <PsychStrip />
 
-      {/* Decision gate — three circles only */}
-      <section className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="glass-liquid rounded-[2rem] px-5 py-12 sm:px-10">
+      {/* Decision gate — three circles + floating decor */}
+      <section className="relative mx-auto max-w-6xl overflow-hidden px-4 py-16 sm:px-6">
+        <FloatingDecor />
+        <div className="glass-liquid relative z-[2] rounded-[2rem] px-5 py-12 sm:px-10">
           <Reveal>
             <p className="text-center text-[11px] font-extrabold uppercase tracking-[0.24em] text-gold-2">
-              Choose one path
+              בחירה אחת
             </p>
             <h2 className="mt-3 text-center font-display text-[clamp(1.85rem,4vw,2.85rem)] font-black tracking-[-0.03em] text-ink">
               איזו עוגה סוגרת את האירוע?
@@ -52,7 +60,7 @@ export default function HomePage() {
 
       <PsychGarden products={garden} />
 
-      {/* Numbers — glass runway of three */}
+      {/* Numbers — staggered spring gallery */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <Reveal>
           <div className="glass-chip mb-8 flex flex-wrap items-end justify-between gap-4 rounded-2xl px-5 py-4">
@@ -72,13 +80,13 @@ export default function HomePage() {
             </Link>
           </div>
         </Reveal>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-          {numbers.map((p, i) => (
-            <Reveal key={p.id} delay={i * 0.05}>
+        <StaggerReveal className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+          {numbers.map((p) => (
+            <StaggerItem key={p.id}>
               <ProductCard product={p} />
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
       </section>
 
       {/* Designed */}
@@ -101,13 +109,13 @@ export default function HomePage() {
             </Link>
           </div>
         </Reveal>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-          {designed.map((p, i) => (
-            <Reveal key={p.id} delay={i * 0.05}>
+        <StaggerReveal className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+          {designed.map((p) => (
+            <StaggerItem key={p.id}>
               <ProductCard product={p} />
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
       </section>
 
       {/* Glass CTA band */}
@@ -117,7 +125,7 @@ export default function HomePage() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_400px_at_50%_50%,rgb(242_196_206_/_0.5),transparent_70%)]"
         />
         <div className="relative mx-auto grid max-w-6xl items-center gap-8 glass-liquid rounded-[2rem] p-8 sm:p-12 lg:grid-cols-2">
-          <Reveal>
+          <PlatePopUp>
             <div className="relative aspect-[5/4] overflow-hidden rounded-[1.5rem] contact-shadow">
               <Image
                 src="/cakes/meutzavot/gold-crown-king.jpg"
@@ -127,10 +135,10 @@ export default function HomePage() {
                 sizes="(max-width:1024px) 100vw, 50vw"
               />
             </div>
-          </Reveal>
+          </PlatePopUp>
           <Reveal delay={0.08}>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-gold-2">
-              Peak–end · סגירה
+              שיא וסיום · סגירה
             </p>
             <h2 className="mt-3 font-display text-[clamp(1.85rem,4vw,2.75rem)] font-black tracking-[-0.03em] text-ink">
               שולחים תמונה — מקבלים עוגה שסוגרת
@@ -141,21 +149,21 @@ export default function HomePage() {
               {" · "}
               קופון <bdi>{siteSettings.launchCouponCode}</bdi>.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <JellyButton
                 href="/shop"
-                className="btn-gold contact-shadow inline-flex h-13 items-center justify-center rounded-full px-8 text-sm font-extrabold"
-                data-magnetic
-                data-cursor-label="SHOP"
+                magneticLabel="קטלוג"
+                className="h-13 min-w-[180px] px-8 text-sm"
               >
                 לפתוח את הקטלוג
-              </Link>
+              </JellyButton>
               <a
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="glass-chip inline-flex h-13 items-center justify-center rounded-full px-7 text-sm font-bold text-ink"
                 data-magnetic
+                data-cursor-label="וואטסאפ"
               >
                 וואטסאפ · <bdi className="ms-1">{siteSettings.phone}</bdi>
               </a>
@@ -170,9 +178,9 @@ export default function HomePage() {
             מה כותבות אחרי האירוע
           </h2>
         </Reveal>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {reviews.slice(0, 4).map((r, i) => (
-            <Reveal key={r.id} delay={i * 0.05}>
+        <StaggerReveal className="mt-8 grid gap-4 md:grid-cols-2">
+          {reviews.slice(0, 4).map((r) => (
+            <StaggerItem key={r.id}>
               <blockquote className="glass-liquid rounded-[1.25rem] p-5">
                 <p className="text-sm font-medium leading-relaxed text-ink">
                   “{r.body}”
@@ -181,9 +189,9 @@ export default function HomePage() {
                   {r.author} · {r.city} · {"★".repeat(r.rating)}
                 </footer>
               </blockquote>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
       </section>
     </>
   );
