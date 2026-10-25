@@ -1,121 +1,191 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
-import { JellyButton } from "@/components/motion/JellyButton";
+import Link from "next/link";
 
 /**
- * Full-bleed psych hero — cake edge-to-edge · free text RIGHT · NO card.
- *
- * Book: P01 complete first frame · P03 one CTA · P05 curiosity · P06 fluency
- * P14 proof · P17 numbers · P19 effort · P24 IKEA · P25 scarcity · N05
+ * Luxury full-bleed hero — Maison / Sur Mesure.
+ * One composition: brand → premium line → headline → one sentence → one CTA.
+ * Attracts with cream/blush/gold atelier light — never a dark void.
  */
-const H1 = "את מעצבת את העוגה — לפני שמשלמים שקל";
-const H2 =
-  "מחיר שקוף על המסך · בסיס מ־₪250 · איסוף מסטודיו נתניה · בלי הפתעות בקופה.";
 const SRC = "/cakes/hero/hero-atelier-blush-gold.jpg";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.85 + i * 0.1,
+      duration: 0.85,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  }),
+};
 
 export function Hero() {
   const wa = whatsappLink(
     siteSettings.whatsapp,
-    `היי ${siteSettings.brandName}! רציתי לסגור עוגה לאירוע — ראיתי את האתר`,
+    `היי ${siteSettings.brandName}! רציתי לסגור עוגה Sur Mesure לאירוע`,
   );
 
   return (
     <section
-      className="relative min-h-[92svh] overflow-hidden bg-[#fff5f7] sm:min-h-[94svh]"
-      aria-label="פתח · LALIBAKERY"
+      className="relative min-h-[100svh] overflow-hidden bg-[#fff5f7]"
+      aria-label="Maison LALIBAKERY"
     >
-      {/* FULL-BLEED cake — entire hero */}
+      {/* Full-bleed couture cake */}
       <div className="absolute inset-0" data-hero-visual>
         <Image
           src={SRC}
-          alt="עוגת couture לבנה עם סרטים ורודים ועלי זהב — צילום סטודיו"
+          alt="עוגת couture לבנה עם פרחי blush ועלי זהב — סטודיו נתניה"
           fill
           priority
           quality={94}
           sizes="100vw"
-          /* Pan so cake sits center-left; RIGHT stays open for freestanding copy */
-          className="object-cover object-[72%_40%] sm:object-[70%_38%] lg:object-[68%_36%]"
+          className="object-cover object-[78%_42%] sm:object-[74%_40%] lg:object-[70%_38%] scale-[1.02]"
+        />
+        {/* Soft cinematic grain of light — not a card */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(900px 520px at 78% 40%, transparent 0%, rgba(255,250,248,0.08) 45%, rgba(255,250,248,0.55) 72%, rgba(255,250,248,0.92) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, transparent 38%, rgba(255,250,248,0.35) 58%, rgba(255,250,248,0.88) 78%, rgba(255,250,248,0.97) 100%)",
+          }}
         />
       </div>
 
-      {/* Soft RIGHT wash — atmosphere only, NOT a card/frame */}
-      <div
+      {/* Fine gold rail — atelier signature */}
+      <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(255,250,248,0.45) 58%, rgba(255,250,248,0.82) 74%, rgba(255,250,248,0.94) 100%)",
-        }}
+        className="pointer-events-none absolute inset-y-[12%] right-[min(46%,34rem)] hidden w-px bg-gradient-to-b from-transparent via-gold-1/55 to-transparent lg:block"
+        initial={{ opacity: 0, scaleY: 0.4 }}
+        animate={{ opacity: 1, scaleY: 1 }}
+        transition={{ delay: 1.1, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      <div className="relative z-10 mx-auto min-h-[92svh] max-w-6xl px-5 pt-28 sm:min-h-[94svh] sm:px-8 lg:pt-24">
-        {/* Physical RIGHT — freestanding typography */}
-        <div className="absolute bottom-16 right-5 w-[min(100%-2.5rem,36rem)] text-right sm:right-8 sm:bottom-20 lg:bottom-auto lg:top-[48%] lg:w-[min(34rem,46%)] lg:-translate-y-1/2">
-          {/* P25 + P14 */}
-          <p className="text-[11px] font-extrabold tracking-wide text-ink">
-            <span className="me-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#c45c6a] align-middle" />
-            נשארו 2 מקומות לסופ״ש
-            <span className="mx-2 text-ink/35">·</span>
-            <span className="font-bold text-ink/55">
-              ★ 4.9 · אימהות מנתניה והסביבה
-            </span>
-          </p>
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-center px-5 sm:px-8">
+        <div className="ms-auto w-full max-w-[36rem] pb-16 pt-28 text-right sm:pb-20 lg:pt-16">
+          {/* Premium maison line */}
+          <motion.p
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="text-[10px] font-extrabold uppercase tracking-[0.42em] text-gold-2"
+          >
+            Maison · Sur Mesure · Atelier Privé
+          </motion.p>
 
-          <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[0.28em] text-gold-2">
-            Haute Pâtisserie · Netanya
-          </p>
-
-          <p className="mt-3 font-display text-[clamp(2.1rem,4.8vw,3rem)] font-bold leading-none tracking-[-0.03em] text-ink">
+          <motion.p
+            custom={1}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-4 font-display text-[clamp(2.6rem,6.5vw,4.25rem)] font-bold leading-[0.92] tracking-[-0.04em] text-ink"
+          >
             {siteSettings.brandName}
-          </p>
+          </motion.p>
 
-          {/* P01 + P05 + P24 — always fully visible */}
-          <h1 className="mt-4 font-display text-balance text-[clamp(2.05rem,5.4vw,3.45rem)] font-bold leading-[1.05] tracking-[-0.035em] text-ink">
-            {H1}
-          </h1>
+          <motion.p
+            custom={2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-3 text-[11px] font-bold tracking-[0.22em] text-ink/45"
+          >
+            Haute Pâtisserie · Netanya
+          </motion.p>
 
-          {/* P17 */}
-          <p className="ml-auto mt-4 max-w-md text-[clamp(0.95rem,1.5vw,1.12rem)] font-semibold leading-snug text-ink/78">
-            {H2.split("₪250").map((part, i, arr) =>
-              i < arr.length - 1 ? (
-                <span key={i}>
-                  {part}
-                  <bdi className="font-extrabold text-ink">₪250</bdi>
-                </span>
-              ) : (
-                <span key={i}>{part}</span>
-              ),
-            )}
-          </p>
+          {/* Hairline */}
+          <motion.span
+            aria-hidden
+            custom={3}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-6 ms-auto block h-px w-24 bg-gradient-to-l from-gold-1 to-transparent"
+          />
 
-          {/* P19 */}
-          <p className="mt-3 text-xs font-bold text-ink/50">
-            72 שעות מהקמח עד הקופסה · עד 5 עוגות מורכבות ביום
-          </p>
+          <motion.h1
+            custom={4}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-6 font-display text-balance text-[clamp(1.85rem,4.2vw,2.85rem)] font-bold leading-[1.12] tracking-[-0.03em] text-ink"
+          >
+            יצירה couture — לפני שמשלמים שקל
+          </motion.h1>
 
-          {/* P03 + P35 — jelly dough CTA */}
-          <div className="mt-8 flex flex-col items-end gap-3">
-            <JellyButton href="/custom-cake" magneticLabel="בונים">
-              לבנות את העוגה שלי
-            </JellyButton>
+          <motion.p
+            custom={5}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="ml-auto mt-4 max-w-md text-[15px] font-medium leading-relaxed text-ink/70"
+          >
+            סטודיו פרטי בנתניה. מחיר שקוף על המסך מבסיס{" "}
+            <bdi className="font-extrabold text-ink">₪250</bdi>
+            . עד חמש עוגות מורכבות ביום — כל אחת Sur Mesure.
+          </motion.p>
+
+          <motion.p
+            custom={6}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-3 text-[11px] font-extrabold tracking-[0.14em] text-gold-2/90"
+          >
+            PREMIUM · BY APPOINTMENT · 72H ATELIER
+          </motion.p>
+
+          <motion.div
+            custom={7}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="mt-9 flex flex-col items-end gap-3"
+          >
+            <Link
+              href="/custom-cake"
+              className="group relative inline-flex h-12 min-w-[14rem] items-center justify-center overflow-hidden rounded-full px-8 text-sm font-extrabold text-ink"
+              style={{
+                background:
+                  "linear-gradient(135deg, #e8c872 0%, #d4af37 42%, #c5a059 78%, #e8c872 100%)",
+                boxShadow:
+                  "0 18px 40px -18px rgba(197,160,89,0.75), inset 0 1px 0 rgba(255,255,255,0.45)",
+              }}
+            >
+              <span className="absolute inset-0 translate-x-[-120%] bg-gradient-to-l from-transparent via-white/35 to-transparent transition duration-700 group-hover:translate-x-[120%]" />
+              <span className="relative">לבנות את העוגה שלי</span>
+            </Link>
+
             <a
               href={wa}
               target="_blank"
               rel="noopener noreferrer"
-              data-magnetic
-              data-cursor-label="וואטסאפ"
-              className="text-sm font-bold text-ink/70 underline decoration-gold-1/70 underline-offset-4 hover:text-ink"
+              className="text-sm font-bold text-ink/60 underline decoration-gold-1/50 underline-offset-[5px] transition hover:text-ink"
             >
-              או וואטסאפ אנושי · <bdi>{siteSettings.phone}</bdi>
+              שיחה פרטית בוואטסאפ · <bdi>{siteSettings.phone}</bdi>
             </a>
-            <p className="text-[11px] font-semibold text-ink/45">
-              Guest checkout · קופון <bdi>{siteSettings.launchCouponCode}</bdi> ·
-              מינימום 3 ימי עסקים
+
+            <p className="max-w-xs text-[10px] font-semibold leading-relaxed tracking-wide text-ink/40">
+              Private checkout · קופון Atelier{" "}
+              <bdi>{siteSettings.launchCouponCode}</bdi> · מינימום 3 ימי עסקים
             </p>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
