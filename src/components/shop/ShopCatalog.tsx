@@ -39,7 +39,7 @@ export function ShopCatalog({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
-      <aside className="h-fit space-y-5 rounded-[1.25rem] bg-white/60 p-4 contact-shadow lg:sticky lg:top-24">
+      <aside className="glass-liquid h-fit space-y-5 rounded-[1.25rem] p-4 lg:sticky lg:top-24">
         <div>
           <label className="text-xs font-semibold" htmlFor="search">
             חיפוש
