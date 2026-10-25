@@ -1,96 +1,131 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { KineticTitle } from "@/components/motion/Reveal";
+import { motion, useReducedMotion } from "framer-motion";
 import { siteSettings } from "@/data/site";
 
-const HeroCake3D = dynamic(() => import("@/components/immersive/HeroCake3D"), {
-  ssr: false,
-  loading: () => (
-    <div className="relative mx-auto flex h-[380px] w-full max-w-md items-center justify-center sm:h-[460px]">
-      <div className="relative h-[88%] w-[88%] overflow-hidden rounded-full border-2 border-ink contact-shadow">
+const H1 = "עוגה ב־3D — בלי הפתעות במחיר";
+const H2 =
+  "Builder חי · מחיר לפני תשלום · בסיס מ־₪250 · איסוף מסטודיו נתניה";
+const SRC = "/cakes/hero/hero-atelier-blush-gold.jpg";
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/**
+ * Static full-bleed hero — no 3D / no orbit.
+ * Editorial blush cake + black type on a soft cream wash (HAZWA atelier).
+ */
+export function Hero() {
+  const reduce = useReducedMotion();
+  const words = H1.split(" ");
+
+  return (
+    <section
+      className="relative min-h-[72svh] overflow-hidden bg-pink-soft sm:min-h-[78svh] lg:min-h-[82svh]"
+      aria-label="פתח · LALIBAKERY"
+    >
+      {/* Static full-bleed — does not move */}
+      <div className="absolute inset-0" data-hero-visual>
         <Image
-          src="/cakes/hero/round-gold-crown.jpg"
-          alt="עוגת כתר זהב"
+          src={SRC}
+          alt="עוגת couture לבנה עם סרטים ורודים ועלי זהב — צילום סטודיו"
           fill
           priority
-          className="object-cover"
-          sizes="480px"
+          quality={92}
+          sizes="100vw"
+          className="object-cover object-[62%_42%] sm:object-[58%_40%]"
         />
       </div>
-    </div>
-  ),
-});
 
-export function Hero() {
-  return (
-    <section className="relative min-h-[100svh] overflow-hidden">
+      {/* Soft cream/blush veil so black type stays crisp */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 50% at 85% 30%, #ffd1dc 0%, transparent 55%), radial-gradient(ellipse 40% 35% at 5% 90%, #0D0D0D22 0%, transparent 50%), linear-gradient(165deg, #FEE1E8 0%, #FFF7FA 55%, #F0DCE3 100%)",
-        }}
+        className="pointer-events-none absolute inset-0 bg-gradient-to-l from-[#fffaf8]/95 via-[#fffaf8]/55 to-transparent lg:from-[#fffaf8]/92 lg:via-[#fffaf8]/35 lg:to-[#fffaf8]/05"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-pink-soft/90 to-transparent"
       />
 
-      <div className="mx-auto grid max-w-6xl items-center gap-6 px-4 pb-20 pt-6 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:pb-14">
-        {/* 360° cake — book P23 / A23 */}
-        <div className="order-1 lg:order-2">
-          <HeroCake3D />
-        </div>
+      <div className="relative z-10 mx-auto min-h-[72svh] max-w-6xl px-5 pb-16 pt-24 sm:min-h-[78svh] sm:px-8 sm:pb-20 lg:min-h-[82svh] lg:pt-28">
+        <div className="absolute bottom-16 right-5 w-[min(100%-2.5rem,34rem)] text-right sm:right-8 sm:bottom-20 lg:bottom-auto lg:top-1/2 lg:w-[min(28rem,42%)] lg:-translate-y-1/2">
+          <motion.p
+            className="text-[11px] font-extrabold uppercase tracking-[0.26em] text-gold-2"
+            initial={reduce ? false : { opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
+            Haute Pâtisserie · Netanya
+          </motion.p>
 
-        <div className="order-2 text-center lg:order-1 lg:text-right">
-          <div className="mb-5 inline-flex items-center gap-3 rounded-full border-2 border-ink bg-ink px-3 py-2">
-            <Image
-              src="/cakes/brand/logo.jpg"
-              alt=""
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full object-cover"
-            />
-            <div className="text-right leading-tight">
-              <p className="font-display text-lg text-pink-soft">{siteSettings.brandName}</p>
-              <p className="text-[11px] font-bold text-gold-2">{siteSettings.tagline}</p>
-            </div>
-          </div>
+          <motion.p
+            className="mt-4 font-display text-[clamp(1.55rem,3.2vw,2.15rem)] font-black tracking-[-0.03em] text-black"
+            initial={reduce ? false : { opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.75, delay: 0.05, ease: EASE }}
+          >
+            {siteSettings.brandName}
+          </motion.p>
 
-          {/* P01 concrete H1 — charcoal, not AI fluff */}
-          <KineticTitle
-            text="העוגה שסוגרת את המסיבה"
-            className="text-4xl leading-[1.1] text-ink sm:text-5xl lg:text-[3.4rem]"
-          />
+          <h1 className="mt-3 font-display text-balance text-[clamp(2.2rem,5.8vw,3.85rem)] font-black leading-[0.96] tracking-[-0.04em] text-black">
+            {words.map((word, i) => (
+              <span
+                key={`${word}-${i}`}
+                className="inline-block overflow-hidden align-bottom pe-[0.12em] last:pe-0"
+              >
+                <motion.span
+                  className="inline-block text-black"
+                  initial={reduce ? false : { x: -32, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.08 + i * 0.06,
+                    ease: EASE,
+                  }}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
 
-          {/* P17 specific claim with number */}
-          <p className="mx-auto mt-5 max-w-md text-base font-bold leading-relaxed text-ink sm:text-lg lg:mx-0">
-            3 קטגוריות · הזמנה לפי תמונה או דמות · וואטסאפ{" "}
-            <bdi className="font-extrabold">{siteSettings.phone}</bdi>
-          </p>
+          <motion.p
+            className="ml-auto mt-4 max-w-md text-[clamp(0.98rem,1.5vw,1.1rem)] font-extrabold leading-snug text-black/75"
+            initial={reduce ? false : { opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.65, delay: 0.4, ease: EASE }}
+          >
+            {H2.split("₪250").map((part, i, arr) =>
+              i < arr.length - 1 ? (
+                <span key={i}>
+                  {part}
+                  <bdi>₪250</bdi>
+                </span>
+              ) : (
+                <span key={i}>{part}</span>
+              ),
+            )}
+          </motion.p>
 
-          {/* P03 isolation — one gold CTA dominates */}
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+          <motion.div
+            className="mt-8 flex flex-col items-end gap-3"
+            initial={reduce ? false : { opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.65, delay: 0.52, ease: EASE }}
+          >
             <Link
-              href="/product/gold-crown-king"
-              className="btn-gold contact-shadow inline-flex h-13 min-h-12 min-w-[220px] items-center justify-center rounded-full px-8 text-sm font-extrabold text-ink"
+              href="/shop"
               data-magnetic
-              data-cursor-label="ORDER"
+              data-cursor-label="SHOP"
+              className="btn-gold contact-shadow inline-flex h-13 min-h-12 min-w-[220px] items-center justify-center rounded-full px-8 text-base font-black tracking-[-0.02em] text-ink"
             >
-              להזמנת העוגה הזו
+              לראות את העוגות
             </Link>
-            <Link
-              href="/collections/gan"
-              className="inline-flex h-12 min-w-[160px] items-center justify-center rounded-full border-2 border-ink bg-ink px-6 text-sm font-bold text-pink-soft"
-            >
-              עוגות גן
-            </Link>
-          </div>
-
-          {/* P14 social proof */}
-          <p className="mt-6 text-xs font-extrabold tracking-wide text-ink">
-            ★★★★★ · לקוחות חוזרות בוואטסאפ · צילומים מהסטודיו בלבד
-          </p>
+            <p className="text-xs font-extrabold text-black/60">
+              איסוף נתניה · עד 5 עוגות מורכבות ביום ·{" "}
+              <bdi className="text-black">{siteSettings.phone}</bdi>
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>

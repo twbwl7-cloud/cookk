@@ -39,9 +39,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="he" dir="rtl">
+    <html lang="he" dir="rtl" className="bg-[#fffaf8]">
       <body
-        className={`${heebo.variable} ${frank.variable} sticky-cta-safe antialiased`}
+        className={`${heebo.variable} ${frank.variable} sticky-cta-safe bg-[#fffaf8] antialiased`}
+        style={{ backgroundColor: "#fffaf8" }}
       >
         <LenisProvider>
           <MagneticCursor />

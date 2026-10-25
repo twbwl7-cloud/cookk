@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+Disallow: /api/
+
+Sitemap: https://lalibakery.co.il/sitemap.xml

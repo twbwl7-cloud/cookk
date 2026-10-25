@@ -84,14 +84,14 @@ export default function HomePage() {
         );
       })}
 
-      <section className="bg-ink text-pink-soft">
+      <section className="border-y border-gold-1/25 bg-gradient-to-l from-pink-soft via-white to-pink-wash">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <p className="text-sm font-semibold text-gold-2">{siteSettings.tagline}</p>
-            <h2 className="mt-2 font-display text-3xl sm:text-4xl">
+            <h2 className="mt-2 font-display text-3xl text-ink sm:text-4xl">
               שולחים תמונה — מקבלים עוגה שסוגרת את האירוע
             </h2>
-            <p className="mt-4 text-pink-soft/75 leading-relaxed">
+            <p className="mt-4 leading-relaxed text-ink/70">
               בלי מלאי מזויף ובלי ספירות לאחור. כל עוגה נבנית להזמנה: גן עם דף אכיל,
               מספרים עם פירות ושוקולד, או מעוצבת עם כתר וטופרים.
             </p>

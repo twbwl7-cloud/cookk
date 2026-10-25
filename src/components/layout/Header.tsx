@@ -24,7 +24,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="border-b-2 border-ink bg-pink-soft/90 backdrop-blur-xl">
+      <div className="border-b border-gold-1/25 bg-[#fffaf8]/88 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <button
             type="button"
@@ -46,7 +46,7 @@ export function Header() {
               alt=""
               width={40}
               height={40}
-              className="h-10 w-10 rounded-full border-2 border-ink object-cover"
+              className="h-10 w-10 rounded-full border border-gold-1/50 object-cover"
             />
             <span className="font-display text-lg font-bold tracking-tight text-ink sm:text-xl">
               {siteSettings.brandName}
@@ -58,31 +58,32 @@ export function Header() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="text-sm font-bold text-ink/85 transition-colors hover:text-ink"
+                className="text-sm font-bold text-ink/80 transition-colors hover:text-gold-2"
               >
                 {l.label}
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <Link
-              href="/cart"
-              className="hidden h-10 items-center rounded-full px-3 text-sm font-medium text-ink-muted hover:text-ink sm:inline-flex"
+              href="/shop"
+              className="btn-gold contact-shadow hidden h-10 items-center rounded-full px-4 text-sm font-semibold text-ink sm:inline-flex"
+              data-magnetic
             >
-              לעגלה
+              לראות את העוגות
             </Link>
             <button
               type="button"
               onClick={openCart}
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full gold-border bg-white/50"
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 bg-white/70"
               aria-label="עגלה"
               data-magnetic
               data-cursor-label="BAG"
             >
               <ShoppingBag size={18} />
               {totalUnits > 0 && (
-                <span className="absolute -top-1 -left-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-pink-soft">
+                <span className="absolute -top-1 -start-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-pink-soft">
                   <bdi>{totalUnits}</bdi>
                 </span>
               )}
@@ -93,7 +94,7 @@ export function Header() {
 
       <div
         className={cn(
-          "border-b border-ink/8 bg-pink-soft lg:hidden",
+          "border-b border-gold-1/20 bg-pink-soft lg:hidden",
           open ? "block" : "hidden",
         )}
       >
@@ -103,7 +104,7 @@ export function Header() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="rounded-xl px-3 py-3 text-base font-medium text-ink hover:bg-white/50"
+              className="rounded-xl px-3 py-3 text-base font-medium text-ink hover:bg-white/60"
             >
               {l.label}
             </Link>
