@@ -11,13 +11,23 @@ export function estimateCart(lines: CartLine[], couponCode?: string) {
     const unit = variant?.priceIls ?? 0;
     const lineTotal = unit * line.quantity;
     subtotalIls += lineTotal;
+    const customBits: string[] = [];
+    const c = line.customization;
+    if (c?.mode === "inspire") customBits.push("השראה");
+    if (c?.plaqueText) customBits.push(`טקסט: ${c.plaqueText}`);
+    if (c?.numbersText) customBits.push(`מספרים: ${c.numbersText}`);
+    if (c?.sugarSheet === "wanted") customBits.push("דף סוכר");
+    if (c?.mergeProductId) customBits.push("שילוב עוגות");
+
     return {
       ...line,
       title: product?.title ?? "מוצר",
       variantLabel: variant?.label ?? "",
+      customSummary: customBits.join(" · "),
+      inspireNotes: c?.inspireNotes,
       unitPriceIls: unit,
       lineTotalIls: lineTotal,
-      image: product?.image ?? "",
+      image: c?.mergePreviewUrl || product?.image || "",
       stock: variant?.stock ?? 0,
     };
   });

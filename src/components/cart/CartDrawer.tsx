@@ -7,12 +7,13 @@ import { useCartStore } from "@/store/cart";
 import { estimateCart } from "@/lib/client-pricing";
 import { formatIls } from "@/lib/utils";
 import { siteSettings } from "@/data/site";
+
 export function CartDrawer() {
   const isOpen = useCartStore((s) => s.isOpen);
   const closeCart = useCartStore((s) => s.closeCart);
   const lines = useCartStore((s) => s.lines);
   const setQuantity = useCartStore((s) => s.setQuantity);
-  const removeItem = useCartStore((s) => s.removeItem);
+  const removeLine = useCartStore((s) => s.removeLine);
   const couponDraft = useCartStore((s) => s.couponDraft);
   const setCouponDraft = useCartStore((s) => s.setCouponDraft);
 
@@ -46,7 +47,7 @@ export function CartDrawer() {
             <div className="py-16 text-center">
               <p className="font-display text-2xl">העגלה ריקה</p>
               <p className="mt-2 text-sm text-ink-muted">
-                מארז ה-VIP מחכה על המדף.
+                בחרי עוגה — או לקחי השראה ושילבי שתיים.
               </p>
               <Link
                 href="/shop"
@@ -60,7 +61,7 @@ export function CartDrawer() {
             <ul className="space-y-4">
               {quote.detailed.map((line) => (
                 <li
-                  key={`${line.productId}-${line.variantId}`}
+                  key={line.lineId}
                   className="flex gap-3 border-b border-ink/8 pb-4"
                 >
                   <div className="relative h-20 w-20 overflow-hidden rounded-2xl bg-pink-base/60">
@@ -74,6 +75,16 @@ export function CartDrawer() {
                   <div className="flex-1">
                     <p className="font-medium">{line.title}</p>
                     <p className="text-xs text-ink-muted">{line.variantLabel}</p>
+                    {line.customSummary && (
+                      <p className="mt-1 text-[11px] font-bold leading-snug text-gold-2">
+                        {line.customSummary}
+                      </p>
+                    )}
+                    {line.inspireNotes && (
+                      <p className="mt-1 line-clamp-2 text-[11px] text-ink/55">
+                        {line.inspireNotes}
+                      </p>
+                    )}
                     <p className="mt-1 text-sm font-semibold">
                       <bdi>{formatIls(line.lineTotalIls)}</bdi>
                     </p>
@@ -82,11 +93,7 @@ export function CartDrawer() {
                         type="button"
                         className="h-8 w-8 rounded-full border border-ink/15"
                         onClick={() =>
-                          setQuantity(
-                            line.productId,
-                            line.variantId,
-                            line.quantity - 1,
-                          )
+                          setQuantity(line.lineId, line.quantity - 1)
                         }
                       >
                         −
@@ -96,11 +103,7 @@ export function CartDrawer() {
                         type="button"
                         className="h-8 w-8 rounded-full border border-ink/15"
                         onClick={() =>
-                          setQuantity(
-                            line.productId,
-                            line.variantId,
-                            line.quantity + 1,
-                          )
+                          setQuantity(line.lineId, line.quantity + 1)
                         }
                       >
                         +
@@ -108,9 +111,7 @@ export function CartDrawer() {
                       <button
                         type="button"
                         className="mr-auto text-xs text-ink-muted underline"
-                        onClick={() =>
-                          removeItem(line.productId, line.variantId)
-                        }
+                        onClick={() => removeLine(line.lineId)}
                       >
                         הסרה
                       </button>
@@ -169,8 +170,7 @@ export function CartDrawer() {
               </div>
             </div>
             <p className="text-[11px] text-ink-muted">
-              המחיר הסופי מאומת בשרת מול המלאי. משלוח חינם מעל{" "}
-              <bdi>{formatIls(siteSettings.freeShippingFromIls)}</bdi>.
+              התאמות אישיות ושילובי AI מאושרים בוואטסאפ לפני אפייה.
             </p>
             <Link
               href="/checkout"

@@ -2,16 +2,19 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Sparkles } from "lucide-react";
 import type { Product } from "@/types/commerce";
 import { formatIls } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
-import { Button } from "@/components/ui/button";
 import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
+import { CakeCustomizeModal } from "@/components/shop/CakeCustomizeModal";
 
 export function ProductDetail({ product }: { product: Product }) {
   const [variantId, setVariantId] = useState(product.variants[0]?.id ?? "");
-  const addItem = useCartStore((s) => s.addItem);
+  const [customizeMode, setCustomizeMode] = useState<"inspire" | "cart" | null>(
+    null,
+  );
   const rememberViewed = useCartStore((s) => s.rememberViewed);
   const variant = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
 
@@ -91,26 +94,46 @@ export function ProductDetail({ product }: { product: Product }) {
           {product.description}
         </p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Button
-            size="lg"
-            className="flex-1"
+        <div className="mt-8 flex flex-col gap-3">
+          <button
+            type="button"
+            className="btn-gold contact-shadow inline-flex h-13 w-full items-center justify-center rounded-full text-sm font-extrabold text-ink disabled:opacity-50"
             data-magnetic
             data-cursor-label="הוספה"
             disabled={!variant || variant.stock < 1}
-            onClick={() => variant && addItem(product.id, variant.id, 1)}
+            onClick={() => setCustomizeMode("cart")}
           >
-            הוספה לעגלה
-          </Button>
+            הוספה לעגלה · טקסט / מספרים / דף סוכר
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-gold-1/40 bg-white/70 text-sm font-bold text-ink disabled:opacity-50"
+            data-magnetic
+            data-cursor-label="השראה"
+            disabled={!variant || variant.stock < 1}
+            onClick={() => setCustomizeMode("inspire")}
+          >
+            <Sparkles size={16} className="text-gold-2" />
+            לקחתי השראה · שילוב AI + הערות
+          </button>
           <a
             href={wa}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-[#25D366] bg-[#25D366]/10 text-sm font-semibold text-ink"
+            className="inline-flex h-12 w-full items-center justify-center rounded-full border border-[#25D366] bg-[#25D366]/10 text-sm font-semibold text-ink"
           >
             שאלה בוואטסאפ
           </a>
         </div>
+
+        {customizeMode && (
+          <CakeCustomizeModal
+            product={product}
+            mode={customizeMode}
+            open
+            onClose={() => setCustomizeMode(null)}
+          />
+        )}
 
         <ul className="mt-8 space-y-2 text-sm text-ink-muted">
           <li>צילום אמיתי מהסטודיו · עיצוב לפי הזמנה</li>

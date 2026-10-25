@@ -2,7 +2,11 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { CartLine } from "@/types/commerce";
+import type { CakeCustomization, CartLine } from "@/types/commerce";
+
+function newLineId() {
+  return `ln_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+}
 
 type CartState = {
   lines: CartLine[];
@@ -14,9 +18,14 @@ type CartState = {
   closeCart: () => void;
   toggleCart: () => void;
   setCouponDraft: (code: string) => void;
-  addItem: (productId: string, variantId: string, quantity?: number) => void;
-  removeItem: (productId: string, variantId: string) => void;
-  setQuantity: (productId: string, variantId: string, quantity: number) => void;
+  addItem: (
+    productId: string,
+    variantId: string,
+    quantity?: number,
+    customization?: CakeCustomization,
+  ) => void;
+  removeLine: (lineId: string) => void;
+  setQuantity: (lineId: string, quantity: number) => void;
   clearCart: () => void;
   rememberViewed: (slug: string) => void;
   setLastSearch: (q: string) => void;
@@ -35,43 +44,53 @@ export const useCartStore = create<CartState>()(
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set((s) => ({ isOpen: !s.isOpen })),
       setCouponDraft: (code) => set({ couponDraft: code }),
-      addItem: (productId, variantId, quantity = 1) => {
+      addItem: (productId, variantId, quantity = 1, customization) => {
         set((state) => {
-          const existing = state.lines.find(
-            (l) => l.productId === productId && l.variantId === variantId,
-          );
-          if (existing) {
-            return {
-              lines: state.lines.map((l) =>
-                l.productId === productId && l.variantId === variantId
-                  ? { ...l, quantity: Math.min(20, l.quantity + quantity) }
-                  : l,
-              ),
-              isOpen: true,
-            };
+          // Only merge identical plain lines (no customization)
+          if (!customization) {
+            const existing = state.lines.find(
+              (l) =>
+                l.productId === productId &&
+                l.variantId === variantId &&
+                !l.customization,
+            );
+            if (existing) {
+              return {
+                lines: state.lines.map((l) =>
+                  l.lineId === existing.lineId
+                    ? { ...l, quantity: Math.min(20, l.quantity + quantity) }
+                    : l,
+                ),
+                isOpen: true,
+              };
+            }
           }
           return {
-            lines: [...state.lines, { productId, variantId, quantity }],
+            lines: [
+              ...state.lines,
+              {
+                lineId: newLineId(),
+                productId,
+                variantId,
+                quantity,
+                customization,
+              },
+            ],
             isOpen: true,
           };
         });
       },
-      removeItem: (productId, variantId) =>
+      removeLine: (lineId) =>
         set((state) => ({
-          lines: state.lines.filter(
-            (l) => !(l.productId === productId && l.variantId === variantId),
-          ),
+          lines: state.lines.filter((l) => l.lineId !== lineId),
         })),
-      setQuantity: (productId, variantId, quantity) =>
+      setQuantity: (lineId, quantity) =>
         set((state) => ({
           lines:
             quantity <= 0
-              ? state.lines.filter(
-                  (l) =>
-                    !(l.productId === productId && l.variantId === variantId),
-                )
+              ? state.lines.filter((l) => l.lineId !== lineId)
               : state.lines.map((l) =>
-                  l.productId === productId && l.variantId === variantId
+                  l.lineId === lineId
                     ? { ...l, quantity: Math.min(20, quantity) }
                     : l,
                 ),
@@ -88,7 +107,7 @@ export const useCartStore = create<CartState>()(
       totalUnits: () => get().lines.reduce((n, l) => n + l.quantity, 0),
     }),
     {
-      name: "luxe-glam-cart-v1",
+      name: "lalibakery-cart-v2",
       partialize: (state) => ({
         lines: state.lines,
         couponDraft: state.couponDraft,

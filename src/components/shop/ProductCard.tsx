@@ -4,11 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/types/commerce";
 import { formatIls } from "@/lib/utils";
-import { useCartStore } from "@/store/cart";
-import { Button } from "@/components/ui/button";
+import { ProductActionBar } from "@/components/shop/CakeCustomizeModal";
 
 export function ProductCard({ product }: { product: Product }) {
-  const addItem = useCartStore((s) => s.addItem);
   const variant = product.variants[0];
   const price = variant?.priceIls ?? 0;
 
@@ -61,22 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
           </p>
         </div>
       </Link>
-      <div className="mt-3 px-1">
-        <Button
-          size="sm"
-          className="w-full"
-          data-magnetic
-          data-cursor-label="הוספה"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (variant) addItem(product.id, variant.id, 1);
-          }}
-          disabled={!variant || variant.stock < 1}
-        >
-          הוספה לעגלה
-        </Button>
-      </div>
+      <ProductActionBar product={product} />
     </article>
   );
 }

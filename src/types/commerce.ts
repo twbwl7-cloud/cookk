@@ -67,8 +67,26 @@ export type SiteSettings = {
   launchCouponPercent: number;
 };
 
+export type CakeCustomization = {
+  mode: "standard" | "inspire";
+  /** Text/numbers to pipe on the cake */
+  plaqueText?: string;
+  numbersText?: string;
+  sugarSheet: "none" | "wanted";
+  sugarNote?: string;
+  /** Inspiration notes — add / remove / change */
+  inspireNotes?: string;
+  /** Second cake to merge with (inspire mode) */
+  mergeProductId?: string;
+  /** Generated / composite preview URL */
+  mergePreviewUrl?: string;
+};
+
 export type CartLine = {
+  /** Stable unique id so two custom cakes of same SKU stay separate */
+  lineId: string;
   productId: string;
   variantId: string;
   quantity: number;
+  customization?: CakeCustomization;
 };

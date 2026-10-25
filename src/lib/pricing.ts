@@ -17,9 +17,22 @@ export const checkoutSchema = z.object({
   lines: z
     .array(
       z.object({
+        lineId: z.string().optional(),
         productId: z.string().min(1),
         variantId: z.string().min(1),
         quantity: z.number().int().min(1).max(20),
+        customization: z
+          .object({
+            mode: z.enum(["standard", "inspire"]),
+            plaqueText: z.string().max(40).optional(),
+            numbersText: z.string().max(20).optional(),
+            sugarSheet: z.enum(["none", "wanted"]),
+            sugarNote: z.string().max(200).optional(),
+            inspireNotes: z.string().max(800).optional(),
+            mergeProductId: z.string().optional(),
+            mergePreviewUrl: z.string().max(500).optional(),
+          })
+          .optional(),
       }),
     )
     .min(1)
