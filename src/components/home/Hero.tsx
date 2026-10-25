@@ -98,8 +98,8 @@ export function Hero() {
 
           {/* P03 + P35 — jelly dough CTA */}
           <div className="mt-8 flex flex-col items-end gap-3">
-            <JellyButton href="/shop" magneticLabel="שלי">
-              לבחור את העוגה שלי
+            <JellyButton href="/custom-cake" magneticLabel="בונים">
+              לבנות את העוגה שלי
             </JellyButton>
             <a
               href={wa}
