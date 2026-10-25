@@ -7,9 +7,8 @@ import { whatsappLink } from "@/lib/utils";
 import Link from "next/link";
 
 /**
- * Luxury full-bleed hero — Maison / Sur Mesure.
- * One composition: brand → premium line → headline → one sentence → one CTA.
- * Attracts with cream/blush/gold atelier light — never a dark void.
+ * Luxury hero — cake LEFT (dimmed atelier) · copy physical RIGHT.
+ * Soft muted luxury, not a black void.
  */
 const SRC = "/cakes/hero/hero-atelier-blush-gold.jpg";
 
@@ -34,10 +33,10 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-[100svh] overflow-hidden bg-[#fff5f7]"
+      className="relative min-h-[100svh] overflow-hidden bg-[#1a1410]"
       aria-label="Maison LALIBAKERY"
     >
-      {/* Full-bleed couture cake */}
+      {/* Full-bleed cake — panned LEFT */}
       <div className="absolute inset-0" data-hero-visual>
         <Image
           src={SRC}
@@ -46,39 +45,50 @@ export function Hero() {
           priority
           quality={94}
           sizes="100vw"
-          className="object-cover object-[78%_42%] sm:object-[74%_40%] lg:object-[70%_38%] scale-[1.02]"
+          className="object-cover object-[22%_42%] sm:object-[18%_40%] lg:object-[14%_38%] scale-[1.04] brightness-[0.78] contrast-[1.05] saturate-[0.92]"
         />
-        {/* Soft cinematic grain of light — not a card */}
+
+        {/* Muted luxury wash over the cake (left) */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(900px 520px at 78% 40%, transparent 0%, rgba(255,250,248,0.08) 45%, rgba(255,250,248,0.55) 72%, rgba(255,250,248,0.92) 100%)",
+              "linear-gradient(90deg, rgba(26,20,16,0.42) 0%, rgba(26,20,16,0.28) 28%, rgba(26,20,16,0.12) 48%, transparent 62%)",
           }}
         />
+        {/* Soft vignette */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, transparent 0%, transparent 38%, rgba(255,250,248,0.35) 58%, rgba(255,250,248,0.88) 78%, rgba(255,250,248,0.97) 100%)",
+              "radial-gradient(120% 90% at 18% 45%, transparent 0%, rgba(20,14,10,0.35) 70%, rgba(20,14,10,0.55) 100%)",
+          }}
+        />
+        {/* Cream readability plane on PHYSICAL RIGHT for copy */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(255,250,248,0.28) 58%, rgba(255,250,248,0.82) 74%, rgba(255,250,248,0.96) 100%)",
           }}
         />
       </div>
 
-      {/* Fine gold rail — atelier signature */}
+      {/* Gold rail between cake & copy */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-y-[12%] right-[min(46%,34rem)] hidden w-px bg-gradient-to-b from-transparent via-gold-1/55 to-transparent lg:block"
+        className="pointer-events-none absolute inset-y-[14%] right-[min(48%,36rem)] hidden w-px bg-gradient-to-b from-transparent via-gold-1/50 to-transparent lg:block"
         initial={{ opacity: 0, scaleY: 0.4 }}
         animate={{ opacity: 1, scaleY: 1 }}
         transition={{ delay: 1.1, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-center px-5 sm:px-8">
-        <div className="ms-auto w-full max-w-[36rem] pb-16 pt-28 text-right sm:pb-20 lg:pt-16">
-          {/* Premium maison line */}
+      <div className="relative z-10 mx-auto min-h-[100svh] max-w-6xl px-5 sm:px-8">
+        {/* PHYSICAL RIGHT — freestanding copy */}
+        <div className="absolute bottom-16 right-5 w-[min(100%-2.5rem,36rem)] text-right sm:bottom-20 sm:right-8 lg:bottom-auto lg:top-1/2 lg:w-[min(34rem,46%)] lg:-translate-y-1/2">
           <motion.p
             custom={0}
             variants={fadeUp}
@@ -109,7 +119,6 @@ export function Hero() {
             Haute Pâtisserie · Netanya
           </motion.p>
 
-          {/* Hairline */}
           <motion.span
             aria-hidden
             custom={3}
@@ -126,7 +135,7 @@ export function Hero() {
             animate="show"
             className="mt-6 font-display text-balance text-[clamp(1.85rem,4.2vw,2.85rem)] font-bold leading-[1.12] tracking-[-0.03em] text-ink"
           >
-            יצירה couture — לפני שמשלמים שקל
+            יצירה מעוצבת — לפני שמשלמים שקל
           </motion.h1>
 
           <motion.p
