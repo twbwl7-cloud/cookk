@@ -71,7 +71,7 @@ export function Header() {
               href="/builder"
               className="btn-gold contact-shadow hidden h-10 items-center rounded-full px-4 text-sm font-semibold text-ink sm:inline-flex"
               data-magnetic
-              data-cursor-label="Builder"
+              data-cursor-label="בונה"
             >
               לבנות Hybrid
             </Link>
