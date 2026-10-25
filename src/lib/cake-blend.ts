@@ -48,7 +48,7 @@ export async function seamlessCakeBlend(
   const maxR = Math.hypot(SIZE * 0.55, SIZE * 0.55);
 
   // How strongly style paints into the center
-  let peak =
+  const peak =
     opts.baseCategory === opts.styleCategory
       ? 0.62
       : opts.baseCategory === "gan"
