@@ -14,19 +14,30 @@ import { getSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 
+/**
+ * Satori (next/og) does not layout Hebrew RTL correctly — characters appear
+ * reversed. Pre-reverse logical Hebrew so the rendered bitmap reads right-to-left.
+ */
+function he(text: string): string {
+  if (!text) return "";
+  // Keep Latin / digits / currency stable; reverse the full visual line for Satori
+  return Array.from(text).reverse().join("");
+}
+
 async function loadFont() {
-  const res = await fetch(
+  const urls = [
+    "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSansHebrew/NotoSansHebrew-Bold.ttf",
     "https://github.com/googlefonts/noto-fonts/raw/main/hinted/ttf/NotoSansHebrew/NotoSansHebrew-Bold.ttf",
-  );
-  if (!res.ok) {
-    // Fallback: Assistant from fonts.gstatic
-    const fallback = await fetch(
-      "https://fonts.gstatic.com/s/notosanshebrew/v46/or3XQ35RN1Xe7xk02FrkaA.ttf",
-    );
-    if (!fallback.ok) return null;
-    return fallback.arrayBuffer();
+  ];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return res.arrayBuffer();
+    } catch {
+      /* try next */
+    }
   }
-  return res.arrayBuffer();
+  return null;
 }
 
 export async function GET(req: Request) {
@@ -89,12 +100,12 @@ export async function GET(req: Request) {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "row-reverse",
           background: "linear-gradient(135deg, #fffaf8 0%, #f7d6de 55%, #fff7f9 100%)",
           fontFamily: fonts.length ? "He" : "sans-serif",
-          direction: "rtl",
         }}
       >
+        {/* Cake photo — no badges / no selection circles */}
         <div
           style={{
             width: "52%",
@@ -111,27 +122,27 @@ export async function GET(req: Request) {
             width={624}
             height={630}
             style={{
-              width: "100%",
-              height: "100%",
+              width: "112%",
+              height: "112%",
               objectFit: "cover",
+              objectPosition: "50% 42%",
+              marginTop: "-4%",
+              marginRight: "-4%",
             }}
           />
+          {/* Cover studio sticker / selection circle on cake boards */}
           <div
             style={{
               position: "absolute",
-              bottom: 24,
-              right: 24,
-              background: "rgba(255,255,255,0.94)",
-              borderRadius: 999,
-              padding: "10px 18px",
-              fontSize: 22,
-              fontWeight: 700,
-              color: "#0d0d0d",
+              bottom: 0,
+              left: 0,
+              width: 120,
+              height: 120,
+              background:
+                "radial-gradient(circle at 30% 70%, rgba(255,250,248,0.96) 0%, rgba(255,250,248,0) 70%)",
               display: "flex",
             }}
-          >
-            תמונת העוגה להזמנה
-          </div>
+          />
         </div>
 
         <div
@@ -142,9 +153,17 @@ export async function GET(req: Request) {
             flexDirection: "column",
             padding: "36px 34px",
             justifyContent: "space-between",
+            alignItems: "flex-end",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-end",
+              width: "100%",
+            }}
+          >
             <div
               style={{
                 fontSize: 18,
@@ -164,9 +183,10 @@ export async function GET(req: Request) {
                 color: "#0d0d0d",
                 lineHeight: 1.15,
                 display: "flex",
+                textAlign: "right",
               }}
             >
-              הזמנה לאופה
+              {he("הזמנה לאופה")}
             </div>
             <div
               style={{
@@ -175,9 +195,10 @@ export async function GET(req: Request) {
                 color: "#2a2a2a",
                 opacity: 0.7,
                 display: "flex",
+                textAlign: "right",
               }}
             >
-              מה שהלקוח בחר — במבט אחד
+              {he("מה שהלקוח בחר — במבט אחד")}
             </div>
 
             <div
@@ -186,6 +207,8 @@ export async function GET(req: Request) {
                 display: "flex",
                 flexDirection: "column",
                 gap: 10,
+                alignItems: "flex-end",
+                width: "100%",
               }}
             >
               {rows.slice(0, 9).map((line) => (
@@ -197,9 +220,12 @@ export async function GET(req: Request) {
                     fontWeight: 700,
                     display: "flex",
                     lineHeight: 1.25,
+                    textAlign: "right",
+                    width: "100%",
+                    justifyContent: "flex-end",
                   }}
                 >
-                  {line}
+                  {he(line)}
                 </div>
               ))}
             </div>
@@ -208,14 +234,23 @@ export async function GET(req: Request) {
           <div
             style={{
               display: "flex",
+              flexDirection: "row-reverse",
               justifyContent: "space-between",
               alignItems: "center",
               borderTop: "1px solid rgba(13,13,13,0.12)",
               paddingTop: 18,
+              width: "100%",
             }}
           >
-            <div style={{ fontSize: 18, color: "#2a2a2a", display: "flex" }}>
-              לאשר בוואטסאפ לפני אפייה
+            <div
+              style={{
+                fontSize: 18,
+                color: "#2a2a2a",
+                display: "flex",
+                textAlign: "right",
+              }}
+            >
+              {he("לאשר בוואטסאפ לפני אפייה")}
             </div>
             <div
               style={{
@@ -225,7 +260,7 @@ export async function GET(req: Request) {
                 display: "flex",
               }}
             >
-              ★ סטודיו
+              {he("סטודיו")}
             </div>
           </div>
         </div>
@@ -236,7 +271,7 @@ export async function GET(req: Request) {
       height: 630,
       fonts,
       headers: {
-        "Cache-Control": "public, max-age=3600",
+        "Cache-Control": "public, max-age=60",
       },
     },
   );

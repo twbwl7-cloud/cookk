@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Dual-ring gold cursor — trail + magnetic scale on interactive targets. */
+/**
+ * Subtle gold cursor trail — no big “selection circle” labels.
+ * Labels were confusing (and broke Hebrew reading). Keep a small ring only.
+ */
 export function MagneticCursor() {
   const core = useRef<HTMLDivElement>(null);
   const ring = useRef<HTMLDivElement>(null);
@@ -21,7 +24,6 @@ export function MagneticCursor() {
     let rx = 0;
     let ry = 0;
     let scale = 1;
-    let label = "";
     let raf = 0;
 
     const onMove = (e: MouseEvent) => {
@@ -30,13 +32,7 @@ export function MagneticCursor() {
       const target = (e.target as HTMLElement | null)?.closest(
         "[data-magnetic]",
       ) as HTMLElement | null;
-      if (target) {
-        scale = 2.8;
-        label = target.dataset.cursorLabel ?? "";
-      } else {
-        scale = 1;
-        label = "";
-      }
+      scale = target ? 1.65 : 1;
     };
 
     const loop = () => {
@@ -47,9 +43,6 @@ export function MagneticCursor() {
 
       if (core.current) {
         core.current.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%) scale(${scale})`;
-        core.current.setAttribute("data-has-label", label ? "true" : "false");
-        const span = core.current.querySelector("span");
-        if (span) span.textContent = label;
       }
       if (ring.current) {
         ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${1 + (scale - 1) * 0.35})`;
@@ -76,16 +69,13 @@ export function MagneticCursor() {
       <div
         ref={ring}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[99] hidden h-10 w-10 rounded-full border border-gold-1/50 md:block"
+        className="pointer-events-none fixed top-0 left-0 z-[99] hidden h-8 w-8 rounded-full border border-gold-1/40 md:block"
       />
       <div
         ref={core}
         aria-hidden
-        data-has-label="false"
-        className="pointer-events-none fixed top-0 left-0 z-[100] hidden h-3 w-3 rounded-full border border-gold-1/80 bg-gold-1/50 shadow-[0_0_20px_rgb(212_175_55_/_0.45)] backdrop-blur-sm transition-[width,height] duration-200 md:block data-[has-label=true]:h-14 data-[has-label=true]:w-14 data-[has-label=true]:bg-gold-1/30"
-      >
-        <span className="absolute inset-0 hidden items-center justify-center px-1 text-center text-[10px] font-extrabold leading-tight tracking-wide text-ink [[data-has-label=true]_&]:flex" />
-      </div>
+        className="pointer-events-none fixed top-0 left-0 z-[100] hidden h-2.5 w-2.5 rounded-full border border-gold-1/70 bg-gold-1/45 md:block"
+      />
     </>
   );
 }
