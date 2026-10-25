@@ -7,14 +7,12 @@ import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
 
 /**
- * Full-bleed appetite hero — NO card / NO frame / NO dark void.
+ * Full-bleed psych hero — cake edge-to-edge · free text on RIGHT · NO card.
  *
- * Book stack (ספר מיליונים):
- * P01 50ms soft impression · P02 beauty=ease · P03 one gold CTA
- * P05 curiosity gap · P06 fluency (ink on blush wash, never white-on-cake)
- * P14 social proof · P17 specificity · P19 effort · P21 product to hand
- * P24 IKEA pride · P25 real scarcity · P35/P36 large CTA at peak motivation
- * N05 cakes: excitement+pride · pastels · soft display · one gold contrast
+ * Book (מיליונים):
+ * P01 first frame COMPLETE (never opacity-0 empty) · P02 beauty · P03 one CTA
+ * P05 curiosity · P06 ink fluency on soft wash · P14 proof · P17 numbers
+ * P19 effort · P24 IKEA pride · P25 scarcity · P35 large CTA · N05 cakes
  */
 const H1 = "את מעצבת את העוגה — לפני שמשלמים שקל";
 const H2 =
@@ -35,7 +33,7 @@ export function Hero() {
       className="relative min-h-[92svh] overflow-hidden bg-[#fff5f7] sm:min-h-[94svh]"
       aria-label="פתח · LALIBAKERY"
     >
-      {/* FULL-BLEED cake — edge to edge, static studio photo */}
+      {/* FULL-BLEED — absolute inset-0, covers entire hero */}
       <div className="absolute inset-0" data-hero-visual>
         <Image
           src={SRC}
@@ -44,67 +42,46 @@ export function Hero() {
           priority
           quality={94}
           sizes="100vw"
-          className="object-cover object-[48%_42%] sm:object-[46%_40%] lg:object-[42%_38%]"
+          className="scale-[1.02] object-cover object-[46%_40%] sm:object-[44%_38%] lg:object-[40%_36%]"
         />
       </div>
 
-      {/*
-        Soft blush wash on the RIGHT only — readability (P06), not a card.
-        No border, no radius, no shadow box. Text floats on atmosphere.
-      */}
+      {/* Soft RIGHT wash only — no border, no radius, no shadow card */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(to left, rgba(255,250,248,0.94) 0%, rgba(255,245,247,0.82) 28%, rgba(255,245,247,0.35) 52%, rgba(255,245,247,0.05) 72%, transparent 100%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-36"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(247,214,222,0.55) 0%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, transparent 38%, rgba(255,250,248,0.55) 62%, rgba(255,250,248,0.88) 78%, rgba(255,250,248,0.95) 100%)",
         }}
       />
 
-      {/* Copy — physical RIGHT, no frame */}
-      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-6xl items-end px-5 pb-16 pt-28 sm:min-h-[94svh] sm:px-8 sm:pb-20 lg:items-center lg:pt-24">
-        <motion.div
-          className="absolute bottom-16 right-5 w-[min(100%-2.5rem,34rem)] text-right sm:right-8 sm:bottom-20 lg:bottom-auto lg:top-[48%] lg:w-[min(32rem,44%)] lg:-translate-y-1/2"
-          initial={reduce ? false : { opacity: 0, x: 36 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, ease: EASE }}
-        >
-          {/* P25 scarcity + P14 proof — floating chips, not a box */}
-          <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold tracking-wide text-ink">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#c45c6a]" />
-              נשארו 2 מקומות לסופ״ש
-            </span>
-            <span className="text-[11px] font-bold text-ink/55">
+      {/*
+        Copy block — physical RIGHT, freestanding (P01: visible on first paint).
+        No rounded frame. No dark panel.
+      */}
+      <div className="relative z-10 mx-auto min-h-[92svh] max-w-6xl px-5 pt-28 sm:min-h-[94svh] sm:px-8 lg:pt-24">
+        <div className="absolute bottom-16 right-5 w-[min(100%-2.5rem,36rem)] text-right sm:right-8 sm:bottom-20 lg:bottom-auto lg:top-1/2 lg:w-[min(34rem,46%)] lg:-translate-y-1/2">
+          {/* P25 + P14 */}
+          <p className="text-[11px] font-extrabold tracking-wide text-ink">
+            <span className="me-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#c45c6a] align-middle" />
+            נשארו 2 מקומות לסופ״ש
+            <span className="mx-2 font-bold text-ink/40">·</span>
+            <span className="font-bold text-ink/55">
               ★ 4.9 · אימהות מנתניה והסביבה
             </span>
-          </div>
+          </p>
 
           <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[0.28em] text-gold-2">
             Haute Pâtisserie · Netanya
           </p>
 
-          {/* Brand first — hero-level (brand test) */}
-          <p
-            className="mt-3 font-display text-[clamp(2rem,4.5vw,2.85rem)] font-bold leading-none tracking-[-0.03em] text-ink"
-            style={{ textShadow: "0 1px 0 rgba(255,255,255,0.65)" }}
-          >
+          <p className="mt-3 font-display text-[clamp(2.1rem,4.8vw,3rem)] font-bold leading-none tracking-[-0.03em] text-ink drop-shadow-[0_1px_0_rgba(255,255,255,0.7)]">
             {siteSettings.brandName}
           </p>
 
-          {/* P01 + P05 + P24 — concrete pride headline */}
-          <h1
-            className="mt-4 font-display text-balance text-[clamp(2.05rem,5.4vw,3.55rem)] font-bold leading-[1.02] tracking-[-0.035em] text-ink"
-            style={{ textShadow: "0 1px 0 rgba(255,255,255,0.55)" }}
-          >
+          {/* P01 + P05 + P24 */}
+          <h1 className="mt-4 font-display text-balance text-[clamp(2.1rem,5.6vw,3.65rem)] font-bold leading-[1.02] tracking-[-0.035em] text-ink drop-shadow-[0_1px_0_rgba(255,255,255,0.65)]">
             {words.map((word, i) => (
               <span
                 key={`${word}-${i}`}
@@ -112,11 +89,11 @@ export function Hero() {
               >
                 <motion.span
                   className="inline-block text-ink"
-                  initial={reduce ? false : { y: "108%", opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
+                  initial={reduce ? false : { y: "100%" }}
+                  animate={{ y: 0 }}
                   transition={{
-                    duration: 0.72,
-                    delay: 0.1 + i * 0.055,
+                    duration: 0.7,
+                    delay: 0.08 + i * 0.05,
                     ease: EASE,
                   }}
                 >
@@ -126,11 +103,8 @@ export function Hero() {
             ))}
           </h1>
 
-          {/* P17 specificity */}
-          <p
-            className="ml-auto mt-4 max-w-md text-[clamp(0.95rem,1.45vw,1.12rem)] font-semibold leading-snug text-ink/75"
-            style={{ textShadow: "0 1px 0 rgba(255,255,255,0.45)" }}
-          >
+          {/* P17 */}
+          <p className="ml-auto mt-4 max-w-md text-[clamp(0.95rem,1.5vw,1.12rem)] font-semibold leading-snug text-ink/78 drop-shadow-[0_1px_0_rgba(255,255,255,0.5)]">
             {H2.split("₪250").map((part, i, arr) =>
               i < arr.length - 1 ? (
                 <span key={i}>
@@ -143,12 +117,12 @@ export function Hero() {
             )}
           </p>
 
-          {/* P19 effort — quality as proof */}
+          {/* P19 */}
           <p className="mt-3 text-xs font-bold text-ink/50">
             72 שעות מהקמח עד הקופסה · עד 5 עוגות מורכבות ביום
           </p>
 
-          {/* P03 isolation + P35 size + P36 trigger at motivation peak */}
+          {/* P03 + P35 + P36 */}
           <div className="mt-8 flex flex-col items-end gap-3">
             <Link
               href="/shop"
@@ -163,7 +137,7 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               data-magnetic
-              className="text-sm font-bold text-ink/70 underline decoration-gold-1/60 underline-offset-4 transition hover:text-ink"
+              className="text-sm font-bold text-ink/70 underline decoration-gold-1/70 underline-offset-4 hover:text-ink"
             >
               או וואטסאפ אנושי · <bdi>{siteSettings.phone}</bdi>
             </a>
@@ -172,7 +146,7 @@ export function Hero() {
               מינימום 3 ימי עסקים
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
