@@ -24,7 +24,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="border-b border-gold-1/25 bg-[#fffaf8]/88 backdrop-blur-xl">
+      <div className="border-b border-gold-1/20 bg-[#fffaf8]/92 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <button
             type="button"

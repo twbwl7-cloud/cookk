@@ -41,6 +41,8 @@
   --color-pink-wash: var(--pink-wash);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
+  /* Alias so text-black never falls through to illegible defaults */
+  --color-black: var(--ink);
   --color-black-deep: var(--black-deep);
   --color-black-matte: var(--black-matte);
   --color-gold-1: var(--gold-1);
