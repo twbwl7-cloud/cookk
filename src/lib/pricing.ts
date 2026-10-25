@@ -31,6 +31,27 @@ export const checkoutSchema = z.object({
             inspireNotes: z.string().max(800).optional(),
             mergeProductId: z.string().optional(),
             mergePreviewUrl: z.string().max(500).optional(),
+            hybridSpec: z
+              .object({
+                kind: z.literal("hybrid"),
+                hybridMode: z.literal(true),
+                baseStyle: z.object({
+                  category: z.enum(["gan", "misparim", "meutzavot"]),
+                  frost: z.string(),
+                  piping: z.string(),
+                  accents: z.string(),
+                  label: z.string(),
+                }),
+                secondaryStyle: z.object({
+                  category: z.enum(["gan", "misparim", "meutzavot"]),
+                  frost: z.string(),
+                  piping: z.string(),
+                  accents: z.string(),
+                  label: z.string(),
+                }),
+                fusionRatio: z.number().min(0).max(1),
+              })
+              .optional(),
           })
           .optional(),
       }),

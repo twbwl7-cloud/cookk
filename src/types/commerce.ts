@@ -67,6 +67,26 @@ export type SiteSettings = {
   launchCouponPercent: number;
 };
 
+export type CakeHybridSpec = {
+  kind: "hybrid";
+  hybridMode: true;
+  baseStyle: {
+    category: CakeCategory;
+    frost: string;
+    piping: string;
+    accents: string;
+    label: string;
+  };
+  secondaryStyle: {
+    category: CakeCategory;
+    frost: string;
+    piping: string;
+    accents: string;
+    label: string;
+  };
+  fusionRatio: number;
+};
+
 export type CakeCustomization = {
   mode: "standard" | "inspire";
   /** Text/numbers to pipe on the cake */
@@ -78,8 +98,10 @@ export type CakeCustomization = {
   inspireNotes?: string;
   /** Second cake to merge with (inspire mode) */
   mergeProductId?: string;
-  /** Generated / composite preview URL */
+  /** Generated / composite preview URL (image reference for order) */
   mergePreviewUrl?: string;
+  /** Structured hybrid fusion for order_lines.custom_spec */
+  hybridSpec?: CakeHybridSpec;
 };
 
 export type CartLine = {

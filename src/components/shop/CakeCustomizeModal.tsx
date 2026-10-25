@@ -7,8 +7,16 @@ import type { CakeCustomization, Product } from "@/types/commerce";
 import { products } from "@/data/products";
 import { formatIls } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
-
 type Mode = "inspire" | "cart";
+
+const NOTES_PLACEHOLDER =
+  "לדוגמה: סרטים ורודים במקום ירוקים, להוריד את השם תמר, להוסיף פרחים זהב…";
+
+function catHe(c: Product["category"]) {
+  if (c === "gan") return "גן";
+  if (c === "misparim") return "מספרים";
+  return "מעוצבת";
+}
 
 export function CakeCustomizeModal({
   product,
@@ -41,7 +49,22 @@ export function CakeCustomizeModal({
     [product.id],
   );
 
-  // Lock page scroll; modal uses clean native/finger scroll (no fat bar)
+  const mergeProduct = useMemo(
+    () => products.find((p) => p.id === mergeId),
+    [mergeId],
+  );
+
+  const badgeText = useMemo(() => {
+    if (pairLabel) return `עוגה אחת משולבת · ${pairLabel} · סטודיו`;
+    if (mergeProduct) {
+      return `עוגה אחת משולבת · ${catHe(product.category)} × ${catHe(mergeProduct.category)} · סטודיו`;
+    }
+    if (mode === "inspire") {
+      return "עוגה אחת משולבת · גן × מעוצבת · סטודיו";
+    }
+    return null;
+  }, [pairLabel, mergeProduct, product.category, mode]);
+
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -90,6 +113,29 @@ export function CakeCustomizeModal({
   };
 
   const submit = () => {
+    const hybridSpec =
+      mode === "inspire" && mergeProduct
+        ? {
+            kind: "hybrid" as const,
+            hybridMode: true,
+            baseStyle: {
+              category: product.category,
+              frost: "ivory" as const,
+              piping: "shell" as const,
+              accents: "none" as const,
+              label: product.title,
+            },
+            secondaryStyle: {
+              category: mergeProduct.category,
+              frost: "blush" as const,
+              piping: "lambeth" as const,
+              accents: "goldLeaf" as const,
+              label: mergeProduct.title,
+            },
+            fusionRatio: 0.55,
+          }
+        : undefined;
+
     const customization: CakeCustomization =
       mode === "inspire"
         ? {
@@ -97,6 +143,7 @@ export function CakeCustomizeModal({
             inspireNotes: inspireNotes.trim() || undefined,
             mergeProductId: mergeId || undefined,
             mergePreviewUrl: mergePreview || undefined,
+            hybridSpec,
             plaqueText: plaqueText.trim() || undefined,
             numbersText: numbersText.trim() || undefined,
             sugarSheet,
@@ -116,65 +163,80 @@ export function CakeCustomizeModal({
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
+      className="fixed inset-0 z-[70] flex items-end justify-center p-0 sm:items-center sm:p-4"
       data-lenis-prevent
     >
       <button
         type="button"
-        className="absolute inset-0 bg-ink/45 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
         aria-label="סגור"
         onClick={onClose}
       />
+
+      {/* Reference layout card */}
       <div
         role="dialog"
         aria-modal
         data-lenis-prevent
         onWheel={(e) => e.stopPropagation()}
         onTouchMove={(e) => e.stopPropagation()}
-        className="modal-scroll-clean relative z-10 max-h-[92svh] w-full max-w-lg rounded-t-[1.75rem] border border-white/70 bg-[#fffaf8] p-5 shadow-[0_30px_80px_-24px_rgba(13,13,13,0.4)] sm:rounded-[1.75rem] sm:p-6"
+        className="modal-scroll-clean relative z-10 flex max-h-[94svh] w-full max-w-[440px] flex-col overflow-y-auto rounded-t-[1.75rem] border border-black/5 bg-white shadow-[0_28px_80px_-28px_rgba(13,13,13,0.45)] sm:rounded-[1.75rem]"
       >
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-gold-2">
-              {mode === "inspire" ? "לקחתי השראה" : "התאמה לפני עגלה"}
-            </p>
-            <h2 className="mt-1 font-display text-2xl font-bold text-ink">
-              {product.title}
-            </h2>
-            <p className="mt-1 text-sm font-semibold text-ink/60">
-              <bdi>{formatIls(variant.priceIls)}</bdi>
-            </p>
+        {/* Gold accent edge (matches reference left hairline) */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-y-6 start-0 w-px bg-gradient-to-b from-transparent via-gold-2/70 to-transparent"
+        />
+
+        <div className="px-5 pb-6 pt-5 sm:px-6 sm:pb-7 sm:pt-6">
+          {/* 1. Header — X left, tag/title/price right */}
+          <div className="flex items-start justify-between gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/12 bg-white text-ink transition hover:bg-[#fffaf8]"
+              aria-label="סגור"
+            >
+              <X size={18} strokeWidth={2.25} />
+            </button>
+
+            <div className="min-w-0 flex-1 text-right">
+              <p className="text-[11px] font-extrabold tracking-[0.18em] text-gold-2">
+                {mode === "inspire" ? "לקחתי השראה" : "התאמה לפני עגלה"}
+              </p>
+              <h2 className="mt-1.5 font-display text-[clamp(1.35rem,4.5vw,1.75rem)] font-bold leading-tight tracking-[-0.02em] text-ink">
+                {product.title}
+              </h2>
+              <p className="mt-1.5 text-[15px] font-semibold text-ink/70">
+                <bdi>{formatIls(variant.priceIls)}</bdi>
+              </p>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full border border-ink/10 p-2 hover:bg-pink-soft/50"
-            aria-label="סגור"
-          >
-            <X size={18} />
-          </button>
-        </div>
 
-        <div className="relative mt-4 aspect-[5/4] overflow-hidden rounded-[1.25rem] bg-pink-soft/40">
-          <Image
-            src={mergePreview || product.image}
-            alt={product.title}
-            fill
-            className="object-cover"
-            sizes="480px"
-          />
-          {mergePreview && (
-            <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-extrabold text-ink">
-              עוגה אחת משולבת
-              {pairLabel ? ` · ${pairLabel}` : ""} · סטודיו
-            </span>
-          )}
-        </div>
+          {/* 2. Image + pill badge bottom-right */}
+          <div className="relative mt-5 aspect-[5/4] overflow-hidden rounded-[1.25rem] bg-[#f7f2f0]">
+            <Image
+              src={mergePreview || product.image}
+              alt={product.title}
+              fill
+              className="object-cover"
+              sizes="440px"
+              priority
+            />
+            {badgeText && (
+              <span className="absolute bottom-3 right-3 max-w-[90%] truncate rounded-full bg-white/95 px-3.5 py-1.5 text-[10px] font-extrabold tracking-wide text-ink shadow-sm">
+                {badgeText}
+              </span>
+            )}
+          </div>
 
-        {mode === "inspire" && (
-          <div className="mt-5 space-y-4">
-            <div>
-              <label className="text-xs font-extrabold text-ink" htmlFor="inspire-notes">
+          {/* 3. Notes — exact prompt from reference (inspire primary) */}
+          {mode === "inspire" ? (
+            <div className="mt-6">
+              <label
+                htmlFor="inspire-notes"
+                className="block text-right text-[15px] font-extrabold text-ink"
+              >
                 מה להוסיף / להוריד / לשנות?
               </label>
               <textarea
@@ -183,27 +245,51 @@ export function CakeCustomizeModal({
                 onChange={(e) => setInspireNotes(e.target.value)}
                 rows={3}
                 maxLength={800}
-                placeholder="לדוגמה: סרטים ורודים במקום ירוקים, להוריד את השם תמר, להוסיף פרחים זהב…"
-                className="mt-1.5 w-full rounded-2xl border border-ink/10 bg-white/80 px-3 py-2.5 text-sm text-ink outline-none focus:border-gold-1/50"
+                placeholder={NOTES_PLACEHOLDER}
+                className="mt-2.5 w-full resize-y rounded-[1rem] border border-ink/12 bg-white px-4 py-3 text-right text-sm leading-relaxed text-ink outline-none placeholder:text-ink/35 focus:border-gold-1/45 focus:ring-2 focus:ring-gold-1/15"
               />
             </div>
+          ) : (
+            <div className="mt-6">
+              <label
+                htmlFor="plaque"
+                className="block text-right text-[15px] font-extrabold text-ink"
+              >
+                מה לכתוב על העוגה?
+              </label>
+              <input
+                id="plaque"
+                value={plaqueText}
+                onChange={(e) => setPlaqueText(e.target.value.slice(0, 25))}
+                maxLength={25}
+                placeholder="למשל: מזל טוב תמר"
+                className="mt-2.5 h-12 w-full rounded-[1rem] border border-ink/12 bg-white px-4 text-right text-sm outline-none focus:border-gold-1/45"
+              />
+            </div>
+          )}
 
-            <div>
-              <p className="text-xs font-extrabold text-ink">
-                לשלב עם עוגה שנייה · גן × מעוצבת / מספרים / אותו סוג — עוגה אחת
+          {/* Hybrid second-cake picker — below the clean hero of the modal */}
+          {mode === "inspire" && (
+            <div className="mt-6 border-t border-ink/8 pt-5">
+              <p className="text-right text-sm font-extrabold text-ink">
+                לשלב עם עוגה שנייה — עוגה אחת
               </p>
+              <p className="mt-1 text-right text-[11px] font-medium text-ink/45">
+                גן × מעוצבת · מספרים · או אותו סוג
+              </p>
+
               {(
                 [
-                  { key: "gan", label: "עוגות גן" },
-                  { key: "meutzavot", label: "מעוצבות" },
-                  { key: "misparim", label: "מספרים" },
+                  { key: "gan" as const, label: "עוגות גן" },
+                  { key: "meutzavot" as const, label: "מעוצבות" },
+                  { key: "misparim" as const, label: "מספרים" },
                 ] as const
               ).map((group) => {
                 const list = others.filter((p) => p.category === group.key);
-                if (list.length === 0) return null;
+                if (!list.length) return null;
                 return (
                   <div key={group.key} className="mt-3">
-                    <p className="mb-1.5 text-[10px] font-extrabold tracking-wide text-gold-2">
+                    <p className="mb-1.5 text-right text-[10px] font-extrabold tracking-wide text-gold-2">
                       {group.label}
                     </p>
                     <div className="grid grid-cols-4 gap-2">
@@ -216,10 +302,10 @@ export function CakeCustomizeModal({
                             setMergePreview(null);
                             setPairLabel(null);
                           }}
-                          className={`relative aspect-square overflow-hidden rounded-xl border-2 ${
+                          className={`relative aspect-square overflow-hidden rounded-xl border-2 transition ${
                             mergeId === p.id
                               ? "border-gold-1"
-                              : "border-transparent opacity-80"
+                              : "border-transparent opacity-85"
                           }`}
                         >
                           <Image
@@ -227,7 +313,7 @@ export function CakeCustomizeModal({
                             alt={p.title}
                             fill
                             className="object-cover"
-                            sizes="80px"
+                            sizes="96px"
                           />
                         </button>
                       ))}
@@ -235,75 +321,60 @@ export function CakeCustomizeModal({
                   </div>
                 );
               })}
+
               <button
                 type="button"
                 onClick={runCombine}
                 disabled={mergeBusy || !mergeId}
-                className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-gold-1/40 bg-white/80 text-sm font-extrabold text-ink disabled:opacity-50"
+                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-gold-1/40 bg-[#fffaf8] text-sm font-extrabold text-ink disabled:opacity-50"
                 data-magnetic
                 data-cursor-label="שילוב"
               >
                 <Sparkles size={16} className="text-gold-2" />
-                {mergeBusy
-                  ? "אורגים עוגה אחת…"
-                  : "צרי שילוב אמיתי · עוגה אחת"}
+                {mergeBusy ? "אורגים עוגה אחת…" : "צרי שילוב · עוגה אחת"}
               </button>
               {mergeError && (
-                <p className="mt-2 text-xs font-bold text-red-700">{mergeError}</p>
+                <p className="mt-2 text-right text-xs font-bold text-red-700">
+                  {mergeError}
+                </p>
               )}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Shared plaque / numbers / sugar — always for cart, also optional on inspire */}
-        <div className="mt-5 space-y-3 border-t border-ink/8 pt-4">
-          <p className="text-xs font-extrabold text-ink">
-            {mode === "cart"
-              ? "מה לכתוב על העוגה?"
-              : "טקסט ומספרים (אופציונלי)"}
-          </p>
-          <div>
-            <label className="text-[11px] font-bold text-ink/55" htmlFor="plaque">
-              טקסט / שם על העוגה
-            </label>
+          {/* Plaque / numbers / sugar — cart mode full; inspire optional */}
+          <div className="mt-5 space-y-3 border-t border-ink/8 pt-5">
+            {mode === "inspire" && (
+              <>
+                <p className="text-right text-xs font-extrabold text-ink/55">
+                  טקסט · מספרים · דף סוכר (אופציונלי)
+                </p>
+                <input
+                  value={plaqueText}
+                  onChange={(e) => setPlaqueText(e.target.value.slice(0, 25))}
+                  maxLength={25}
+                  placeholder="טקסט על העוגה"
+                  className="h-11 w-full rounded-[1rem] border border-ink/12 bg-white px-3 text-right text-sm"
+                />
+              </>
+            )}
             <input
-              id="plaque"
-              value={plaqueText}
-              onChange={(e) => setPlaqueText(e.target.value.slice(0, 25))}
-              maxLength={25}
-              placeholder="למשל: מזל טוב תמר"
-              className="mt-1 h-11 w-full rounded-2xl border border-ink/10 bg-white/80 px-3 text-sm"
-            />
-            <p className="mt-1 text-[10px] text-ink/40">
-              עד 25 תווים · <bdi>{plaqueText.length}</bdi>/25
-            </p>
-          </div>
-          <div>
-            <label className="text-[11px] font-bold text-ink/55" htmlFor="nums">
-              מספרים על העוגה
-            </label>
-            <input
-              id="nums"
               value={numbersText}
               onChange={(e) => setNumbersText(e.target.value.slice(0, 12))}
               maxLength={12}
-              placeholder="למשל: 18"
-              className="mt-1 h-11 w-full rounded-2xl border border-ink/10 bg-white/80 px-3 text-sm"
+              placeholder="מספרים (למשל 18)"
+              className="h-11 w-full rounded-[1rem] border border-ink/12 bg-white px-3 text-right text-sm"
             />
-          </div>
-          <div>
-            <p className="text-[11px] font-bold text-ink/55">דף סוכר</p>
-            <div className="mt-1.5 flex gap-2">
+            <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setSugarSheet("none")}
                 className={`rounded-full px-3 py-1.5 text-xs font-bold ${
                   sugarSheet === "none"
                     ? "bg-ink text-pink-soft"
-                    : "bg-pink-soft/70 text-ink"
+                    : "bg-[#fff5f7] text-ink"
                 }`}
               >
-                בלי
+                בלי דף סוכר
               </button>
               <button
                 type="button"
@@ -311,7 +382,7 @@ export function CakeCustomizeModal({
                 className={`rounded-full px-3 py-1.5 text-xs font-bold ${
                   sugarSheet === "wanted"
                     ? "bg-ink text-pink-soft"
-                    : "bg-pink-soft/70 text-ink"
+                    : "bg-[#fff5f7] text-ink"
                 }`}
               >
                 רוצה דף סוכר
@@ -322,31 +393,32 @@ export function CakeCustomizeModal({
                 value={sugarNote}
                 onChange={(e) => setSugarNote(e.target.value)}
                 rows={2}
-                placeholder="תארו את התמונה / דמות — או שלחו קובץ בוואטסאפ אחרי ההזמנה"
-                className="mt-2 w-full rounded-2xl border border-ink/10 bg-white/80 px-3 py-2 text-sm"
+                placeholder="תיאור / קישור לתמונה לדף הסוכר — או שליחה בוואטסאפ"
+                className="w-full rounded-[1rem] border border-ink/12 bg-white px-3 py-2 text-right text-sm"
               />
             )}
           </div>
-        </div>
 
-        <div className="mt-6 flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={submit}
-            className="btn-gold contact-shadow inline-flex h-13 w-full items-center justify-center gap-2 rounded-full text-sm font-extrabold text-ink"
-            data-magnetic
-            data-cursor-label="עגלה"
-          >
-            <ShoppingBag size={16} />
-            {mode === "inspire" ? "שמירה לעגלה עם ההשראה" : "הוספה לעגלה"}
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="h-10 text-sm font-bold text-ink/50 underline"
-          >
-            ביטול
-          </button>
+          {/* CTA */}
+          <div className="mt-6 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={submit}
+              className="btn-gold contact-shadow inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-extrabold text-ink"
+              data-magnetic
+              data-cursor-label="עגלה"
+            >
+              <ShoppingBag size={16} />
+              {mode === "inspire" ? "שמירה לעגלה עם ההשראה" : "הוספה לעגלה"}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="h-10 text-sm font-bold text-ink/45 underline"
+            >
+              ביטול
+            </button>
+          </div>
         </div>
       </div>
     </div>
