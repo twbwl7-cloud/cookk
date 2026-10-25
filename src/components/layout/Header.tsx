@@ -9,6 +9,7 @@ import { siteSettings } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 const links = [
+  { href: "/builder", label: "בונה Hybrid" },
   { href: "/collections/gan", label: "עוגות גן" },
   { href: "/collections/misparim", label: "עוגות מספרים" },
   { href: "/collections/meutzavot", label: "עוגות מעוצבות" },
@@ -67,11 +68,12 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <Link
-              href="/shop"
+              href="/builder"
               className="btn-gold contact-shadow hidden h-10 items-center rounded-full px-4 text-sm font-semibold text-ink sm:inline-flex"
               data-magnetic
+              data-cursor-label="Builder"
             >
-              לראות את העוגות
+              לבנות Hybrid
             </Link>
             <button
               type="button"

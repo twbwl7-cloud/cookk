@@ -22,14 +22,17 @@ export function CartDrawer() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60]">
+    <div className="fixed inset-0 z-[60]" data-lenis-prevent>
       <button
         type="button"
         className="absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
         aria-label="סגור עגלה"
         onClick={closeCart}
       />
-      <aside className="absolute inset-y-0 left-0 flex w-full max-w-md flex-col bg-surface contact-shadow sm:left-auto sm:right-0">
+      <aside
+        data-lenis-prevent
+        className="modal-scroll-clean absolute inset-y-0 left-0 flex w-full max-w-md flex-col overflow-y-auto bg-surface contact-shadow sm:left-auto sm:right-0"
+      >
         <div className="flex items-center justify-between border-b border-ink/10 px-5 py-4">
           <h2 className="font-display text-xl">העגלה שלי</h2>
           <button

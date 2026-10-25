@@ -275,18 +275,25 @@ main {
   font-weight: 800;
 }
 
-/* Modal: normal finger/wheel scroll, no fat OS scrollbar chrome */
+/* Modal: native scroll that WORKS (Lenis is prevented via data-lenis-prevent).
+   Thin elegant scrollbar — never a fat OS bar, never scroll locked. */
 .modal-scroll-clean {
-  overflow-y: auto;
+  overflow-y: auto !important;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--gold-2) 55%, transparent) transparent;
 }
 .modal-scroll-clean::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  display: none;
+  width: 6px;
+}
+.modal-scroll-clean::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-scroll-clean::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--gold-2) 50%, transparent);
+  border-radius: 999px;
 }
 
 .skip-link:focus {

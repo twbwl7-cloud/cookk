@@ -115,7 +115,10 @@ export function CakeCustomizeModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center">
+    <div
+      className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
+      data-lenis-prevent
+    >
       <button
         type="button"
         className="absolute inset-0 bg-ink/45 backdrop-blur-[2px]"
@@ -125,6 +128,9 @@ export function CakeCustomizeModal({
       <div
         role="dialog"
         aria-modal
+        data-lenis-prevent
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
         className="modal-scroll-clean relative z-10 max-h-[92svh] w-full max-w-lg rounded-t-[1.75rem] border border-white/70 bg-[#fffaf8] p-5 shadow-[0_30px_80px_-24px_rgba(13,13,13,0.4)] sm:rounded-[1.75rem] sm:p-6"
       >
         <div className="flex items-start justify-between gap-3">
