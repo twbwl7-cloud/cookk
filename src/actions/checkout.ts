@@ -3,6 +3,8 @@
 import { checkoutSchema, quoteCart } from "@/lib/pricing";
 import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
+import { absoluteUrl } from "@/lib/site-url";
+import { getProductById } from "@/data/products";
 
 export type CheckoutResult =
   | {
@@ -44,8 +46,13 @@ export async function submitCheckout(
     ...data.lines.map((raw, i) => {
       const priced = quote.lines[i];
       const c = raw.customization;
+      const product = getProductById(raw.productId);
+      const cakeImage = absoluteUrl(
+        c?.mergePreviewUrl || product?.image || "/cakes/brand/logo.jpg",
+      );
       const bits = [
         `• ${priced?.title ?? raw.productId} (${priced?.variantLabel ?? ""}) ×${raw.quantity} — ₪${priced?.lineTotalIls ?? "?"}`,
+        `  📷 תמונת העוגה במצורף להזמנה:\n  ${cakeImage}`,
       ];
       if (c?.mode === "inspire" || c?.hybridSpec) {
         bits.push("  ★ מוצר אחד: עוגה אחת משולבת · גן × מעוצבת");
@@ -61,8 +68,6 @@ export async function submitCheckout(
       if (c?.numbersText) bits.push(`  מספרים: ${c.numbersText}`);
       if (c?.sugarSheet === "wanted")
         bits.push(`  דף סוכר: כן${c.sugarNote ? ` — ${c.sugarNote}` : ""}`);
-      if (c?.mergePreviewUrl)
-        bits.push(`  תמונת העוגה האחת: ${c.mergePreviewUrl}`);
       return bits.join("\n");
     }),
     `סה״כ לתשלום: ₪${quote.totalIls}`,

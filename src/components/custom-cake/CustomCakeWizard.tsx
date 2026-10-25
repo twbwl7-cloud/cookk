@@ -25,9 +25,10 @@ import {
   estimateCustomCakeIls,
   servingsLabel,
 } from "@/lib/custom-cake-summary";
-import { formatIls, whatsappLink } from "@/lib/utils";
+import { encodeOrderPayload, toOrderPayload } from "@/lib/order-payload";
+import { absoluteUrl } from "@/lib/site-url";
+import { formatIls, whatsappLink, cn } from "@/lib/utils";
 import { siteSettings } from "@/data/site";
-import { cn } from "@/lib/utils";
 
 function Chip({
   active,
@@ -164,9 +165,19 @@ export function CustomCakeWizard() {
   };
   const goBack = () => setStep(Math.max(1, step - 1));
 
+  const orderLinks = useMemo(() => {
+    const token = encodeOrderPayload(toOrderPayload(store, totalIls));
+    const imageUrl = absoluteUrl(`/api/order-card?p=${token}`);
+    const bakerPageUrl = absoluteUrl(`/z?p=${token}`);
+    return { imageUrl, bakerPageUrl, token };
+  }, [store, totalIls]);
+
   const wa = whatsappLink(
     siteSettings.whatsapp,
-    buildWhatsAppMessage(store, totalIls),
+    buildWhatsAppMessage(store, totalIls, {
+      imageUrl: orderLinks.imageUrl,
+      bakerPageUrl: orderLinks.bakerPageUrl,
+    }),
   );
 
   const bases = BASES.filter((b) => cat?.baseIds.includes(b.id));
@@ -587,6 +598,35 @@ export function CustomCakeWizard() {
                         </li>
                       ))}
                     </ul>
+                    <div className="border-t border-ink/8 bg-[#fffaf8] px-4 py-4">
+                      <p className="text-right text-xs font-extrabold text-ink">
+                        📷 תמונה במצורף לאופה
+                      </p>
+                      <p className="mt-1 text-right text-[11px] font-medium text-ink/50">
+                        הקישור בתקציר הוואטסאפ פותח כרטיס עם תמונת העוגה + כל הבחירות — כדי שבעל הבית יראה בדיוק מה להכין.
+                      </p>
+                      <a
+                        href={orderLinks.imageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 block overflow-hidden rounded-[1rem] border border-ink/10"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={orderLinks.imageUrl}
+                          alt="כרטיס הזמנה עם תמונת העוגה"
+                          className="w-full"
+                        />
+                      </a>
+                      <a
+                        href={orderLinks.bakerPageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-flex text-[11px] font-bold text-gold-2 underline"
+                      >
+                        פתיחת דף מלא לאופה
+                      </a>
+                    </div>
                     <div className="flex items-center justify-between border-t border-ink/8 px-5 py-4">
                       <div>
                         <p className="text-xs font-bold text-ink/45">מחיר משוער</p>
@@ -605,12 +645,12 @@ export function CustomCakeWizard() {
                         data-magnetic
                         data-cursor-label="וואטסאפ"
                       >
-                        לשלוח בוואטסאפ
+                        לשלוח בוואטסאפ + תמונה
                       </a>
                     </div>
                   </div>
                   <p className="text-center text-[12px] font-medium text-ink/45">
-                    לפני האפייה נאשר יחד בוואטסאפ בדיוק מה ייצא. המחיר הסופי אחרי אישור.
+                    הוואטסאפ כולל קישור לתמונת העוגה. לפני האפייה מאשרים יחד. המחיר הסופי אחרי אישור.
                   </p>
                 </div>
               )}
@@ -645,7 +685,7 @@ export function CustomCakeWizard() {
                     rel="noopener noreferrer"
                     className="btn-gold contact-shadow inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-extrabold text-ink"
                   >
-                    אישור ושליחה
+                    אישור + שליחה עם תמונה
                   </a>
                 )}
               </div>

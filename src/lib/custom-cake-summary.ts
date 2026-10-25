@@ -110,21 +110,33 @@ export function buildCustomCakeLines(s: Snapshot): { label: string; text: string
   return lines;
 }
 
-export function buildWhatsAppMessage(s: Snapshot, totalIls: number): string {
+export function buildWhatsAppMessage(
+  s: Snapshot,
+  totalIls: number,
+  opts?: { imageUrl?: string; bakerPageUrl?: string },
+): string {
   const cat = categoryOf(s.category);
   const lines = buildCustomCakeLines(s);
   const servings = servingsLabel(s);
+  const cakePhoto = opts?.imageUrl;
   return [
     `היי LALIBAKERY! הזמנת עוגה בהתאמה אישית`,
     cat?.id === "hybrid" ? `★ מוצר אחד: עוגה אחת משולבת · גן × מעוצבת` : ``,
     ``,
+    cakePhoto
+      ? `📷 תמונת העוגה במצורף להזמנה (לחצו לפתיחה — כך רואים מה הלקוח בחר):\n${cakePhoto}`
+      : ``,
+    opts?.bakerPageUrl
+      ? `📋 כרטיס מלא לאופה:\n${opts.bakerPageUrl}`
+      : ``,
+    cakePhoto || opts?.bakerPageUrl ? `` : ``,
     ...lines.map((l) => `${l.label}: ${l.text}`),
     servings ? `מנות: ${servings}` : "",
     `מחיר משוער מהאתר: ₪${totalIls}`,
     ``,
     `לפני האפייה נאשר יחד בוואטסאפ בדיוק מה ייצא.`,
   ]
-    .filter(Boolean)
+    .filter((line) => Boolean(line))
     .join("\n");
 }
 
