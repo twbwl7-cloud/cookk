@@ -1,0 +1,96 @@
+1. קובץ הליבה (Boilerplate) - app/layout.tsx
+הקובץ הזה כבר מוגדר לעברית (ימין לשמאל - RTL), ומייבא אוטומטית פונט עברי נקי (Heebo) מגוגל, יחד עם תשתית SEO ראשונית.
+TypeScript
+import type { Metadata } from 'next';
+import { Heebo } from 'next/font/google';
+import './globals.css';
+// ייבוא פונט עברי מודרני
+const heebo = Heebo({ subsets: ['hebrew', 'latin'], weight: ['300', '400', '700', '900'] });
+export const metadata: Metadata = {
+title: 'שם העסק | תיאור קצר ומושך',
+description: 'תיאור מפורט עבור מנוע החיפוש של גוגל שמכיל מילות מפתח',
+};
+export default function RootLayout({
+children,
+}: {
+children: React.ReactNode;
+}) {
+return (
+// הגדרת השפה והכיוון לימין-לשמאל
+<html lang="he" dir="rtl">
+<body className={`${heebo.className} bg-slate-50 text-slate-900`}>
+{/* כאן אפשר לשים Navbar קבוע שיופיע בכל הדפים */}
+<main className="min-h-screen">
+{children}
+</main>
+{/* כאן אפשר לשים Footer קבוע */}
+</body>
+</html>
+);
+}
+2. סכמות קבועות למערכת הניהול (Sanity Schemas)
+שמור את שלושת הקבצים האלו בתיקיית sanity/schemas שלך. הם יתנו לכל לקוח שלך פאנל ניהול מקצועי מהיום הראשון.
+קובץ siteSettings.ts (הגדרות עסק בסיסיות):
+TypeScript
+export default {
+name: 'siteSettings',
+title: 'הגדרות אתר',
+type: 'document',
+fields: [
+{ name: 'businessName', title: 'שם העסק', type: 'string' },
+{ name: 'logo', title: 'לוגו העסק', type: 'image', options: { hotspot: true } },
+{ name: 'phone', title: 'טלפון (לוואטסאפ)', type: 'string' },
+{ name: 'address', title: 'כתובת מלאה', type: 'string' },
+{ name: 'wazeLink', title: 'קישור ל-Waze', type: 'url' },
+{ name: 'instagram', title: 'קישור לאינסטגרם', type: 'url' }
+]
+}
+קובץ seo.ts (קידום ושיתוף):
+TypeScript
+export default {
+name: 'seo',
+title: 'הגדרות SEO וקידום',
+type: 'document',
+fields: [
+{ name: 'metaTitle', title: 'כותרת לגוגל (עד 60 תווים)', type: 'string' },
+{ name: 'metaDescription', title: 'תיאור לגוגל (עד 160 תווים)', type: 'text' },
+{ name: 'shareImage', title: 'תמונה לשיתוף בוואטסאפ/פייסבוק', type: 'image' }
+]
+}
+קובץ legal.ts (עמודים משפטיים):
+TypeScript
+export default {
+name: 'legal',
+title: 'עמודים משפטיים',
+type: 'document',
+fields: [
+{ name: 'title', title: 'שם העמוד (למשל: תקנון האתר)', type: 'string' },
+{ name: 'slug', title: 'קישור לעמוד', type: 'slug', options: { source: 'title' } },
+{ name: 'content', title: 'תוכן העמוד', type: 'array', of: [{ type: 'block' }] }
+]
+}
+(אל תשכח להוסיף את שלושתם לתוך קובץ ה-schema.ts הראשי שלך).
+3. תבנית קובץ משתני סביבה (.env-template)
+צור קובץ טקסט פשוט בשם env-template.txt ושמור אותו בתיקייה שלך. בכל פרויקט חדש, פשוט תשנה את השם שלו ל-.env.local ותמלא את הנתונים, וכך לא תשכח אף משתנה חשוב:
+Plaintext
+# --- הגדרות Sanity CMS ---
+NEXT_PUBLIC_SANITY_PROJECT_ID="הכנס_את_מזהה_הפרויקט_כאן"
+NEXT_PUBLIC_SANITY_DATASET="production"
+NEXT_PUBLIC_SANITY_API_VERSION="2024-01-01"
+SANITY_API_READ_TOKEN="הכנס_טוקן_קריאה_כאן"
+# --- כתובות לתצוגה מקדימה ---
+NEXT_PUBLIC_SANITY_STUDIO_URL="http://localhost:3000/studio"
+SANITY_STUDIO_PREVIEW_URL="http://localhost:3000"
+# (לאחר העלאה ל-Vercel, יש לשנות את שתי הכתובות למעלה לכתובת ה-Vercel האמיתית)
+4. שאלון קליטת לקוח (להעתקה ל-Google Forms)
+פתח טופס גוגל חדש, והעתק לתוכו את השאלות הבאות. ברגע שלקוח משלם, שלח לו את הקישור לטופס. התשובות שלו הן בדיוק מה שתדביק לקלוד יחד עם "פרומפט המאסטר":
+שם העסק הרשמי:
+תחום הפעילות במשפט אחד: (למשל: "קונדיטוריית בוטיק לעוגות חלון ראווה")
+כתובת מדויקת מלאה: (כולל מספר בית ועיר, עבור הניווט ב-Waze)
+מספר טלפון לפניות קהל (וואטסאפ):
+קישורים לרשתות חברתיות: (אינסטגרם / פייסבוק / טיקטוק)
+צבעי מותג נבחרים: (אם יש קודי צבע - HEX, נא לציין. אם לא, תאר את האווירה - למשל: "ורוד פסטל ולבן נקי")
+(אם רלוונטי לחנות) מדיניות משלוחים ואזורי חלוקה: (לאן מגיעים, כמה עולה משלוח, ומאיזה סכום המשלוח חינם?)
+(אם רלוונטי לחנות) זמני הכנה / אספקה: (למשל: "הזמנה מינימום 3 ימים מראש")
+האם יש צורך בסינון אלרגנים או בקשות מיוחדות? (למשל: טקסט חופשי להקדשה על עוגה, בחירה "ללא גלוטן")
+קישור לתיקיית Google Drive / Dropbox: (אנא העלה לשם את הלוגו שלך באיכות גבוהה ותמונות/סרטונים של העסק שתרצה לשלב באתר)

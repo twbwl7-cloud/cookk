@@ -1,0 +1,23 @@
+---
+description: Always use Michael's DOKS playbooks when building or redesigning any website
+alwaysApply: true
+---
+
+# DOKS playbooks (always on)
+
+The owner uploaded a permanent pack. **Do not ask him to re-upload.** Before building or redesigning a site, read:
+
+1. `/cursor/stores/user/doks/MEMORY.md` (or `/workspace/_doks/README.md` if the store is unavailable)
+2. The matching `text/*.txt` playbook(s) under `_doks` / user `doks`
+
+## Pick the best for THIS request
+
+| If the ask is… | Primary source |
+|---|---|
+| Demo / WOW / close a client in a meeting | `demo-site-script` + book A* + animations |
+| Landing / PPC / leads | `landing-page-script` + book P* (trust/decision/action) |
+| Full shop / boutique product site | `boilerplate-folder` + book niche N* + animations sparingly |
+| Hero / motion polish only | book A* + `animations.txt` |
+| Vague brief | `prompt-formats` to structure, then choose above |
+
+Layer **3–7 psychology levers (P\*)** and **2–5 motion recipes (A\*)** that serve the goal. Never fake scarcity, countdowns, or reviews. Hebrew RTL + logical CSS. Ship a runnable luxury-quality slice with real copy.

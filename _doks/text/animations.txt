@@ -1,0 +1,1014 @@
+'use client';
+import { motion } from 'framer-motion';
+export default function PremiumTextReveal({ text }: { text: string }) {
+const words = text.split(' ');
+const container = {
+hidden: { opacity: 0 },
+visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+};
+const child = {
+visible: { opacity: 1, y: 0, transition: { type: 'spring', damping: 12, stiffness: 100 } },
+hidden: { opacity: 0, y: 50 },
+};
+return (
+<motion.div variants={container} initial="hidden" animate="visible" className="flex flex-wrap gap-2 overflow-hidden">
+{words.map((word, index) => (
+<motion.span variants={child} key={index} className="inline-block">{word}</motion.span>
+))}
+</motion.div>
+);
+}
+'use client';
+import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
+export default function ScrollFadeUp({ children, delay = 0 }: { children: ReactNode, delay?: number }) {
+return (
+<motion.div
+initial={{ opacity: 0, y: 40 }}
+whileInView={{ opacity: 1, y: 0 }}
+viewport={{ once: true, margin: "-50px" }}
+transition={{ duration: 0.7, ease: "easeOut", delay }}
+>
+{children}
+</motion.div>
+);
+}
+'use client';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Float, Html, useProgress } from '@react-three/drei';
+import { Suspense } from 'react';
+function Loader() {
+const { progress } = useProgress();
+return <Html center><div className="text-xl font-bold">טוען... {progress.toFixed(0)}%</div></Html>;
+}
+export default function Floating3DModel() {
+return (
+<div className="h-[500px] w-full bg-transparent cursor-grab active:cursor-grabbing">
+<Canvas camera={{ position: [0, 0, 6] }}>
+<ambientLight intensity={0.8} />
+<Suspense fallback={<Loader />}>
+<Float speed={2} rotationIntensity={1} floatIntensity={2}>
+{/* כאן תכניס את מודל ה-GLB שלך בעתיד */}
+<mesh><torusKnotGeometry args={[1, 0.3, 100, 16]} /><meshStandardMaterial color="#E91E63" /></mesh>
+</Float>
+</Suspense>
+<OrbitControls enableZoom={false} />
+</Canvas>
+</div>
+);
+}
+'use client';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { MouseEvent, ReactNode, useRef } from 'react';
+export default function MagneticButton({ children }: { children: ReactNode }) {
+const ref = useRef<HTMLDivElement>(null);
+const x = useMotionValue(0);
+const y = useMotionValue(0);
+const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
+const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+if (!ref.current) return;
+const { height, width, left, top } = ref.current.getBoundingClientRect();
+const middleX = e.clientX - (left + width / 2);
+const middleY = e.clientY - (top + height / 2);
+x.set(middleX * 0.3); // עוצמת המגנט
+y.set(middleY * 0.3);
+};
+const handleMouseLeave = () => { x.set(0); y.set(0); };
+return (
+<motion.div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ x: mouseXSpring, y: mouseYSpring }} className="inline-block cursor-pointer">
+{children}
+</motion.div>
+);
+}
+'use client';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+export default function ParallaxImage({ src, alt }: { src: string, alt: string }) {
+const ref = useRef(null);
+const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]); // טווח התזוזה
+return (
+<div ref={ref} className="overflow-hidden w-full h-[400px] relative rounded-2xl">
+<motion.img style={{ y }} src={src} alt={alt} className="absolute inset-0 w-full h-[130%] object-cover" />
+</div>
+);
+}
+'use client';
+import { motion } from 'framer-motion';
+export default function InfiniteMarquee({ text }: { text: string }) {
+return (
+<div className="overflow-hidden whitespace-nowrap bg-black py-4 flex w-full">
+<motion.div
+animate={{ x: [0, -1000] }}
+transition={{ repeat: Infinity, ease: "linear", duration: 10 }}
+className="text-white text-4xl font-bold uppercase shrink-0 px-4"
+>
+{text} • {text} • {text} • {text} • {text}
+</motion.div>
+</div>
+);
+}
+'use client';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { MouseEvent, ReactNode } from 'react';
+export default function TiltCard({ children }: { children: ReactNode }) {
+const x = useMotionValue(200);
+const y = useMotionValue(200);
+const rotateX = useTransform(y, [0, 400], [10, -10]);
+const rotateY = useTransform(x, [0, 400], [-10, 10]);
+function handleMouse(event: MouseEvent<HTMLDivElement>) {
+const rect = event.currentTarget.getBoundingClientRect();
+x.set(event.clientX - rect.left);
+y.set(event.clientY - rect.top);
+}
+function handleMouseLeave() {
+x.set(200); y.set(200); // איפוס למרכז
+}
+return (
+<motion.div
+onMouseMove={handleMouse} onMouseLeave={handleMouseLeave}
+style={{ rotateX, rotateY, perspective: 1000 }}
+className="w-full max-w-sm rounded-xl border border-gray-200 shadow-xl bg-white p-8 transition-shadow hover:shadow-2xl"
+>
+{children}
+</motion.div>
+);
+}
+'use client';
+import { motion } from 'framer-motion';
+const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+const item = { hidden: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1, transition: { type: "spring" } } };
+export default function StaggeredGallery({ images }: { images: string[] }) {
+return (
+<motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-2 md:grid-cols-3 gap-4">
+{images.map((src, i) => (
+<motion.img key={i} variants={item} src={src} className="w-full h-48 object-cover rounded-lg" />
+))}
+</motion.div>
+);
+}
+'use client';
+import { motion, useSpring } from 'framer-motion';
+import { useEffect, useState } from 'react';
+export default function CustomCursor() {
+const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
+const cursorX = useSpring(mousePosition.x, springConfig);
+const cursorY = useSpring(mousePosition.y, springConfig);
+useEffect(() => {
+const updateMousePosition = (e: globalThis.MouseEvent) => setMousePosition({ x: e.clientX, y: e.clientY });
+window.addEventListener('mousemove', updateMousePosition);
+return () => window.removeEventListener('mousemove', updateMousePosition);
+}, []);
+return (
+<motion.div
+className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-black pointer-events-none z-50 mix-blend-difference"
+style={{ x: cursorX, y: cursorY, translateX: '-50%', translateY: '-50%' }}
+/>
+);
+}
+'use client';
+import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
+export default function PageTransition({ children }: { children: ReactNode }) {
+return (
+<>
+<motion.div
+className="fixed inset-0 z-50 bg-black pointer-events-none origin-bottom"
+initial={{ scaleY: 1 }}
+animate={{ scaleY: 0 }}
+exit={{ scaleY: 1 }}
+transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+/>
+{children}
+</>
+);
+}
+🧁 קטגוריה 1: מאפיות, קונדיטוריות ומסעדות (רך, מגרה, קופצני)
+1. כפתור ג'לי קופצני (Jelly Button) מעולה לכפתורי "הזמן עכשיו". נותן תחושה רכה וספוגית של בצק כשהובר מעליו.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function JellyButton({ text }: { text: string }) {
+return (
+<motion.button
+whileHover={{ scaleX: 1.05, scaleY: 0.95 }}
+whileTap={{ scaleX: 0.95, scaleY: 1.05 }}
+transition={{ type: "spring", stiffness: 300, damping: 10 }}
+className="bg-pink-500 text-white px-8 py-3 rounded-full font-bold shadow-lg"
+>
+{text}
+</motion.button>
+);
+}
+2. רכיבים מרחפים ברקע (Floating Ingredients) תמונות של פולי קפה, פטל או מקרונים שמרחפים בעדינות ברקע הדף למעלה ולמטה.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function FloatingIngredient({ src, delay = 0 }: { src: string, delay?: number }) {
+return (
+<motion.img
+src={src}
+animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}
+transition={{ repeat: Infinity, duration: 4, delay, ease: "easeInOut" }}
+className="w-16 h-16 object-contain absolute opacity-70"
+/>
+);
+}
+3. אדים עולים (Rising Steam) אפקט של אדים עולים ונעלמים. לשים מעל תמונה של קפה חם או מאפה טרי.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function RisingSteam() {
+return (
+<motion.div
+animate={{ y: [0, -40], opacity: [0, 0.6, 0], scale: [1, 1.5] }}
+transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
+className="w-8 h-8 bg-white/40 blur-md rounded-full"
+/>
+);
+}
+4. הופעת צלחת מלמטה (Plate Pop-Up) תמונה של עוגה שקופצת מחוץ למסך בחלק התחתון בגלילה.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function PlatePopUp({ children }: { children: React.ReactNode }) {
+return (
+<motion.div
+initial={{ y: 200, opacity: 0 }}
+whileInView={{ y: 0, opacity: 1 }}
+transition={{ type: "spring", bounce: 0.4, duration: 1 }}
+viewport={{ once: true }}
+>
+{children}
+</motion.div>
+);
+}
+🍹 קטגוריה 2: משקאות, ברים ואלכוהול (נוזלי, בועות, דינמי)
+5. טקסט מתמלא בנוזל (Liquid Fill Text) הטקסט שקוף עם קווי מתאר, ובגלילה הצבע מתמלא מלמטה למעלה כמו כוס.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function LiquidFillText({ text }: { text: string }) {
+return (
+<motion.h1
+initial={{ backgroundPositionY: '100%' }}
+whileInView={{ backgroundPositionY: '0%' }}
+transition={{ duration: 1.5, ease: "easeOut" }}
+viewport={{ once: true }}
+className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-t from-blue-500 via-blue-400 to-transparent border-black"
+style={{ WebkitTextStroke: '2px black', backgroundSize: '100% 200%' }}
+>
+{text}
+</motion.h1>
+);
+}
+6. בועות עולות ברקע (Rising Bubbles) מייצר בועות קטנות שעולות מתחתית המסך ונעלמות.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function RisingBubbles() {
+const bubbles = Array.from({ length: 10 });
+return (
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
+{bubbles.map((_, i) => (
+<motion.div
+key={i}
+initial={{ y: "100vh", opacity: 0, x: Math.random() * 100 }}
+animate={{ y: "-10vh", opacity: [0, 1, 0] }}
+transition={{ repeat: Infinity, duration: 3 + Math.random() * 3, delay: Math.random() * 2 }}
+className="absolute bottom-0 w-3 h-3 bg-white/30 rounded-full blur-[1px]"
+/>
+))}
+</div>
+);
+}
+7. בקבוק נוטה בהובר (Bottle Tilt) כשהעכבר על תמונה של בקבוק, הוא נוטה טיפה הצידה למזיגה.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function BottleTilt({ src }: { src: string }) {
+return (
+<motion.img
+src={src}
+whileHover={{ rotate: 15, scale: 1.05 }}
+transition={{ type: "spring", stiffness: 200 }}
+className="h-64 object-contain origin-bottom"
+/>
+);
+}
+🏋️ קטגוריה 3: חדר כושר, ספורט ואקסטרים (אגרסיבי, חד, עוצמתי)
+8. כותרת מתרסקת (Heavy Impact Text) הטקסט נופל מלמעלה במהירות ופוגע ברצפה בתחושה של משקולת כבדה (ללא קפיציות).
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function HeavyImpactText({ text }: { text: string }) {
+return (
+<motion.h1
+initial={{ scale: 3, opacity: 0, y: -100 }}
+whileInView={{ scale: 1, opacity: 1, y: 0 }}
+transition={{ type: "spring", stiffness: 500, damping: 25 }}
+className="text-7xl font-black uppercase tracking-tighter"
+>
+{text}
+</motion.h1>
+);
+}
+9. כפתור דופק לב (Heartbeat Pulse) כפתור שפועם כמו דופק מהיר, מעולה ל"הצטרף עכשיו".
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function HeartbeatButton({ text }: { text: string }) {
+return (
+<motion.button
+animate={{ scale: [1, 1.1, 1, 1.1, 1] }}
+transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 1 }}
+className="bg-red-600 text-white px-10 py-4 uppercase font-black transform skew-x-[-10deg]"
+>
+<span className="skew-x-[10deg] block">{text}</span>
+</motion.button>
+);
+}
+10. חשיפה באלכסון עצבני (Diagonal Slash Reveal) התמונה נחשפת בחיתוך אלכסוני חד ומהיר (כמו סכין/תנועה).
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function SlashReveal({ src }: { src: string }) {
+return (
+<motion.div
+initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
+whileInView={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
+transition={{ duration: 0.6, ease: "circOut" }}
+>
+<img src={src} className="w-full h-full object-cover" alt="Gym" />
+</motion.div>
+);
+}
+🏢 קטגוריה 4: נדל"ן, אדריכלות ומלונות (יוקרתי, איטי, חלק)
+11. זום איטי פרימיום (Ken Burns Hero) תמונת הגיבור גדלה לאט לאט ברקע. מייצר תחושת מרחב ויוקרה.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function SlowZoomHero({ src }: { src: string }) {
+return (
+<div className="w-full h-screen overflow-hidden relative">
+<motion.img
+src={src}
+initial={{ scale: 1 }}
+animate={{ scale: 1.15 }}
+transition={{ duration: 15, ease: "linear", repeat: Infinity, repeatType: "mirror" }}
+className="w-full h-full object-cover"
+/>
+</div>
+);
+}
+12. הופעת שרטוט עדין (Blueprint Draw) לאייקונים של נדל"ן (בתים/מפתחות). קו המתאר של ה-SVG מצטייר לאט.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function SVGDraw() {
+return (
+<svg width="100" height="100" viewBox="0 0 100 100">
+<motion.path
+d="M10 50 L50 10 L90 50 M20 50 L20 90 L80 90 L80 50"
+fill="transparent"
+stroke="currentColor"
+strokeWidth="2"
+initial={{ pathLength: 0 }}
+whileInView={{ pathLength: 1 }}
+transition={{ duration: 2, ease: "easeInOut" }}
+/>
+</svg>
+);
+}
+13. חשיפת פנלים מלמעלה (Curtain Drop) צבע שיורד מלמעלה וחושף תמונה של בניין.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function CurtainDrop({ src }: { src: string }) {
+return (
+<div className="relative overflow-hidden w-full h-[400px]">
+<motion.div
+initial={{ height: "100%" }}
+whileInView={{ height: "0%" }}
+transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }}
+className="absolute inset-0 bg-stone-800 z-10"
+/>
+<img src={src} className="w-full h-full object-cover" />
+</div>
+);
+}
+קטגוריה 5: אופנה, תכשיטים וביוטי (אלגנטי, מינימליסטי, נוצץ)
+14. ניצוץ זהב/יהלום (Shimmer Effect) פס מבריק שעובר על כותרת או כפתור, מתאים למכירת תכשיטים.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function ShimmerText({ text }: { text: string }) {
+return (
+<motion.span
+animate={{ backgroundPosition: ["200% 50%", "-200% 50%"] }}
+transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+className="bg-[linear-gradient(110deg,#c0a062,45%,#fcebb6,55%,#c0a062)] bg-[length:200%_100%] text-transparent bg-clip-text font-serif text-4xl"
+>
+{text}
+</motion.span>
+);
+}
+15. החלפת תמונה רכה (Soft Hover Swap) לקולקציית בגדים: התמונה משתנה בעדינות לפוזה השנייה כשהעכבר מעליה.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function ImageHoverSwap({ src1, src2 }: { src1: string, src2: string }) {
+return (
+<div className="relative w-[300px] h-[400px] cursor-pointer">
+<img src={src2} className="absolute inset-0 w-full h-full object-cover" />
+<motion.img
+src={src1}
+whileHover={{ opacity: 0 }}
+transition={{ duration: 0.4 }}
+className="absolute inset-0 w-full h-full object-cover z-10"
+/>
+</div>
+);
+}
+16. עלייה אלגנטית (Elegant Float Up) אנימציה סופר איטית ורכה של טקסט שנכנס לעמוד (הסגנון של VOGUE).
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function ElegantFloatUp({ text }: { text: string }) {
+return (
+<motion.p
+initial={{ opacity: 0, y: 30 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
+className="font-light tracking-widest text-gray-500"
+>
+{text}
+</motion.p>
+);
+}
+🚀 קטגוריה 6: הייטק, אפליקציות ושירותים (טכנולוגי, זוהר, מודרני)
+17. אפקט הקלדת מסוף (Terminal Typing) הטקסט מוקלד אות אחרי אות, עם סמן מהבהב. קלאסי לסטארט-אפים.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+export default function TypingEffect({ text }: { text: string }) {
+const [displayedText, setDisplayedText] = useState("");
+useEffect(() => {
+let i = 0;
+const interval = setInterval(() => {
+setDisplayedText(text.slice(0, i + 1));
+i++;
+if (i === text.length) clearInterval(interval);
+}, 100);
+return () => clearInterval(interval);
+}, [text]);
+return (
+<div className="text-green-400 font-mono text-2xl">
+{displayedText}
+<motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 0.8 }}>_</motion.span>
+</div>
+);
+}
+18. כרטיס זוהר (Neon Hover Card) כרטיס שירות שברגע שהעכבר מעליו, הוא מקבל צללית זוהרת מסביב.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function NeonCard({ children }: { children: React.ReactNode }) {
+return (
+<motion.div
+whileHover={{ scale: 1.02, boxShadow: "0px 0px 20px 0px rgba(59, 130, 246, 0.6)" }}
+className="bg-slate-900 border border-slate-700 rounded-2xl p-6 transition-all"
+>
+{children}
+</motion.div>
+);
+}
+19. כרטיסים מרחפים (Floating Interface) שלושה כרטיסים (כמו מסכי אפליקציה) שמרחפים מעלה מטה בזמנים שונים.
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function FloatingCards() {
+return (
+<div className="flex gap-4">
+{[0, 0.2, 0.4].map((delay, i) => (
+<motion.div
+key={i}
+animate={{ y: [0, -15, 0] }}
+transition={{ repeat: Infinity, duration: 4, delay, ease: "easeInOut" }}
+className="w-24 h-32 bg-blue-500 rounded-xl shadow-xl"
+/>
+))}
+</div>
+);
+}
+20. טבעות קרינה (Pulse Rings) עיגולים שמתרחבים ונעלמים מסביב לאייקון, טוב להמחשת "רשת" או "חיבור".
+TypeScript
+'use client';
+import { motion } from 'framer-motion';
+export default function PulseRings() {
+return (
+<div className="relative w-16 h-16 flex items-center justify-center">
+<motion.div
+animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
+transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
+className="absolute w-full h-full rounded-full border-2 border-indigo-500"
+/>
+<div className="w-8 h-8 bg-indigo-600 rounded-full z-10" />
+</div>
+);
+}
+Image 1 (hero object):
+A premium 3D product render of the object in the attached reference, matching its shape, proportions and colors exactly. Satin-matte soft-touch finish, like a premium silicone or anodized product, with subtle softness in the material.
+Style: Apple product photography, in the spirit of the AirPods Max campaign. Studio lighting, a large soft diffused key light from the upper left, a gentle rim light, a very soft contact shadow. Three-quarter view, slightly from below, so it feels heroic and calm. Fully transparent background (PNG). Ultra clean: no props, no text, no reflections of other objects. 4K, centered with generous padding.
+Image 2 (macro detail, made after image 1 and using it as reference so the material matches):
+An extreme close-up macro of the most recognizable detail of the same object. Same material, same lighting. Shallow depth of field: the detail in sharp focus, the rest of the object softly out of focus. Tightly cropped, with the object cut off by the bottom edge of the frame. Transparent background (PNG), 4K.
+פרומט מס 2 לעיצוב מחדש של ה
+hero
+תגררו את 2 התמונות שקיבלתם מ
+chat GPT
+לפרויקט ותדביקו את הפרומט הבא
+Rebuild ONLY the hero section of this site, from scratch. Do not touch any other section, page, or shared layout.
+## Step 0: read the project first, then decide
+Before writing code, read the existing pages, content, and styles, and decide these on your own. Write your decisions as a short comment at the top of the hero file:
+- DIRECTION: RTL or LTR, from the site's language. Below, "start" = the reading-start side (right in RTL, left in LTR) and "end" = the opposite side. Use logical CSS properties (inset-inline-start/end, margin-inline, padding-inline) so the layout mirrors correctly.
+- PRODUCT OBJECT: what the site sells, as one physical-looking object. Use /assets/hero-object.webp. If it doesn't exist, use the best existing product or brand image in the project. If there is none, stop and tell me which image to generate.
+- MACRO DETAIL: /assets/hero-macro.webp. If missing, use a tightly cropped, scaled-up part of the hero object image (never the same framing as the main object).
+- GHOST WORD: the brand or product name, one short word (max ~8 characters). Use the exact spelling from the logo.
+- ACCENT COLOR: the brand's single most recognizable saturated color, from the existing styles or logo.
+- HEADLINE: the site's core promise, as exactly three short lines (1 to 3 words each), taken from or faithful to the existing copy. Never invent claims, numbers, clients, or quotes.
+- SUBTEXT: one sentence, at most 20 words, explaining what it does, plus an optional second line of proof that already exists in the content (e.g. who it's built for or with).
+- CTA: the site's main existing action (label + link). The secondary arrow links to the next section.
+## Concept
+An editorial Apple product page, in the spirit of the AirPods Max campaign:
+- one object photographed like a product
+- a giant pale tone-on-tone word behind it
+- a tight stacked headline
+- small quiet body text
+- one soft neumorphic pill button
+- a cropped macro detail bleeding off the edge
+Monochrome, calm, lots of air, nothing decorative.
+There is NO UI in the hero: no cards, no device mockups, no chips, no badges, no icons, no color gradients, no glows. If something looks like a template, remove it.
+## Colors
+Derive from the project's existing tokens if they exist. Otherwise use this warm neutral set:
+--surface #F3EFE6 | --surface-light #FAF8F3 | --surface-deep #E8E2D6
+--ink #1A2420 | --ink-soft #2E3632 (headline; softer than pure ink) | --ink-muted #5B635E
+--accent: the ACCENT COLOR from step 0.
+The background is always a light tone-on-tone neutral, even if the rest of the site is darker.
+The accent appears in exactly two places: one small detail on the ghost word (the dot of an i or j if the word has one; otherwise a period after the word), and the CTA label. Nowhere else.
+## Font (this broke last time: get it right)
+- Use the site's existing display font. If there is none, use Rubik, which supports both Hebrew and Latin. Weights 400/500/800.
+- Load it WITH every subset the site's language needs, e.g. next/font:
+Rubik({ subsets: ['hebrew','latin'], weight: ['400','500','800'], display: 'swap', variable: '--font-display' })
+and apply the variable class on <html>.
+- Set font-family: var(--font-display), system-ui, sans-serif on body, AND explicitly on the H1, the ghost word, and the button, so no utility class or global heading style can override it.
+- Verify in DevTools → Computed → "Rendered Fonts" that the H1 renders in the intended font. If it doesn't, find what overrides it and remove it.
+- Hebrew and Arabic: H1 letter-spacing -0.01em. Latin: -0.03em.
+## Section shell
+- min-height: 100svh; max-height: 940px; position: relative; overflow: hidden; overflow-x: clip.
+- Background: linear-gradient(180deg, #F6F3EC 0%, #EDE8DD 100%), or the same two-stop tone-on-tone from the project's surface color.
+- Optional: a very faint radial highlight, rgba(255,255,255,0.6), behind the object, like a studio key light.
+- z-index: ghost word 0, macro detail 1, object 2, text 3, nav 5.
+## Nav (minimal, like the reference)
+- Height 64px, transparent, absolutely positioned on top of the hero, inline padding 48px.
+- Start side: the existing logo, about 22px tall.
+- End side: the existing nav links at 13px/400, --ink-muted, gap 36px, hover --ink.
+- NO button in the nav.
+## Desktop (≥1024px)
+Layer 1: ghost word (behind everything)
+- The GHOST WORD in the display font, weight 800.
+- font-size: clamp(420px, 44vw, 900px); line-height: 0.8; letter-spacing: -0.04em; white-space: nowrap; direction: the word's own script direction.
+- Position: absolute; inset-inline-start: -4vw; top: 50%; transform: translateY(-48%).
+- It must read as ONE giant word filling the hero, never as pale rectangles: spanning almost the full width, behind the object AND the headline, cropped by the start edge, with letters about 55–60% of the hero's height.
+- Color: rgba(255,255,255,0.6). If the headline loses contrast where they overlap, lower it to 0.45. Never shrink the word.
+- The accent detail is a separate absolutely positioned element sized in em (about 0.16em), so it stays a perfect circle and scales with the word.
+- aria-hidden="true".
+Layer 2: the object
+- hero-object, height clamp(420px, 62vh, 620px).
+- Its center sits about 22% from the start edge, vertically just above center.
+- A very soft contact shadow under it: an ellipse, rgba(26,36,32,0.18), blur 24px. Not a box-shadow.
+Layer 3: text block
+- Position: absolute; inset-inline-start: 44vw; vertically centered; width auto; NO max-width on the block.
+- It sits in the open middle area: never on top of the object, never centered on the ghost letters.
+- H1, exactly three lines. Render each line as <span style="display:block; white-space:nowrap">.
+Weight 800, font-size clamp(64px, 6.4vw, 120px), line-height 0.92, color --ink-soft.
+- Subtext: margin-top 32px; 15px/400; line-height 1.65; --ink-muted; max-width 34ch. The optional proof line goes on its own line, same style.
+- Button row, margin-top 40px:
+- One neumorphic pill with the CTA label. Height 54px; padding-inline 34px; border-radius 999px; background --surface; border 1px solid rgba(255,255,255,0.7).
+box-shadow: 10px 10px 24px rgba(160,148,124,0.35), -10px -10px 24px rgba(255,255,255,0.95).
+Label 15px/500 in --accent; if the accent fails 4.5:1 contrast on --surface, use --ink.
+- Hover: shadows tighten to 6px/14px; translateY(-1px).
+- Active: inset 6px 6px 12px rgba(160,148,124,0.3), inset -6px -6px 12px rgba(255,255,255,0.9).
+- A visible focus ring.
+- Beside it (gap 16px): a 54px neumorphic circle, same shadow recipe, with a thin arrow (1.5px stroke, --ink-muted) pointing in the reading direction. It links to the next section and has an aria-label.
+Layer 4: macro detail
+- hero-macro, anchored to the END edge and the BOTTOM of the hero.
+- width: clamp(260px, 26vw, 420px), bleeding about 18% off the bottom and about 4% off the end edge, like the cropped headband in the reference.
+- Nothing overlaps it.
+## Motion (quiet, plays once, Apple restraint)
+Easing everywhere: cubic-bezier(0.22, 1, 0.36, 1).
+- Load:
+- ghost word fades in, 0→1 over 1.2s
+- the object rises 24px→0 and fades in (900ms, delay 150ms)
+- the text lines fade up 12px, with an 80ms stagger
+- the macro slides up 40px→0 (1s, delay 300ms)
+- The accent detail on the ghost word appears last (scale 0→1, delay 1.1s). It's the only "event" on the screen.
+- Idle: the object floats very slowly, translateY 0 → -8px → 0 over 6s, infinite, ease-in-out. Nothing else moves.
+- Scroll parallax: ghost word at 0.6x scroll speed, macro at 1.15x.
+- Pointer (desktop only): the object shifts at most 8px toward the cursor, the ghost word at most 4px the opposite way.
+- prefers-reduced-motion: no float and no parallax; everything appears in place.
+## Tablet (768–1023px)
+Keep the desktop layering, with these changes:
+- ghost word font-size 40vw
+- object height 50vh, centered 18% from the start edge
+- text block at inset-inline-start 46vw
+- H1 clamp(56px, 6vw, 80px)
+- macro width 30vw
+## Mobile (<768px): same language, recomposed vertically
+- Nav: logo on the start side; on the end side, a minimal two-line menu icon that opens a full-screen --surface sheet with the links at 28px/500. Height 56px, inline padding 20px.
+- Order, top to bottom:
+1. Visual block, about 58svh tall. Ghost word at font-size 64vw, inset-inline-start -10vw, vertically centered behind the object (it bleeds off both sides; that's intended). The object is centered over it, height about 44svh. The accent detail stays.
+2. Text block, inline padding 24px, below the visual block and never overlapping the object.
+H1: the same three nowrap lines, font-size clamp(52px, 15vw, 72px). If a line overflows at 360px, drop to 14vw rather than letting it wrap.
+Subtext 15px, max-width 30ch.
+3. CTA pill: width 100%, max-width 340px, height 56px, with the 56px arrow circle beside it.
+4. Macro: anchored bottom/end, width 52vw, bleeding off the bottom and end edge, with 24px of air below the button and never touching it.
+- min-height 100svh, no horizontal scroll at 360px.
+- No pointer parallax on touch; keep the slow float.
+## Done when
+At 1440, 1280, 1024, 768, 390 and 360 widths:
+- the H1 is exactly three lines, in the intended font
+- the ghost word reads as one giant word and spans most of the hero
+- nothing overlaps the H1 or the button, and the object never covers text
+- the macro is visibly cropped by the edge
+- the only saturated colors are the accent (two places) and the colors inside the product images
+Plus: a single <h1>, correct dir on the section, and the subtext passing 4.5:1 contrast.
+You are in Agent mode. Do every step below in order, exactly as written. Do not skip, merge or "improve" anything. After each CHECKPOINT, run the site and confirm before moving on.
+I attached: my can model (.glb) and 8 reference images. They show exactly how the finished site must look. Only the art printed on the can may differ.
+---
+## STEP 1 — Create the project
+Run in an empty folder, one by one:
+```
+npm create vite@latest . -- --template vanilla
+npm install
+npm install gsap lenis three
+npm install -D playwright pngjs
+npx playwright install chromium
+```
+Then:
+1. Delete every file inside `src/` and delete `public/vite.svg`.
+2. Create folders `public/models`, `reference`, `scripts`.
+3. Save my .glb as `public/models/can.glb`.
+4. Save the 8 images in `reference/` with these names: `01-desktop-hero.png`, `02-desktop-transition-hero-to-flavour.png`, `03-desktop-flavour.png`, `04-desktop-transition-flavour-to-fresh.png`, `05-desktop-fresh.png`, `06-mobile-hero.png`, `07-mobile-flavour.png`, `08-mobile-fresh.png`.
+---
+## STEP 2 — index.html (replace the whole file)
+- In `<head>`: title "Blue Soda", Google Fonts `Anton` + `Inter:wght@400;700`, link `/src/style.css`.
+- In `<body>`, in this exact order:
+```html
+<canvas id="can-canvas"></canvas>
+<a class="logo" href="#">M</a>
+<button class="menu" aria-label="Menu"><i></i><i></i></button>
+<div class="social"><span>Social media</span><a>[Instagram outline svg]</a><a>[Facebook outline svg]</a></div>
+<div class="badge"><svg viewBox="0 0 100 100">
+<defs><path id="badge-circle" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+<text><textPath href="#badge-circle" textLength="238" lengthAdjust="spacing">FRESH • SPARKLING • DAILY • NATURAL • </textPath></text>
+<path class="leaf" d="M57 41c-9 1-15 7-15 15 0 1 0 2 .3 3 8 0 14-6 14.7-18z"/><path class="vein" d="M44 57l9-11"/>
+</svg></div>
+<main>
+<section class="s s1">
+<div class="hero-copy">
+<p class="eyebrow">New · Sparkling Water</p>
+<h1 class="hero-title"><span class="line"><span>Blue</span></span><span class="line"><span>Soda.</span></span></h1>
+<div class="hero-actions"><a class="btn">Explore More</a><a class="link">See flavours <span>→</span></a></div>
+</div>
+<div class="hero-note"><span class="rule"></span><strong>Light, crisp and sparkling.</strong><p>Fine bubbles and a cool citrus finish, with zero added sugar.</p></div>
+<div class="scroll-cue"><span>Scroll</span><i></i></div>
+<div class="anchor" id="anchor-1" data-rx="14" data-ry="-25" data-rz="16"></div>
+</section>
+<section class="s s2">
+<div class="anchor" id="anchor-2" data-rx="14" data-ry="-30" data-rz="26"></div>
+<div class="flavour">
+<h2 class="mask"><span>New Flavour</span></h2>
+<p class="sub">Blueberry, lime and a hint of fresh mint.</p>
+<p class="body">Naturally flavoured, lightly carbonated and made with nothing artificial. A clean, cold refresh that tastes like the first sip of summer, every time.</p>
+</div>
+</section>
+<section class="s s3">
+<svg class="wave" viewBox="0 0 1440 200" preserveAspectRatio="none"><defs><linearGradient id="wave-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8EC9F5"/><stop offset=".5" stop-color="#9D8CF2"/><stop offset="1" stop-color="#5B3BE8"/></linearGradient></defs><path fill="url(#wave-grad)"/></svg>
+<div class="glow"></div><div class="ground"></div>
+<h2 class="word left"><span>Fresh</span></h2><h2 class="word right"><span>Soda</span></h2>
+<div class="anchor" id="anchor-3" data-rx="8" data-ry="0" data-rz="0"></div>
+</section>
+</main>
+<script type="module" src="/src/main.js"></script>
+```
+---
+## STEP 3 — src/style.css
+Write these rules exactly. All sizes are in vw/vh so the layout is identical on every screen (on 1440×900: 1vw = 14.4px, 1vh = 9px).
+**Base**
+1. `:root` vars: `--bg #EEF0F8; --ink #15133B; --muted #8B8FA8; --accent #6C4DF5; --pad 3.2vw; --grad linear-gradient(90deg,#8EC9F5 0%,#9D8CF2 50%,#5B3BE8 100%)`.
+2. Reset margin/padding, box-sizing border-box. `html, body`: bg `--bg`, color `--ink`, font Inter, antialiased. `body { overflow-x:hidden }`. Lenis helpers: `html.lenis, html.lenis body { height:auto }`.
+3. `#can-canvas`: fixed, inset 0, 100vw×100vh, z-index 10, pointer-events none.
+4. `.s`: relative, width 100%, height 100vh. `.s2 { z-index:2 }`. `.s3 { z-index:3; background:var(--grad); color:#fff }`.
+**Fixed UI (all position:fixed, z-index 50)**
+5. `.logo`: left/top `--pad`, Anton 28px/1, ink, no underline.
+6. `.menu`: right/top `calc(var(--pad) - 7px)`, 34×34px circle, transparent, flex column centered, gap 5px; each `i` = 18×1.5px ink block. Transition bg + transform .35s.
+7. `.social`: left/bottom `--pad`, flex, align center, gap 12px, Inter 700 `clamp(10px,.68vw,13px)`; each `a` 16×16px ink.
+8. `.badge`: right/bottom 3.5vw, width `clamp(70px,6.5vw,120px)`, square, opacity .6. Its `svg` rotates 360° every 14s linear infinite. `text`: Inter 700 9px, letter-spacing .15em, fill ink. `.leaf` fill ink. `.vein` stroke `--bg`, width 1.
+9. `body.on-color`: `.menu` bg #fff + scale .9; `.logo`, `.social`, `.social a` color #fff; badge text + leaf fill #fff; vein stroke #5B3BE8.
+**Section 1 — hero**
+10. `.hero-copy`: absolute, left 10vw, top 50vh, translateY(-50%), z-index 5.
+11. `.eyebrow`: Inter 700 `clamp(10px,.72vw,13px)`/1.2, letter-spacing .22em, uppercase, color accent, margin-bottom 1.6vw.
+12. `.hero-title`: Anton 400, 8vw, line-height .9, uppercase, letter-spacing -.005em. `.line`: block, overflow hidden, padding-bottom .04em. `.line > span`: block.
+13. `.hero-actions`: flex, align center, gap 1.8vw, margin-top 2.2vw.
+14. `.btn`: accent bg, white, Inter 700 `clamp(12px,.8vw,15px)`/1, padding .95em 1.9em, radius 999px. Hover: scale 1.05 + `box-shadow 0 6px 20px rgba(108,77,245,.4)`, .3s.
+15. `.link`: ink, Inter 700 same size, no underline, padding-bottom 4px, `border-bottom 1px solid currentColor`. Inner `span` margin-left .35em, moves 4px right on hover.
+16. `.hero-note`: absolute, left 74vw, top 56vh, width 15vw, z-index 20. `.rule` 32×2px accent, margin-bottom 1.1vw. `strong` block, Inter 700 `clamp(12px,.9vw,17px)`/1.3, margin-bottom 8px. `p` Inter 400 `clamp(11px,.78vw,14px)`/1.6 muted.
+17. `.scroll-cue`: absolute, left 50vw, bottom 3.2vw, translateX(-50%), flex column, center, gap 10px, z 5. `span` Inter 700 10px, letter-spacing .25em, uppercase, muted. `i` = 1×40px track, `rgba(139,143,168,.35)`, overflow hidden; its `::after` = 1×18px ink segment animating translateY -18px → 40px, 1.8s infinite.
+**Section 2**
+18. `.flavour`: absolute, left 52vw, top 48vh, translateY(-50%), width 24vw. `h2` Anton 3.6vw/.95 uppercase. `.sub` margin-top 1vw, max-width 14vw, Inter 700 `clamp(12px,.82vw,16px)`/1.35. `.body` margin-top 1.1vw, Inter 400 `clamp(11px,.74vw,14px)`/1.6 muted. `.mask` overflow hidden, `.mask > span` inline-block.
+**Section 3**
+19. `.wave`: absolute, left 0, top `calc(-14vh + 1px)`, width 100%, height 14vh.
+20. `.glow`: absolute, center at 50vw/52vh, 46vh circle, `rgba(255,255,255,.25)`.
+21. `.ground`: absolute, center at 50vw/81vh, 22vh×3.2vh oval, `radial-gradient(closest-side, rgba(21,19,59,.35), transparent)`, blur 4px.
+22. `.word`: absolute, top 52vh, translate(-50%,-50%), Anton 5.2vw/1 uppercase, overflow hidden, padding-bottom .04em. `.left` left 20vw, `.right` left 80vw. `.word > span` inline-block.
+**Anchors** (invisible targets for the can)
+23. `.anchor`: absolute, translate(-50%,-50%), visibility hidden, pointer-events none. `#anchor-1` left 60vw top 50vh height 58vh width 24vh. `#anchor-2` left 27vw top 50vh height 56vh width 26vh. `#anchor-3` left 50vw top 52vh height 56vh width 26vh. `body.debug .anchor` visible with a 1px dashed red outline.
+**Mobile — `@media (max-width:767px)`**
+24. `--pad 5vw`. Hero: `.hero-copy` left 7vw, top 15vh, no transform; eyebrow 11px, margin-bottom 3vw; title 16vw; actions margin-top 5vw, gap 5vw; btn + link 13px; `.hero-note` left 7vw, top 80vh, width 70vw (strong 13px, p 12px); scroll-cue hidden; `#anchor-1` 62vw/58vh, h 32vh.
+25. Section 2: `#anchor-2` 50vw/30vh, h 32vh; `.flavour` left 7vw, top 58vh, width 86vw, no transform; h2 11vw; sub 14px, no max-width; body 13px; gaps 3vw.
+26. Section 3: `.word` 16vw; `.left` at 50vw/17vh, `.right` at 50vw/87vh; `#anchor-3` 50vw/52vh, h 40vh; `.glow` 34vh; `.ground` top 72vh, width 16vh.
+---
+## STEP 4 — src/anchors.js
+Export `getAnchors()`: for every `.anchor` in DOM order return `{ scroll: section.offsetTop, x: parseFloat(getComputedStyle(el).left), y: parseFloat(getComputedStyle(el).top), h: el.offsetHeight, rx, ry, rz }` (rotations in degrees from data-attributes). On resize (debounced 150ms) and after `document.fonts.ready`, dispatch a window event `anchors:refresh`.
+## STEP 5 — src/wave.js
+Export `startWave(path, ticker)`. Every tick set the path `d`: 6 points with x = 0, 288, 576, 864, 1152, 1440 and base y = 125, 140, 115, 60, 40, 65; each y = base + sin(time·1.1 + i·1.3)·10. Join neighbours with `C midX,y1 midX,y2 x2,y2` (midX = halfway), then close with `L1440,200 L0,200 Z`.
+## STEP 6 — src/main.js
+1. Import Lenis, gsap, ScrollTrigger, startWave, './anchors.js'. Register ScrollTrigger. If URL has `?debug`, add class `debug` to body. Set `history.scrollRestoration='manual'` and scroll to 0.
+2. Unless prefers-reduced-motion: `new Lenis({ lerp: .08 })`, `lenis.on('scroll', ScrollTrigger.update)`, drive it from `gsap.ticker` (`lenis.raf(time*1000)`), `lagSmoothing(0)`, expose `window.__lenis`.
+3. `startWave(document.querySelector('.wave path'), gsap.ticker)`.
+4. ScrollTrigger on `.s3`, start `"top 60px"`: toggle `on-color` on body.
+5. Load timeline, delay .2s: at 0 dispatch window event `intro:can` · at 0 `.eyebrow` from y 12, opacity 0, .7s power3.out · at .1 `.hero-title .line > span` from yPercent 110, 1.1s power4.out, stagger .12 · at .5 `.hero-actions` then `.hero-note` from y 20, opacity 0, .8s, stagger .08 · at .7 logo, menu, social, badge, scroll-cue from opacity 0, .8s.
+6. Section 2 (toggleActions `play none none reverse`): `.flavour h2 > span` from yPercent 110 (.9s power4.out) when `.s2` top hits 65%; `.sub` + `.body` from y 24, opacity 0 (.8s, stagger .1) at 60%.
+7. Section 3: `.word > span` from yPercent 110 (.9s power4.out, stagger .08) at top 40%; `.glow` from scale .6, opacity 0 → 1, scrubbed from "top 70%" to "top top"; `.ground` opacity 0 → 1, scrubbed "top 30%" → "top top".
+8. After fonts load: `ScrollTrigger.refresh()`.
+9. Last line: `import './can.js';`
+**CHECKPOINT A:** run `npm run dev`. Open the site with `?debug`. Compare with `reference/01`, `03`, `05`, ignoring the can: every text, button, icon, color and spacing must match. Red dashed boxes must sit where the can is in the references. Fix anything off before continuing.
+---
+## STEP 7 — src/can.js (the 3D can)
+1. **Renderer** on `#can-canvas`: alpha, antialias, pixelRatio `min(devicePixelRatio, 2)` (1.5 on mobile), `SRGBColorSpace`, `NeutralToneMapping`, exposure .95.
+2. **Scene:** environment = `RoomEnvironment` through `PMREMGenerator`, `environmentIntensity .45`. White DirectionalLight 1.3 at (-4, 6, 5) + AmbientLight .35. **Camera:** PerspectiveCamera fov 25, z = 12.
+3. **Groups:** `canGroup` (rotation.order `'XZY'`) → `floatGroup` → model. With this order +rx tilts the top toward the camera (lid visible) and +rz leans the top to the LEFT.
+4. **Load** `/models/can.glb` with GLTFLoader + DRACOLoader (decoder `https://www.gstatic.com/draco/versioned/decoders/1.5.7/`). Wrap it in a `fix` group: rotate so its longest axis points up Y; if `FLIP` rotate π on X; rotate `FRONT_Y` degrees on Y; scale to height 1; move its bounding-box center to the origin. `FLIP` and `FRONT_Y` are consts at the top of the file, overridable by `?flip` and `?front=90`.
+5. **Materials:** parts with a texture map: metalness max .25, roughness min .45, envMapIntensity .6. Parts without a map (lid, rim): metalness .9, roughness .3. If the GLB fails to load, build a fallback can (cylinder r .33 with a canvas gradient label + lathe top and bottom).
+6. **Pixel → 3D:** `k = 2·tan(fov/2)·camera.z / innerHeight`. Position x = `(px − innerWidth/2)·k`, y = `−(py − innerHeight/2)·k`. Scale = `heightPx·k`.
+7. **Pose from scroll** (every frame, read `window.scrollY`, keys = `getAnchors()`): find the two anchors you're between; `t = easeInOutQuad((scrollY − A.scroll)/(B.scroll − A.scroll))`. Position x/y, rx and rz follow a quadratic curve that passes through a middle waypoint M at t = .5 (control point = 2M − (A+B)/2). Height and ry go linear. Add a spin of `t·360°` on Y. Waypoints — desktop: hero→flavour `(40vw, 68vh, rx 6, rz 2)`, flavour→fresh `(40vw, 47vh, rx 6, rz 0)`; mobile: `(50vw, 60vh)` and `(50vw, 45vh)`. Before the first anchor or after the last, hold that anchor's pose.
+8. **Intro:** when both the model is loaded and the `intro:can` event fired, tween `p` 0 → 1 over 1.4s power3.out. Apply offsets × (1 − p): 12vh lower, rz +25°, ry −90°, scale ×.85. Opacity = min(1, p·2.5) (materials transparent during the intro only).
+9. **Idle:** floatGroup y = sin(t·1.2)·.02, rz = sin(t·.9)·1.5°; desktop mouse parallax max 3° on Y and 2° on X, smoothed .06. Clamp all idle rotation to ±3°.
+10. **`?upright`:** show the can centered, height 50vh, rotation 0, no idle — for calibration.
+11. Render on `gsap.ticker`. Rebuild anchors + camera aspect on `anchors:refresh`.
+## STEP 8 — Calibrate the can
+Open `?upright` and take a screenshot. The LID must be on top and the label FRONT must face you. If the bottom is on top, set `FLIP = true`. If the label faces sideways or back, set `FRONT_Y` to 90, 180 or -90 until it faces you. Then open the normal page: in the hero the can must lean LEFT with the lid visible.
+**CHECKPOINT B:** scroll the whole page by hand. The can must sit on each red box (`?debug`), dip and spin between sections, and land upright in the center of the gradient section.
+---
+## STEP 9 — Verify-and-fix loop (until it is perfect, max 6 rounds)
+1. Write `scripts/verify.mjs` with Playwright (launch args `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader`). For viewport 1440×900 and 390×844: open the site, wait 3.5s; for scroll = 0, 0.5, 1, 1.5, 2 × innerHeight call `window.__lenis.scrollTo(y, {immediate:true, force:true})`, wait 2s, save a screenshot to `verify-shots/`.
+2. In the same script print PASS/FAIL for: no console errors · Anton and Inter loaded · bg pixel = #EEF0F8 on sections 1–2 · section 3 left edge ≈ #8EC9F5 and right edge ≈ #5B3BE8 · the can is drawn at each anchor's center and stays inside its box · hero can leans LEFT (its top is left of its bottom) · desktop: title left = 10vw, title size = 8vw, note at 74vw/56vh, button bg = rgb(108,77,245) · fixed UI is white on section 3.
+3. Run it. Then OPEN each screenshot next to its reference: desktop 0→01, 0.5→02, 1→03, 1.5→04, 2→05; mobile 0→06, 1→07, 2→08.
+4. Write a list of every difference as "measured vs expected": position, size, color, font, spacing, the can's position, size, lean direction, lid visible.
+5. Fix the smallest thing that causes each difference. Run again.
+6. Stop only when every check is PASS and every screenshot matches its reference. Print the final PASS list.
+A 3D stylized cartoon character render, Pixar / Disney-style collectible figure quality, soft clay-like skin shading.
+SUBJECT: A young girl shown in strict side profile facing RIGHT, from the head down to the mid-chest (crop cuts off at the chest, bottom of frame). Her eyes are gently CLOSED, with long dark lashes. Serene, dreamy, content expression, as if lost in music. Small upturned nose, soft rosy-pink blush on the cheek, small soft lips with a faint smile.
+HAIR: Warm chestnut-brown hair pulled up into a big messy top bun, with loose wispy strands and flyaways around the neck, ear and forehead. Realistic individual strand detail with soft highlights.
+HEADPHONES: Large over-ear headphones in pastel lime / pistachio green (#B9D98A), matte soft-touch plastic, a thick rounded ear cup with a lighter green inner ring and a slim headband going over the bun. The ear cup sits fully over her ear and is the visual focal point.
+OUTFIT: A chunky, fuzzy hand-knit sweater with a hood, horizontal stripes in cream, mint green, mustard yellow, burnt orange, dusty pink and soft teal. Visible thick yarn texture and fluffy mohair fibers. The hood is bunched behind her neck.
+LIGHTING & RENDER: Soft diffused studio lighting from the front-left, gentle rim light on the back of the head and hair, subtle subsurface scattering on the skin, soft ambient occlusion. Octane / Redshift render look, ultra-detailed textures, 8K, crisp edges. Pastel, warm, cozy color palette.
+COMPOSITION: Vertical portrait 3:4. The top of the bun touches the very top of the frame; the sweater is cut off at the bottom edge. Character centered.
+BACKGROUND: Fully TRANSPARENT background (PNG cutout), no shadow on the ground, no backdrop, no text, no props.
+הפרומט ליצירת האתר
+Build a hero section that matches this exact composition. Do NOT redesign or "improve" it — reproduce the layout, layering and proportions precisely. Keep it framework-agnostic (plain HTML/CSS, or adapt to the existing stack without changing the design).
+ASSETS
+- /character.png → 3D character cutout, transparent PNG, side profile facing right
+- /character-thumb.png → small square image of the same character
+- BRAND_NAME = "SUNNY" (replace with the brand name; keep it 5–6 letters for the same effect)
+1. PAGE + FULL-SCREEN HERO
+- Page background: light mint #A9DDD3.
+- On desktop, the hero must fill the entire screen:
+width: 100%;
+max-width: none;
+height: 100svh;
+min-height: 640px;
+margin: 0;
+- The hero must be full-bleed on desktop, without outer gaps.
+- Card background: solid teal #63B4A6 with a very subtle radial highlight in the top-left:
+radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.12), transparent 60%).
+- Desktop border-radius: 0.
+- overflow: hidden.
+- position: relative.
+- Everything below is absolutely positioned inside the hero.
+2. LAYER ORDER (critical)
+z-index 1 → giant background word
+z-index 2 → character image (sits ON TOP of the word, covering the middle letters)
+z-index 3 → nav, bottom-left text, right-side text, thumbnail
+3. GIANT BACKGROUND WORD (z-index 1)
+- Text: BRAND_NAME in uppercase.
+- Font: "Anton" from Google Fonts (fallback: "Bebas Neue", Impact). Tall, ultra-condensed.
+- Size: it must span ~88% of the hero width and ~62% of the hero height.
+- Use font-size: clamp(160px, 30vw, 520px);
+- line-height: 0.85;
+- letter-spacing: -0.01em.
+- Position: horizontally centered (left: 50%; transform: translateX(-50%)); top: 14%.
+- Fill: gradient text:
+background: linear-gradient(
+180deg,
+rgba(255,255,255,0.78) 0%,
+rgba(255,255,255,0.45) 45%,
+rgba(255,255,255,0) 92%
+);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent.
+- The letters should look frosted white at the top, melting into the teal at the bottom.
+- user-select: none;
+- pointer-events: none;
+- white-space: nowrap.
+4. CHARACTER (z-index 2)
+- <img src="/character.png">.
+- height: 100% of the hero;
+- width: auto.
+- bottom: 0.
+- The sweater gets cut by the bottom edge.
+- The top of the hair bun touches the top edge.
+- The character’s center sits at ~46% of the hero width, covering the 3rd–4th letters of the giant word.
+- Add a soft shadow behind her:
+filter: drop-shadow(-20px 20px 40px rgba(20,70,60,0.25)).
+5. NAV (z-index 3)
+- Top-left logo: BRAND_NAME.
+- Font: "Anton", 18px, white, letter-spacing: 0.02em.
+- Position: top: 32px; left: 40px.
+- Top-right button: pill, white background.
+- Text: "Get Started".
+- Text color: #1F3D38.
+- Font: Inter 600, 12px.
+- padding: 9px 18px.
+- border-radius: 999px.
+- Position: top: 28px; right: 40px.
+- Hover: translateY(-1px) with a soft shadow.
+- No other nav links.
+6. BOTTOM-LEFT TEXT BLOCK (z-index 3)
+- Position: left: 40px; bottom: 44px.
+- max-width: 230px.
+- Title: BRAND_NAME in Title Case ("Sunny").
+- Inter 600, 16px, white.
+- Below it: 8px gap.
+- Add a short 3-line brand/character description.
+- Inter 400, 11px.
+- line-height: 1.6.
+- color: rgba(255,255,255,0.7).
+7. RIGHT-SIDE BLOCK (z-index 3)
+- Position: right: 7%; top: 62%.
+- max-width: 210px.
+- text-align: left.
+- Heading:
+"Meet the Character That Feels Like You"
+- Inter 600, 18px.
+- line-height: 1.25.
+- white.
+- Wrap onto 2 lines.
+- Below it: 14px gap.
+- Add a row of 4 tiny dots:
+5px circles, gap: 6px.
+- First dot: solid white.
+- Other dots: rgba(255,255,255,0.4).
+- Below the dots, place the thumbnail lower with additional vertical spacing.
+- Thumbnail:
+<img src="/character-thumb.png">
+width: 64px;
+height: 84px;
+object-fit: cover;
+border-radius: 12px;
+border: 2px solid rgba(255,255,255,0.6);
+box-shadow: 0 10px 20px rgba(0,0,0,0.15).
+- Move the thumbnail approximately 14px farther down than its normal position.
+8. MOTION (subtle, on load only)
+- Giant word: fade in + translateY(40px → 0), 1.2s, cubic-bezier(.2,.8,.2,1).
+- Character: fade in + translateY(60px → 0), 1.2s, delay 0.15s.
+- Text blocks + nav: fade in, 0.8s, delay 0.5s.
+- Optional: very light parallax on mouse move:
+character moves up to 8px;
+giant word moves up to 3px in the opposite direction.
+- Respect prefers-reduced-motion.
+9. RESPONSIVE (mobile < 768px)
+- On mobile, return to the floating-card layout.
+- Hero width: calc(100% - 24px).
+- height: auto.
+- aspect-ratio: 9 / 16.
+- margin: 12px auto.
+- border-radius: 22px.
+- Add the floating-card shadow:
+box-shadow: 0 30px 60px -20px rgba(30,90,80,0.35).
+- Giant word: keep it centered at top: 18%.
+- Do not rotate it.
+- font-size: approximately 38vw so it spans ~95% of the width.
+- Character: height: 78% of the hero.
+- Horizontally centered at 50%.
+- bottom: 0.
+- Right-side block moves to:
+bottom: 32px;
+right: 20px;
+max-width: 150px.
+- Right-side heading: 14px.
+- Bottom-left block:
+left: 20px;
+bottom: 32px;
+max-width: 140px.
+- Hide the bottom-left paragraph on mobile; show the title only.
+QUALITY CHECK BEFORE FINISHING
+- On desktop, the hero must fill the entire viewport with no outer margins.
+- The giant word must be BEHIND the character and fade toward the bottom.
+- If the word looks flat or solid, fix the gradient.
+- The character’s hair must touch the top edge and the sweater must be cropped by the bottom edge.
+- The thumbnail must sit lower beneath the slider dots.
+- Keep the floating rounded-card appearance only on mobile.
+- No extra sections, icons, gradients, or decorations beyond what is described.
+# SCRIPT: THE ZERO-UI REALITY ENGINE (The Post-Web Era)
+MISSION DIRECTIVE:
+You are a Pioneer of the Spatial Web, a GPGPU / WebGL Compute Shader God, and an Avant-Garde Digital Artist. I am completely abandoning traditional web design (No DOM, no navbars, no buttons, no grids, no scrolling down a flat page).
+We are building a "Zero-UI Spatial Experience" for an ultra-elite client. The user does not "read a website" — they plunge into a cinematic, volumetric 3D void.
+THE RULE-BREAKING PHYSICS (THE 4 PILLARS):
+1. The "One-Shot" Z-Axis Plunge: Traditional Y-axis scrolling is dead. The user's scroll wheel controls a cinematic camera pushing continuously FORWARD (Z-axis) through an infinite, dark, atmospheric 3D void.
+2. Typographic Matter (FBO Particles): Text is NOT HTML. Text is physical matter. Headlines and messaging are formed by millions of interactive WebGL particles (using GPGPU / Frame Buffer Objects). As the camera approaches the text, the particles assemble into words. As the camera flies THROUGH the text, the particles shatter, dissolve into noise, or react fluidly to the user's mouse cursor.
+3. Invisible UI (Intent-Based Navigation): There are no buttons. Navigation happens through space. To "enter" a project or section, the camera flies into a portal of light or a geometric anomaly.
+4. Volumetric Atmosphere: The environment must feel thick. We will use volumetric fog, depth of field (DoF) focusing dynamically on the particles, and chromatic aberration at the edges of the screen.
+STRICT WORKFLOW (DO NOT DEVIATE):
+You will act as the Architect of this Reality. We execute in 3 phases. STOP after each phase and wait for my explicit "PROCEED".
+==================================================
+PHASE 1: THE VOID INTERROGATION
+==================================================
+Ask me only 2 questions to define the universe:
+1. What is the emotional state of this void? (e.g., Aggressive & dark with red neon particles, Ethereal & liquid with gold dust, Clinical & quantum with white data nodes).
+2. What are the 3 core "Words/Phrases" the particles need to form as the camera flies through them?
+*STOP. Wait for my answers.*
+==================================================
+PHASE 2: THE GPGPU & CAMERA MATH BLUEPRINT
+==================================================
+Based on my answers, provide the exact mathematical and architectural blueprint:
+- GPGPU Logic: Explain the FBO (Frame Buffer Object) simulation logic. How will the curl noise or fluid dynamics interact with the particles when the mouse moves?
+- The Camera Spline: Describe the CatmullRomCurve3 (or GSAP custom path) the camera will travel on tied to the scroll velocity.
+- Post-Processing: Detail the `@react-three/postprocessing` stack (e.g., God Rays, Depth of Field, Glitch effects).
+*STOP. Wait for my approval.*
+==================================================
+PHASE 3: THE GOD-TIER R3F EXECUTION
+==================================================
+Write the production-ready React Three Fiber, Drei, and Custom GLSL code.
+- Write the Vertex and Fragment shaders for the FBO particles. (This is the most critical part).
+- Write the camera controller tied to `useScroll` from Drei.
+- Ensure the code handles 1,000,000+ particles cleanly by utilizing the GPU.
+- DO NOT output standard HTML/CSS other than an absolute full-screen canvas and a minimal loading screen.
+# SCRIPT: THE 2.5D CINEMATIC DEPTH-SCROLL ENGINE (The $100K Illusion)
+MISSION DIRECTIVE:
+You are an Elite WebGL Shader Artist and a React Three Fiber (R3F) Visionary. I want to build a mind-blowing, silky-smooth cinematic scroll experience.
+CRITICAL RULE: We are NOT using heavy 3D `.glb` models, and we are NOT using scroll-bound `<video>` tags (which lag terribly on mobile).
+We are using the "Apple Secret": 2.5D RGB-D Parallax using a Base Image, a Depth Map, and a custom GLSL Fragment Shader. This guarantees 60-120FPS flawless performance while looking like a pre-rendered 3D cinematic movie.
+THE PHYSICS & PSYCHOLOGY RULES (THE 4 PILLARS):
+1. The Depth Illusion (GLSL Displacement): The user is presented with what looks like a flat masterpiece image. As they scroll, a custom WebGL fragment shader reads the Depth Map (black = far, white = close). The shader dynamically displaces the UV coordinates of the base image on the Z-axis, creating a jaw-dropping 3D parallax effect.
+2. The Z-Axis Plunge: Standard scrolling is dead. The scroll wheel drives the camera (or the shader uniform) FORWARD into the image. We fly *through* the foreground elements and get closer to the background.
+3. Fluid Mouse Micro-Interactions: On desktop, the mouse movement (XY) slightly shifts the camera, creating a liquid, 3D peeking effect behind objects in the image.
+4. Absolute 60FPS Performance: Because this is just a single PlaneGeometry with a shader, it costs zero CPU. You will ensure the shader is highly optimized and mobile-ready.
+STRICT WORKFLOW (DO NOT DEVIATE):
+Execute phase by phase. STOP after each phase and wait for my explicit "PROCEED" command.
+==================================================
+PHASE 1: THE ASSET INTERROGATION
+==================================================
+Ask me:
+1. What is the subject of the base image? (e.g., A sprawling futuristic city, a close-up of a luxury watch, a portrait of a person).
+2. Do you already have the Depth Map (black & white image), or do you need me to explain how to generate it?
+3. How extreme should the scroll distortion be? (Subtle luxury parallax, or an extreme "fly-through" zoom?)
+*STOP. Wait for my answers.*
+==================================================
+PHASE 2: THE GLSL SHADER BLUEPRINT
+==================================================
+Provide the theoretical architecture for the shader:
+- Write the exact mathematical concept for the Fragment Shader (How will the `uDepthMap` affect the `vUv` coordinates based on `uScrollProgress`?).
+- Detail the GSAP ScrollTrigger or Lenis setup to bind the window scroll directly to the `uScrollProgress` uniform in the shader.
+- How will we handle edge-stretching/pixel-tearing? (e.g., edge feathering or clamping).
+*STOP. Wait for my approval.*
+==================================================
+PHASE 3: THE HTML/CSS TYPOGRAPHY
+==================================================
+Design the Text Layer that sits over the WebGL Canvas.
+- As the user plunges into the 3D image, the text must react (e.g., fade out, scale up and pass behind the camera, or be masked by the depth map).
+- Provide the exact CSS/GSAP logic for this typography choreography.
+*STOP. Wait for my approval.*
+==================================================
+PHASE 4: ELITE R3F EXECUTION (THE CODE)
+==================================================
+Write the production-ready React Three Fiber code.
+- Write the raw GLSL strings (`vertexShader` and `fragmentShader`) inside a `shaderMaterial`.
+- Include the R3F `<Canvas>` setup.
+- Use `@react-three/drei`'s `useTexture` to load the image and depth map.
+- Feed the scroll value into the material uniforms efficiently inside `useFrame`.
+- Ensure NO placeholders. Write the master-level code.
