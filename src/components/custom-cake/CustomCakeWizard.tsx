@@ -69,12 +69,14 @@ function OptionCard({
   note,
   onClick,
   image,
+  priority,
 }: {
   active?: boolean;
   title: string;
   note?: string;
   onClick: () => void;
   image?: string;
+  priority?: boolean;
 }) {
   return (
     <button
@@ -93,6 +95,7 @@ function OptionCard({
             src={image}
             alt=""
             fill
+            priority={priority}
             className="object-cover transition duration-700 group-hover:scale-[1.04]"
             sizes="(max-width:768px) 100vw, 33vw"
           />
@@ -294,13 +297,14 @@ export function CustomCakeWizard() {
               {step === 1 && (
                 <div className="mt-7 space-y-6">
                   <div className="grid gap-3 sm:grid-cols-2">
-                    {CATEGORIES.map((c) => (
+                    {CATEGORIES.map((c, i) => (
                       <OptionCard
                         key={c.id}
                         active={category === c.id}
                         title={c.title}
                         note={c.blurb}
                         image={c.image}
+                        priority={i < 2}
                         onClick={() => setCategory(c.id)}
                       />
                     ))}

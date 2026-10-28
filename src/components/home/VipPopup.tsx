@@ -5,21 +5,50 @@ import { X } from "lucide-react";
 import Link from "next/link";
 import { siteSettings } from "@/data/site";
 
-/** Soft atelier welcome — real coupon only, no fake countdown (P11 + honesty). */
+/**
+ * Soft atelier welcome — real coupon only (no fake countdown).
+ * Waits for scroll OR a long idle so it never blocks the first hero CTA.
+ */
 export function VipPopup() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const seen = sessionStorage.getItem("lb-vip-popup");
     if (seen) return;
-    const t = window.setTimeout(() => setOpen(true), 9000);
-    return () => window.clearTimeout(t);
+
+    let armed = false;
+    const show = () => {
+      if (armed) return;
+      armed = true;
+      setOpen(true);
+    };
+
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.55) show();
+    };
+
+    const idle = window.setTimeout(show, 16000);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.clearTimeout(idle);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   const close = () => {
     sessionStorage.setItem("lb-vip-popup", "1");
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   if (!open) return null;
 
