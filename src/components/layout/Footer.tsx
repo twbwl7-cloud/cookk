@@ -1,21 +1,35 @@
 import Link from "next/link";
 import { siteSettings } from "@/data/site";
 
-/** Soft atelier footer — cream/blush/gold, never a dark scare slab. */
+/** Soft atelier footer — cream/blush/gold, conversion + trust. */
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-pink-baby/40 bg-gradient-to-b from-[#fffaf8] to-pink-soft/80 text-ink">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
           <p className="font-display text-2xl text-ink">{siteSettings.brandName}</p>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink/65">
-            {siteSettings.tagline} — עוגות גן, מספרים ומעוצבות לפי הזמנה.
-            וואטסאפ: <bdi>{siteSettings.phone}</bdi>
+          <p className="mt-1 text-[11px] font-extrabold tracking-[0.22em] text-gold-2">
+            HAUTE PÂTISSERIE · NETANYA
           </p>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink/65">
+            {siteSettings.tagline} — עוגות Sur Mesure לפי הזמנה. וואטסאפ:{" "}
+            <bdi>{siteSettings.phone}</bdi>
+          </p>
+          <Link
+            href="/custom-cake"
+            className="btn-gold contact-shadow mt-5 inline-flex h-11 items-center rounded-full px-6 text-sm font-extrabold"
+          >
+            לבנות עוגה
+          </Link>
         </div>
         <div>
           <p className="text-sm font-extrabold text-gold-2">ניווט</p>
           <ul className="mt-3 space-y-2 text-sm font-medium text-ink/70">
+            <li>
+              <Link href="/custom-cake" className="hover:text-gold-2">
+                בניית עוגה
+              </Link>
+            </li>
             <li>
               <Link href="/collections/gan" className="hover:text-gold-2">
                 עוגות גן
@@ -65,6 +79,7 @@ export function Footer() {
               </a>
             </li>
             <li>{siteSettings.hours}</li>
+            <li className="text-ink/50">מינימום 3 ימי עסקים · עד 5 couture ביום</li>
           </ul>
         </div>
       </div>
@@ -82,6 +97,9 @@ export function Footer() {
             </Link>
             <Link href="/accessibility" className="hover:text-gold-2">
               נגישות
+            </Link>
+            <Link href="/faq" className="hover:text-gold-2">
+              שאלות נפוצות
             </Link>
           </div>
         </div>

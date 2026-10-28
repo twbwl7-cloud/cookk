@@ -25,7 +25,7 @@ export function PsychStrip() {
             ממחיר <bdi>{formatIls(fromPrice)}</bdi>
           </p>
           <p className="mt-2 text-sm font-medium leading-relaxed text-ink/65">
-            Builder מבסיס <bdi>₪250</bdi> — רואות מחיר לפני שמשלמות.
+            בניית עוגה מבסיס <bdi>₪250</bdi> — רואות מחיר על המסך לפני שמשלמות.
           </p>
         </div>
         <div className="glass-chip rounded-2xl p-5">
@@ -34,8 +34,8 @@ export function PsychStrip() {
           </p>
           <p className="mt-2 text-sm font-medium leading-relaxed text-ink/65">
             מכסה אמיתית לגימור מושלם.{" "}
-            <Link href="/shop" className="font-bold text-gold-2 underline">
-              לקטלוג
+            <Link href="/custom-cake" className="font-bold text-gold-2 underline">
+              להתחיל לבנות
             </Link>
             {" · "}
             <bdi className="font-bold text-gold-2">{siteSettings.phone}</bdi>

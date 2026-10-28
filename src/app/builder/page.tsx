@@ -10,6 +10,13 @@ export const metadata: Metadata = {
 export default function BuilderPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+      <p className="mb-6 rounded-2xl border border-gold-1/30 bg-white/70 px-4 py-3 text-sm font-medium text-ink/75">
+        המסלול הראשי לבנייה Sur Mesure נמצא ב־
+        <a href="/custom-cake" className="mx-1 font-extrabold text-gold-2 underline">
+          בניית עוגה צעד־אחר־צעד
+        </a>
+        — כאן נשארת אפשרות המשולבת לגן × מעוצבת.
+      </p>
       <p className="text-[11px] font-extrabold uppercase tracking-[0.24em] text-gold-2">
         3D Cake Builder
       </p>

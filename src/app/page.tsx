@@ -18,7 +18,7 @@ import {
   collections,
   getProductsByCategory,
 } from "@/data/products";
-import { reviews, siteSettings } from "@/data/site";
+import { faqs, reviews, siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
 
 /** Landing — cream atelier · Hebrew cursor · luxury bakery motion. */
@@ -118,7 +118,7 @@ export default function HomePage() {
         </StaggerReveal>
       </section>
 
-      {/* Glass CTA band */}
+      {/* Close band — one primary CTA: build */}
       <section className="relative px-4 py-16 sm:px-6">
         <div
           aria-hidden
@@ -141,21 +141,22 @@ export default function HomePage() {
               שיא וסיום · סגירה
             </p>
             <h2 className="mt-3 font-display text-[clamp(1.85rem,4vw,2.75rem)] font-black tracking-[-0.03em] text-ink">
-              שולחים תמונה — מקבלים עוגה שסוגרת
+              קודם מעצבות. אחר כך משלמות.
             </h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-ink/70">
-              בלי מלאי מזויף. בלי ספירה לאחור. Guest checkout · משלוח חינם מ־
+              בלי מלאי מזויף. בלי ספירה לאחור. בונות צעד־אחר־צעד, רואות מחיר על
+              המסך, שולחות לוואטסאפ עם כרטיס הזמנה. משלוח חינם מ־
               <bdi>₪{siteSettings.freeShippingFromIls}</bdi>
               {" · "}
               קופון <bdi>{siteSettings.launchCouponCode}</bdi>.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <JellyButton
-                href="/shop"
-                magneticLabel="קטלוג"
+                href="/custom-cake"
+                magneticLabel="בנייה"
                 className="h-13 min-w-[180px] px-8 text-sm"
               >
-                לפתוח את הקטלוג
+                לבנות את היצירה שלי
               </JellyButton>
               <a
                 href={wa}
@@ -163,11 +164,13 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="glass-chip inline-flex h-13 items-center justify-center rounded-full px-7 text-sm font-bold text-ink"
                 data-magnetic
-                data-cursor-label="וואטסאפ"
               >
                 וואטסאפ · <bdi className="ms-1">{siteSettings.phone}</bdi>
               </a>
             </div>
+            <p className="mt-4 text-[11px] font-semibold text-ink/40">
+              בלי התחייבות · מינימום 3 ימי עסקים · עד 5 couture ביום
+            </p>
           </Reveal>
         </div>
       </section>
@@ -189,6 +192,47 @@ export default function HomePage() {
                   {r.author} · {r.city} · {"★".repeat(r.rating)}
                 </footer>
               </blockquote>
+            </StaggerItem>
+          ))}
+        </StaggerReveal>
+      </section>
+
+      {/* Trust FAQ — friction down before sticky CTA (P17) */}
+      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-gold-2">
+                שקיפות
+              </p>
+              <h2 className="mt-2 font-display text-3xl font-black text-ink">
+                שאלות לפני שסוגרים
+              </h2>
+            </div>
+            <Link
+              href="/faq"
+              className="text-sm font-extrabold text-gold-2 underline"
+            >
+              לכל השאלות
+            </Link>
+          </div>
+        </Reveal>
+        <StaggerReveal className="mt-8 grid gap-3 md:grid-cols-2">
+          {faqs.slice(0, 4).map((f) => (
+            <StaggerItem key={f.id}>
+              <details className="group rounded-[1.25rem] border border-ink/8 bg-white/50 px-5 py-4 open:bg-white/80">
+                <summary className="cursor-pointer list-none font-display text-lg font-bold text-ink marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span className="flex items-center justify-between gap-3">
+                    {f.question}
+                    <span className="text-gold-2 transition group-open:rotate-45">
+                      +
+                    </span>
+                  </span>
+                </summary>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-ink/65">
+                  {f.answer}
+                </p>
+              </details>
             </StaggerItem>
           ))}
         </StaggerReveal>

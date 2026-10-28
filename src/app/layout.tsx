@@ -47,7 +47,7 @@ export default function RootLayout({
         <LenisProvider>
           <MagneticCursor />
           <Header />
-          <main>{children}</main>
+          <main id="main">{children}</main>
           <Footer />
           <WhatsAppFloat />
           <StickyMobileCTA />

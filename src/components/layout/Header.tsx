@@ -8,13 +8,13 @@ import { useCartStore } from "@/store/cart";
 import { siteSettings } from "@/data/site";
 import { cn } from "@/lib/utils";
 
+/** One conversion path: custom-cake. Catalog stays secondary. */
 const links = [
   { href: "/custom-cake", label: "בניית עוגה" },
-  { href: "/builder", label: "עוגה אחת משולבת" },
   { href: "/collections/gan", label: "עוגות גן" },
-  { href: "/collections/misparim", label: "עוגות מספרים" },
-  { href: "/collections/meutzavot", label: "עוגות מעוצבות" },
-  { href: "/shop", label: "הכל" },
+  { href: "/collections/misparim", label: "מספרים" },
+  { href: "/collections/meutzavot", label: "מעוצבות" },
+  { href: "/shop", label: "הקטלוג" },
   { href: "/about", label: "אודות" },
   { href: "/contact", label: "צור קשר" },
 ];
@@ -26,12 +26,16 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
+      <a href="#main" className="skip-link">
+        דלג לתוכן
+      </a>
       <div className="border-b border-gold-1/20 bg-[#fffaf8]/92 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
           <button
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink md:hidden"
-            aria-label="תפריט"
+            aria-label={open ? "סגור תפריט" : "תפריט"}
+            aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={20} /> : <Menu size={20} />}
@@ -41,7 +45,6 @@ export function Header() {
             href="/"
             className="flex items-center gap-2"
             data-magnetic
-            data-cursor-label="בית"
           >
             <Image
               src="/cakes/brand/logo.jpg"
@@ -55,7 +58,7 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-5 lg:flex">
+          <nav className="hidden items-center gap-5 lg:flex" aria-label="ראשי">
             {links.map((l) => (
               <Link
                 key={l.href}
@@ -72,7 +75,6 @@ export function Header() {
               href="/custom-cake"
               className="btn-gold contact-shadow hidden h-10 items-center rounded-full px-4 text-sm font-semibold text-ink sm:inline-flex"
               data-magnetic
-              data-cursor-label="בנייה"
             >
               בניית עוגה
             </Link>
@@ -82,7 +84,6 @@ export function Header() {
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 bg-white/70"
               aria-label="עגלה"
               data-magnetic
-              data-cursor-label="עגלה"
             >
               <ShoppingBag size={18} />
               {totalUnits > 0 && (
@@ -101,7 +102,7 @@ export function Header() {
           open ? "block" : "hidden",
         )}
       >
-        <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
+        <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3" aria-label="נייד">
           {links.map((l) => (
             <Link
               key={l.href}
