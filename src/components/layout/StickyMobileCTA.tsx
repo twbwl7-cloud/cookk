@@ -36,7 +36,7 @@ export function StickyMobileCTA() {
           href="/custom-cake"
           className="btn-gold contact-shadow flex h-12 min-w-0 flex-1 items-center justify-center rounded-full text-[13px] font-extrabold tracking-wide"
         >
-          לבנות את היצירה
+          לעיצוב העוגה
         </Link>
         <a
           href={wa}

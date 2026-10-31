@@ -25,7 +25,8 @@ export function PsychStrip() {
             ממחיר <bdi>{formatIls(fromPrice)}</bdi>
           </p>
           <p className="mt-2 text-sm font-medium leading-relaxed text-ink/65">
-            בניית עוגה מבסיס <bdi>₪220</bdi> — רואות מחיר על המסך לפני שמשלמות.
+            בוחרים גודל וטעמים, רואים מחיר מ־<bdi>₪220</bdi> על המסך, ורק אז
+            משלמים.
           </p>
         </div>
         <div className="glass-chip rounded-2xl p-5">

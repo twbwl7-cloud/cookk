@@ -46,10 +46,10 @@ export default function HomePage() {
               בחירה אחת
             </p>
             <h2 className="mt-3 text-center font-display text-[clamp(1.85rem,4vw,2.85rem)] font-black tracking-[-0.03em] text-ink">
-              איזו עוגה סוגרת את האירוע?
+              איזו עוגה מתאימה לכם?
             </h2>
             <p className="mx-auto mt-2 max-w-lg text-center text-sm font-semibold text-ink/65">
-              שלוש קטגוריות בעיגול — פחות עומס, יותר החלטה.
+              גן לחיתוך קל, מספרים לימי הולדת, ומעוצבות עם דף סוכר.
             </p>
           </Reveal>
           <div className="mt-10">
@@ -137,15 +137,15 @@ export default function HomePage() {
             </div>
           </PlatePopUp>
           <Reveal delay={0.08}>
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-gold-2">
-              שיא וסיום · סגירה
+            <p className="text-[11px] font-extrabold tracking-[0.18em] text-gold-2">
+              איך זה עובד
             </p>
             <h2 className="mt-3 font-display text-[clamp(1.85rem,4vw,2.75rem)] font-black tracking-[-0.03em] text-ink">
-              קודם מעצבות. אחר כך משלמות.
+              שולחים רעיון. מקבלים סקיצה. אופים אחרי שאישרתם.
             </h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-ink/70">
-              בלי מלאי מזויף. בלי ספירה לאחור. בונות צעד־אחר־צעד, רואות מחיר על
-              המסך, שולחות לוואטסאפ עם כרטיס הזמנה. משלוח חינם מ־
+              שלושה צעדים: בוחרים גודל וטעמים, רואים מחיר על המסך, שולחות
+              בוואטסאפ עם כרטיס הזמנה. משלוח חינם מ־
               <bdi>₪{siteSettings.freeShippingFromIls}</bdi>
               {" · "}
               קופון <bdi>{siteSettings.launchCouponCode}</bdi>.
@@ -153,10 +153,10 @@ export default function HomePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <JellyButton
                 href="/custom-cake"
-                magneticLabel="בנייה"
+                magneticLabel="עיצוב"
                 className="h-13 min-w-[180px] px-8 text-sm"
               >
-                לבנות את היצירה שלי
+                לעיצוב העוגה
               </JellyButton>
               <a
                 href={wa}
@@ -169,7 +169,7 @@ export default function HomePage() {
               </a>
             </div>
             <p className="mt-4 text-[11px] font-semibold text-ink/40">
-              בלי התחייבות · מינימום 3 ימי עסקים · עד 5 couture ביום
+              בלי התחייבות · מינימום 3 ימי עסקים · עד 5 עוגות מורכבות ביום
             </p>
           </Reveal>
         </div>

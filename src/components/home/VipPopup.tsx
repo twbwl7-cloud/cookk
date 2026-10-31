@@ -78,8 +78,8 @@ export function VipPopup() {
         >
           <X size={16} />
         </button>
-        <p className="text-[10px] font-extrabold tracking-[0.28em] text-gold-2">
-          ATELIER · FIRST ORDER
+        <p className="text-[10px] font-extrabold tracking-[0.18em] text-gold-2">
+          הזמנה ראשונה
         </p>
         <h2 id="vip-title" className="mt-2 font-display text-2xl font-bold text-ink">
           קוד השקה ללקוחות חדשים
@@ -107,7 +107,7 @@ export function VipPopup() {
             onClick={close}
             className="inline-flex h-11 flex-1 items-center justify-center rounded-full border border-ink/12 bg-white/80 text-sm font-bold text-ink"
           >
-            לבנות עוגה
+            לעיצוב העוגה
           </Link>
         </div>
       </div>

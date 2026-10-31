@@ -8,18 +8,18 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
           <p className="font-display text-2xl text-ink">{siteSettings.brandName}</p>
-          <p className="mt-1 text-[11px] font-extrabold tracking-[0.22em] text-gold-2">
-            HAUTE PÂTISSERIE · NETANYA
+          <p className="mt-1 text-[11px] font-extrabold tracking-[0.18em] text-gold-2">
+            אפייה מהלב · נתניה
           </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink/65">
-            {siteSettings.tagline} — עוגות Sur Mesure לפי הזמנה. וואטסאפ:{" "}
+            {siteSettings.tagline} — עוגות בעיצוב אישי לפי הזמנה. וואטסאפ:{" "}
             <bdi>{siteSettings.phone}</bdi>
           </p>
           <Link
             href="/custom-cake"
             className="btn-gold contact-shadow mt-5 inline-flex h-11 items-center rounded-full px-6 text-sm font-extrabold"
           >
-            לבנות עוגה
+            לעיצוב העוגה
           </Link>
         </div>
         <div>
@@ -79,7 +79,7 @@ export function Footer() {
               </a>
             </li>
             <li>{siteSettings.hours}</li>
-            <li className="text-ink/50">מינימום 3 ימי עסקים · עד 5 couture ביום</li>
+            <li className="text-ink/50">מינימום 3 ימי עסקים · עד 5 עוגות מורכבות ביום</li>
           </ul>
         </div>
       </div>
