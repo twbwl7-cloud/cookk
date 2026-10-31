@@ -49,7 +49,7 @@ export function Hero() {
             alt="עוגה מעוצבת עם לוגו LALIBAKERY תלת־ממד"
             fill
             priority
-            quality={92}
+            quality={90}
             sizes="100vw"
             className="object-cover object-[50%_30%] brightness-[1.1] contrast-[1.02] lg:hidden"
           />
