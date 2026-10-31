@@ -7,20 +7,20 @@ import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
 
 /**
- * Hero — cake + 3D logo LEFT · natural Hebrew copy RIGHT.
- * N05 · H01 · S01 · no AI smell (X), no foreign filler.
+ * Previous hero restored — cake + 3D logo still LEFT · copy RIGHT.
+ * Turntable removed only. Cake further left · in-image logo larger · stand lighter.
  */
 const HERO_BG = "/cakes/hero/hero-3d-logo-cake.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const rise = {
-  hidden: { opacity: 0, y: 28, filter: "blur(5px)" },
+  hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay: 0.4 + i * 0.08, duration: 0.85, ease },
+    transition: { delay: 0.45 + i * 0.08, duration: 0.85, ease },
   }),
 };
 
@@ -32,34 +32,34 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-[100svh] overflow-hidden bg-[#1a1412]"
+      className="relative min-h-[100svh] overflow-hidden bg-[#14100e]"
       aria-label={`${siteSettings.brandName} — עוגות בעיצוב אישי`}
     >
       <div className="absolute inset-0" data-hero-visual>
         <motion.div
           className="absolute inset-0"
-          initial={{ scale: 1.04, opacity: 0.75 }}
+          initial={{ scale: 1.05, opacity: 0.75 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.45, ease, delay: 0.15 }}
+          transition={{ duration: 1.5, ease, delay: 0.15 }}
         >
           <Image
             src={HERO_BG}
-            alt="עוגה מעוצבת עם ורדים וזהב לצד לוגו LALIBAKERY"
+            alt="עוגה מעוצבת עם לוגו LALIBAKERY תלת־ממד"
             fill
             priority
             quality={94}
             sizes="100vw"
-            className="object-cover object-[12%_42%] sm:object-[16%_40%] lg:object-[20%_38%] brightness-[1.14] contrast-[1.02] saturate-[1.04]"
+            className="object-cover object-[0%_32%] brightness-[1.06] contrast-[1.03] saturate-[0.98] sm:object-[0%_38%] lg:object-[0%_42%]"
           />
         </motion.div>
 
-        {/* Strong left lift — cake side stays open and bright */}
+        {/* Very light left veil — stand stays readable */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(255,246,238,0.42) 0%, rgba(255,246,238,0.2) 22%, rgba(255,246,238,0.06) 40%, transparent 55%)",
+              "linear-gradient(90deg, rgba(255,246,238,0.14) 0%, transparent 32%)",
           }}
         />
         <div
@@ -67,33 +67,35 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(60% 75% at 16% 42%, rgba(255,232,210,0.35) 0%, transparent 65%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(80% 90% at 22% 50%, transparent 0%, rgba(12,8,6,0.06) 72%, rgba(12,8,6,0.22) 100%)",
+              "radial-gradient(75% 85% at 18% 48%, transparent 0%, rgba(12,8,6,0.1) 65%, rgba(12,8,6,0.28) 100%)",
           }}
         />
 
-        {/* Cream plane for copy — physical RIGHT */}
+        {/* Desktop cream — physical RIGHT only */}
         <div
           aria-hidden
-          className="absolute inset-0"
+          className="absolute inset-0 hidden lg:block"
           style={{
             background:
-              "linear-gradient(270deg, rgba(255,250,248,0.98) 0%, rgba(255,250,248,0.94) 26%, rgba(255,250,248,0.7) 40%, rgba(255,250,248,0.16) 54%, transparent 66%)",
+              "linear-gradient(270deg, rgba(255,250,248,0.98) 0%, rgba(255,250,248,0.94) 26%, rgba(255,250,248,0.55) 42%, rgba(255,250,248,0.1) 56%, transparent 68%)",
           }}
         />
         <div
           aria-hidden
-          className="absolute inset-y-0 right-0 w-[55%]"
+          className="absolute inset-y-0 right-0 hidden w-[52%] lg:block"
           style={{
             background:
-              "radial-gradient(600px 420px at 82% 70%, rgba(242,196,206,0.32) 0%, transparent 70%)",
+              "radial-gradient(560px 400px at 80% 70%, rgba(242,196,206,0.32) 0%, transparent 70%)",
+          }}
+        />
+
+        {/* Mobile: cake open on top · cream only under copy */}
+        <div
+          aria-hidden
+          className="absolute inset-0 lg:hidden"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 0%, transparent 42%, rgba(255,250,248,0.4) 58%, rgba(255,250,248,0.94) 72%, rgba(255,250,248,0.99) 100%)",
           }}
         />
       </div>
@@ -104,15 +106,9 @@ export function Hero() {
         animate={{ y: [0, -10, 0], opacity: [0.35, 0.85, 0.35] }}
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.span
-        aria-hidden
-        className="pointer-events-none absolute right-[32%] top-[58%] hidden h-1 w-1 rounded-full bg-gold-2/60 lg:block"
-        animate={{ y: [0, 8, 0], opacity: [0.25, 0.7, 0.25] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-      />
 
-      <div className="relative z-10 mx-auto min-h-[100svh] max-w-6xl px-5 sm:px-8">
-        <div className="absolute bottom-16 right-5 w-[min(100%-2.5rem,34rem)] text-right sm:bottom-20 sm:right-8 lg:bottom-auto lg:top-1/2 lg:w-[min(32rem,44%)] lg:-translate-y-1/2">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-5 pb-[5.5rem] pt-[46svh] sm:px-8 sm:pb-24 sm:pt-[42svh] lg:block lg:pb-0 lg:pt-0">
+        <div className="relative w-full text-right lg:absolute lg:right-8 lg:top-1/2 lg:w-[min(32rem,42%)] lg:-translate-y-1/2">
           <div className="relative pe-2 ps-5 sm:ps-7">
             <span
               aria-hidden
@@ -144,7 +140,7 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-5 text-[11px] font-extrabold tracking-[0.18em] text-gold-2"
+              className="mt-4 text-[11px] font-extrabold tracking-[0.18em] text-gold-2 sm:mt-5"
             >
               אפייה מהלב · נתניה
             </motion.p>
@@ -154,7 +150,7 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-3 font-display text-[clamp(2.8rem,7vw,4.6rem)] font-bold leading-[0.9] tracking-[-0.045em] text-ink"
+              className="mt-2 font-display text-[clamp(2.5rem,7vw,4.6rem)] font-bold leading-[0.9] tracking-[-0.045em] text-ink sm:mt-3"
             >
               {siteSettings.brandName}
             </motion.h1>
@@ -165,29 +161,27 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-7 ms-auto block h-px w-28 bg-gradient-to-l from-gold-1 via-gold-2/80 to-transparent"
+              className="mt-5 ms-auto block h-px w-28 bg-gradient-to-l from-gold-1 via-gold-2/80 to-transparent sm:mt-6"
             />
 
-            {/* H01 · N05 promise */}
             <motion.p
               custom={4}
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-7 font-display text-balance text-[clamp(1.7rem,3.8vw,2.55rem)] font-bold leading-[1.15] tracking-[-0.03em] text-ink"
+              className="mt-5 font-display text-balance text-[clamp(1.5rem,3.5vw,2.55rem)] font-bold leading-[1.15] tracking-[-0.03em] text-ink sm:mt-6"
             >
               אתם מתארים.
               <br />
               <span className="text-ink/75">אנחנו אופים.</span>
             </motion.p>
 
-            {/* S01 subhead — facts, spoken Hebrew */}
             <motion.p
               custom={5}
               variants={rise}
               initial="hidden"
               animate="show"
-              className="ml-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed text-ink/68"
+              className="ml-auto mt-4 max-w-md text-[14px] font-medium leading-relaxed text-ink/68 sm:text-[15px]"
             >
               עוגות בעיצוב אישי לימי הולדת, לבר מצווה ולאירועים. מעצבים איתכם על
               המסך, אופים רק אחרי שאישרתם. מחיר מ־
@@ -200,7 +194,7 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-4 text-[11px] font-bold text-ink/45"
+              className="mt-3 text-[11px] font-bold text-ink/45"
             >
               גן · מספרים · מעוצבות עם דף סוכר
             </motion.p>
@@ -210,7 +204,7 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-9 flex flex-col items-end gap-3"
+              className="mt-7 flex flex-col items-end gap-3 sm:mt-8"
             >
               <Link
                 href="/custom-cake"
