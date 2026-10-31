@@ -49,17 +49,17 @@ export function Hero() {
             priority
             quality={94}
             sizes="100vw"
-            className="object-cover object-[12%_42%] sm:object-[16%_40%] lg:object-[20%_38%] brightness-[1.08] contrast-[1.04] saturate-[1.02]"
+            className="object-cover object-[12%_42%] sm:object-[16%_40%] lg:object-[20%_38%] brightness-[1.14] contrast-[1.02] saturate-[1.04]"
           />
         </motion.div>
 
-        {/* Soft left lift — keep cake readable, not crushed in shadow */}
+        {/* Strong left lift — cake side stays open and bright */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(255,248,244,0.22) 0%, rgba(255,248,244,0.08) 18%, transparent 38%)",
+              "linear-gradient(90deg, rgba(255,246,238,0.42) 0%, rgba(255,246,238,0.2) 22%, rgba(255,246,238,0.06) 40%, transparent 55%)",
           }}
         />
         <div
@@ -67,7 +67,7 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(55% 70% at 18% 45%, rgba(255,236,220,0.18) 0%, transparent 62%)",
+              "radial-gradient(60% 75% at 16% 42%, rgba(255,232,210,0.35) 0%, transparent 65%)",
           }}
         />
         <div
@@ -75,7 +75,7 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(75% 85% at 20% 50%, transparent 0%, rgba(12,8,6,0.12) 70%, rgba(12,8,6,0.32) 100%)",
+              "radial-gradient(80% 90% at 22% 50%, transparent 0%, rgba(12,8,6,0.06) 72%, rgba(12,8,6,0.22) 100%)",
           }}
         />
 
