@@ -11,6 +11,7 @@ import { whatsappLink } from "@/lib/utils";
  * Turntable removed only. Cake further left · in-image logo larger · stand lighter.
  */
 const HERO_BG = "/cakes/hero/hero-3d-logo-cake.jpg";
+const HERO_BG_MOBILE = "/cakes/hero/hero-3d-logo-cake-mobile.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -42,24 +43,36 @@ export function Hero() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.5, ease, delay: 0.15 }}
         >
+          {/* Mobile portrait crop — cake left, logo large */}
+          <Image
+            src={HERO_BG_MOBILE}
+            alt="עוגה מעוצבת עם לוגו LALIBAKERY תלת־ממד"
+            fill
+            priority
+            quality={92}
+            sizes="100vw"
+            className="object-cover object-[50%_30%] brightness-[1.1] contrast-[1.02] lg:hidden"
+          />
+          {/* Desktop / tablet landscape still */}
           <Image
             src={HERO_BG}
-            alt="עוגה מעוצבת עם לוגו LALIBAKERY תלת־ממד"
+            alt=""
             fill
             priority
             quality={94}
             sizes="100vw"
-            className="object-cover object-[0%_32%] brightness-[1.06] contrast-[1.03] saturate-[0.98] sm:object-[0%_38%] lg:object-[0%_42%]"
+            className="hidden object-cover object-[4%_42%] brightness-[1.06] contrast-[1.03] saturate-[0.98] lg:block"
+            aria-hidden
           />
         </motion.div>
 
-        {/* Very light left veil — stand stays readable */}
+        {/* Soft left lift — stand brighter, less mud */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(255,246,238,0.14) 0%, transparent 32%)",
+              "linear-gradient(90deg, rgba(255,246,238,0.2) 0%, rgba(255,246,238,0.06) 24%, transparent 42%)",
           }}
         />
         <div
@@ -67,7 +80,7 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(75% 85% at 18% 48%, transparent 0%, rgba(12,8,6,0.1) 65%, rgba(12,8,6,0.28) 100%)",
+              "radial-gradient(75% 85% at 16% 46%, transparent 0%, rgba(12,8,6,0.08) 68%, rgba(12,8,6,0.24) 100%)",
           }}
         />
 
@@ -89,13 +102,13 @@ export function Hero() {
           }}
         />
 
-        {/* Mobile: cake open on top · cream only under copy */}
+        {/* Mobile: cake clear on top half · cream only under copy */}
         <div
           aria-hidden
           className="absolute inset-0 lg:hidden"
           style={{
             background:
-              "linear-gradient(180deg, transparent 0%, transparent 42%, rgba(255,250,248,0.4) 58%, rgba(255,250,248,0.94) 72%, rgba(255,250,248,0.99) 100%)",
+              "linear-gradient(180deg, rgba(255,246,238,0.08) 0%, transparent 18%, transparent 46%, rgba(255,250,248,0.55) 62%, rgba(255,250,248,0.97) 78%, rgba(255,250,248,0.99) 100%)",
           }}
         />
       </div>
@@ -107,7 +120,7 @@ export function Hero() {
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-5 pb-[5.5rem] pt-[46svh] sm:px-8 sm:pb-24 sm:pt-[42svh] lg:block lg:pb-0 lg:pt-0">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-5 pb-[5.5rem] pt-[48svh] sm:px-8 sm:pb-24 sm:pt-[44svh] lg:block lg:pb-0 lg:pt-0">
         <div className="relative w-full text-right lg:absolute lg:right-8 lg:top-1/2 lg:w-[min(32rem,42%)] lg:-translate-y-1/2">
           <div className="relative pe-2 ps-5 sm:ps-7">
             <span
