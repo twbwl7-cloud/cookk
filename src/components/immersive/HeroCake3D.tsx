@@ -18,6 +18,8 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import Image from "next/image";
 
+const CAKE_SRC = "/cakes/hero/round-hero-3d.jpg";
+
 function Loader() {
   const { progress } = useProgress();
   return (
@@ -30,7 +32,7 @@ function Loader() {
 }
 
 function RealCakeTurntable() {
-  const texture = useLoader(THREE.TextureLoader, "/cakes/hero/round-gold-crown.jpg");
+  const texture = useLoader(THREE.TextureLoader, CAKE_SRC);
 
   useMemo(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -80,25 +82,21 @@ function RealCakeTurntable() {
 
   return (
     <group position={[0, 0.05, 0]}>
-      {/* Charcoal rim / cake board edge */}
       <mesh castShadow>
         <cylinderGeometry args={[1.62, 1.62, 0.14, 64]} />
         <primitive object={rimMat} attach="material" />
       </mesh>
 
-      {/* Thin gold ring */}
       <mesh position={[0, 0.08, 0]}>
         <torusGeometry args={[1.58, 0.035, 12, 64]} />
         <primitive object={goldMat} attach="material" />
       </mesh>
 
-      {/* THE real cake photo — front face */}
       <mesh position={[0, 0.078, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[1.52, 96]} />
         <primitive object={photoMat} attach="material" />
       </mesh>
 
-      {/* Back face so 360° never shows empty */}
       <mesh position={[0, -0.078, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <circleGeometry args={[1.52, 64]} />
         <primitive object={backMat} attach="material" />
@@ -116,19 +114,18 @@ export default function HeroCake3D() {
   }, []);
 
   return (
-    <div className="relative h-[400px] w-full cursor-grab touch-none active:cursor-grabbing sm:h-[480px] lg:h-[560px]">
-      {/* Static poster = LCP, real photo */}
+    <div className="relative h-full min-h-[340px] w-full cursor-grab touch-none active:cursor-grabbing sm:min-h-[420px] lg:min-h-[520px]">
       <div
         className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${ready ? "pointer-events-none opacity-0" : "opacity-100"}`}
       >
-        <div className="relative aspect-square w-[88%] overflow-hidden rounded-full border-[3px] border-ink contact-shadow">
+        <div className="relative aspect-square w-[78%] max-w-[420px] overflow-hidden rounded-full border-[3px] border-gold-1/40 contact-shadow">
           <Image
-            src="/cakes/hero/round-gold-crown.jpg"
-            alt="עוגת כתר זהב — LALIBAKERY"
+            src={CAKE_SRC}
+            alt="עוגה מעוצבת תלת־ממד · LALIBAKERY"
             fill
             priority
             className="object-cover"
-            sizes="(max-width:1024px) 90vw, 520px"
+            sizes="(max-width:1024px) 90vw, 420px"
           />
         </div>
       </div>
@@ -168,9 +165,9 @@ export default function HeroCake3D() {
         </Canvas>
       )}
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-        <span className="rounded-full border-2 border-ink bg-ink px-4 py-1.5 text-[11px] font-extrabold tracking-wide text-pink-soft">
-          זו העוגה האמיתית · גררו לסיבוב 360°
+      <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center sm:bottom-4">
+        <span className="rounded-full border border-gold-1/40 bg-ink/85 px-4 py-1.5 text-[11px] font-extrabold tracking-wide text-pink-soft backdrop-blur">
+          עוגה אמיתית · גררו לסיבוב 360°
         </span>
       </div>
     </div>

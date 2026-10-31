@@ -2,15 +2,34 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { siteSettings } from "@/data/site";
 import { whatsappLink } from "@/lib/utils";
 
+const HeroCake3D = dynamic(() => import("@/components/immersive/HeroCake3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="relative flex h-full min-h-[340px] items-center justify-center sm:min-h-[420px]">
+      <div className="relative aspect-square w-[78%] max-w-[420px] overflow-hidden rounded-full border-[3px] border-gold-1/40">
+        <Image
+          src="/cakes/hero/round-hero-3d.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+          sizes="420px"
+        />
+      </div>
+    </div>
+  ),
+});
+
 /**
  * PSYCH × HAUTE hero
- * Cake PHYSICAL LEFT (dimmed) · copy PHYSICAL RIGHT — flipped layout.
+ * 3D logo + couture cake LEFT · copy RIGHT.
  */
-const SRC = "/cakes/hero/hero-atelier-blush-gold.jpg";
+const HERO_BG = "/cakes/hero/hero-3d-logo-cake.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -20,7 +39,7 @@ const rise = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay: 0.95 + i * 0.09, duration: 0.9, ease },
+    transition: { delay: 0.55 + i * 0.09, duration: 0.9, ease },
   }),
 };
 
@@ -35,32 +54,31 @@ export function Hero() {
       className="relative min-h-[100svh] overflow-hidden bg-[#14100e]"
       aria-label="LALIBAKERY · Maison hero"
     >
-      {/* ——— CAKE: physical LEFT, muted couture ——— */}
+      {/* Atmosphere — 3D logo + cake still as depth plane */}
       <div className="absolute inset-0" data-hero-visual>
         <motion.div
           className="absolute inset-0"
-          initial={{ scale: 1.08, opacity: 0.7 }}
+          initial={{ scale: 1.06, opacity: 0.65 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.6, ease, delay: 0.35 }}
+          transition={{ duration: 1.6, ease, delay: 0.2 }}
         >
           <Image
-            src={SRC}
-            alt="יצירת couture לבנה עם פרחי blush ועלי זהב — סטודיו נתניה"
+            src={HERO_BG}
+            alt="לוגו LALIBAKERY בתלת־ממד לצד עוגה מעוצבת עם ורדים וזהב"
             fill
             priority
             quality={94}
             sizes="100vw"
-            className="object-cover object-[14%_40%] sm:object-[12%_38%] lg:object-[10%_36%] brightness-[0.72] contrast-[1.08] saturate-[0.88]"
+            className="object-cover object-[18%_45%] sm:object-[22%_42%] lg:object-[28%_40%] brightness-[0.78] contrast-[1.06] saturate-[0.92]"
           />
         </motion.div>
 
-        {/* Expensive dim over the cake (left) */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(18,12,10,0.55) 0%, rgba(18,12,10,0.28) 22%, rgba(18,12,10,0.08) 40%, transparent 55%)",
+              "linear-gradient(90deg, rgba(18,12,10,0.62) 0%, rgba(18,12,10,0.35) 28%, rgba(18,12,10,0.12) 48%, transparent 62%)",
           }}
         />
         <div
@@ -68,7 +86,7 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(70% 80% at 18% 42%, transparent 0%, rgba(12,8,6,0.25) 55%, rgba(12,8,6,0.5) 100%)",
+              "radial-gradient(70% 80% at 22% 48%, transparent 0%, rgba(12,8,6,0.28) 55%, rgba(12,8,6,0.55) 100%)",
           }}
         />
 
@@ -78,10 +96,9 @@ export function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(270deg, rgba(255,250,248,0.98) 0%, rgba(255,250,248,0.94) 28%, rgba(255,250,248,0.72) 42%, rgba(255,250,248,0.22) 56%, transparent 68%)",
+              "linear-gradient(270deg, rgba(255,250,248,0.98) 0%, rgba(255,250,248,0.94) 26%, rgba(255,250,248,0.7) 40%, rgba(255,250,248,0.18) 54%, transparent 66%)",
           }}
         />
-        {/* Warm blush kiss under copy (right) */}
         <div
           aria-hidden
           className="absolute inset-y-0 right-0 w-[55%]"
@@ -92,7 +109,62 @@ export function Hero() {
         />
       </div>
 
-      {/* Floating gold dust near copy */}
+      {/* Interactive 3D cake + floating logo badge */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-[5] flex w-full items-end justify-start pb-24 pt-20 sm:pb-16 lg:w-[58%] lg:items-center lg:pb-0 lg:pt-8">
+        <div className="pointer-events-auto relative mx-auto w-full max-w-[560px] px-2 sm:mx-0 sm:ms-4 lg:ms-8">
+          <HeroCake3D />
+
+          {/* 3D logo badge — floats over the cake scene */}
+          <motion.div
+            className="pointer-events-none absolute -right-1 top-[8%] z-20 sm:right-2 sm:top-[6%] lg:-right-2 lg:top-[4%]"
+            initial={{ opacity: 0, y: 24, rotateY: -28, scale: 0.86 }}
+            animate={{
+              opacity: 1,
+              y: [0, -10, 0],
+              rotateY: [-8, 8, -8],
+              rotateX: [6, 2, 6],
+              scale: 1,
+            }}
+            transition={{
+              opacity: { delay: 0.9, duration: 0.8, ease },
+              scale: { delay: 0.9, duration: 0.8, ease },
+              y: { delay: 1.4, duration: 5.5, repeat: Infinity, ease: "easeInOut" },
+              rotateY: {
+                delay: 1.4,
+                duration: 7.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+              rotateX: {
+                delay: 1.4,
+                duration: 6.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+            style={{ transformStyle: "preserve-3d", perspective: 900 }}
+          >
+            <div
+              className="relative h-[5.5rem] w-[5.5rem] overflow-hidden rounded-full border-[3px] border-gold-1/70 sm:h-[6.75rem] sm:w-[6.75rem] lg:h-[7.75rem] lg:w-[7.75rem]"
+              style={{
+                boxShadow:
+                  "0 22px 48px -16px rgba(0,0,0,0.65), 0 0 0 1px rgba(212,175,55,0.35), inset 0 1px 0 rgba(255,255,255,0.35)",
+                transform: "translateZ(40px)",
+              }}
+            >
+              <Image
+                src="/cakes/brand/logo.jpg"
+                alt="לוגו LALIBAKERY תלת־ממד"
+                fill
+                className="object-cover"
+                sizes="140px"
+                priority
+              />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
       <motion.span
         aria-hidden
         className="pointer-events-none absolute right-[18%] top-[22%] hidden h-1.5 w-1.5 rounded-full bg-gold-1/70 blur-[0.5px] lg:block"
@@ -107,7 +179,6 @@ export function Hero() {
       />
 
       <div className="relative z-10 mx-auto min-h-[100svh] max-w-6xl px-5 sm:px-8">
-        {/* ——— COPY: physical RIGHT ——— */}
         <div className="absolute bottom-16 right-5 w-[min(100%-2.5rem,34rem)] text-right sm:bottom-20 sm:right-8 lg:bottom-auto lg:top-1/2 lg:w-[min(32rem,44%)] lg:-translate-y-1/2">
           <div className="relative pe-2 ps-5 sm:ps-7">
             <span
@@ -194,7 +265,7 @@ export function Hero() {
               className="ml-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed text-ink/68"
             >
               מחיר שקוף על המסך מבסיס{" "}
-              <bdi className="font-extrabold text-ink">₪250</bdi>
+              <bdi className="font-extrabold text-ink">₪220</bdi>
               . סטודיו פרטי בנתניה. עד{" "}
               <span className="font-extrabold text-ink">5 עוגות couture</span>{" "}
               ביום — כל אחת Sur Mesure, 72 שעות מהקמח עד הקופסה.
@@ -248,7 +319,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Atelier mark on cake side (left) */}
         <motion.p
           aria-hidden
           className="pointer-events-none absolute bottom-8 left-6 hidden text-[9px] font-extrabold tracking-[0.35em] text-white/35 sm:block"
@@ -256,7 +326,7 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8, duration: 1 }}
         >
-          ATELIER
+          ATELIER · 3D
         </motion.p>
       </div>
     </section>

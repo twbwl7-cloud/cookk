@@ -2,6 +2,7 @@ import type { Collection, Product } from "@/types/commerce";
 
 export const products: Product[] = [
   // —— עוגות גן ——
+  // קטנה 220 · גדולה 250
   {
     id: "p-gan-roblox",
     slug: "roblox-10",
@@ -16,7 +17,8 @@ export const products: Product[] = [
     featured: true,
     shape: "sheet",
     variants: [
-      { id: "v-roblox-std", label: "סטנדרט גן", sku: "LB-GN-RB10", priceIls: 280, stock: 12 },
+      { id: "v-roblox-s", label: "גן קטנה", sku: "LB-GN-RB10-S", priceIls: 220, stock: 12 },
+      { id: "v-roblox-l", label: "גן גדולה", sku: "LB-GN-RB10-L", priceIls: 250, stock: 10 },
     ],
   },
   {
@@ -33,7 +35,8 @@ export const products: Product[] = [
     featured: true,
     shape: "sheet",
     variants: [
-      { id: "v-libby-std", label: "עם תמונה", sku: "LB-GN-PH08", priceIls: 300, stock: 15 },
+      { id: "v-libby-s", label: "גן קטנה", sku: "LB-GN-PH08-S", priceIls: 220, stock: 15 },
+      { id: "v-libby-l", label: "גן גדולה", sku: "LB-GN-PH08-L", priceIls: 250, stock: 12 },
     ],
   },
   {
@@ -49,7 +52,8 @@ export const products: Product[] = [
     featured: false,
     shape: "sheet",
     variants: [
-      { id: "v-yagel", label: "סטנדרט", sku: "LB-GN-MY01", priceIls: 270, stock: 10 },
+      { id: "v-yagel-s", label: "גן קטנה", sku: "LB-GN-MY01-S", priceIls: 220, stock: 10 },
+      { id: "v-yagel-l", label: "גן גדולה", sku: "LB-GN-MY01-L", priceIls: 250, stock: 8 },
     ],
   },
   {
@@ -65,7 +69,8 @@ export const products: Product[] = [
     featured: false,
     shape: "sheet",
     variants: [
-      { id: "v-adam", label: "סטנדרט", sku: "LB-GN-MA02", priceIls: 270, stock: 10 },
+      { id: "v-adam-s", label: "גן קטנה", sku: "LB-GN-MA02-S", priceIls: 220, stock: 10 },
+      { id: "v-adam-l", label: "גן גדולה", sku: "LB-GN-MA02-L", priceIls: 250, stock: 8 },
     ],
   },
   {
@@ -82,7 +87,8 @@ export const products: Product[] = [
     featured: true,
     shape: "sheet",
     variants: [
-      { id: "v-kuti", label: "פרימיום", sku: "LB-GN-CK01", priceIls: 350, stock: 8 },
+      { id: "v-kuti-s", label: "גן קטנה", sku: "LB-GN-CK01-S", priceIls: 220, stock: 8 },
+      { id: "v-kuti-l", label: "גן גדולה", sku: "LB-GN-CK01-L", priceIls: 250, stock: 6 },
     ],
   },
   {
@@ -98,7 +104,8 @@ export const products: Product[] = [
     featured: false,
     shape: "sheet",
     variants: [
-      { id: "v-brawl", label: "סטנדרט", sku: "LB-GN-BS07", priceIls: 290, stock: 9 },
+      { id: "v-brawl-s", label: "גן קטנה", sku: "LB-GN-BS07-S", priceIls: 220, stock: 9 },
+      { id: "v-brawl-l", label: "גן גדולה", sku: "LB-GN-BS07-L", priceIls: 250, stock: 7 },
     ],
   },
   {
@@ -114,11 +121,29 @@ export const products: Product[] = [
     featured: true,
     shape: "sheet",
     variants: [
-      { id: "v-bar", label: "חגיגית", sku: "LB-GN-BM13", priceIls: 380, stock: 6 },
+      { id: "v-bar", label: "גן גדולה", sku: "LB-GN-BM13", priceIls: 250, stock: 6 },
     ],
   },
 
   // —— עוגות מספרים ——
+  // שתי ספרות 320 · ספרה אחת 250
+  {
+    id: "p-num-1",
+    slug: "number-1",
+    title: "עוגת מספרים · ספרה 1",
+    shortDescription: "ספרה אחת עם קרם, ממתקים ופלאק בעברית.",
+    description:
+      "עוגת מספרים לספרה בודדת — קרם, קישוטים ופלאקים בעברית לפי הזמנה.",
+    category: "misparim",
+    tags: ["kids", "new", "bestseller"],
+    image: "/cakes/misparim/number-22-chocolate.jpg",
+    imageCredit: "real",
+    featured: true,
+    shape: "number",
+    variants: [
+      { id: "v-n1", label: "ספרה אחת", sku: "LB-NM-01", priceIls: 250, stock: 10 },
+    ],
+  },
   {
     id: "p-num-70",
     slug: "number-70-gold",
@@ -133,7 +158,7 @@ export const products: Product[] = [
     featured: true,
     shape: "number",
     variants: [
-      { id: "v-n70", label: "זוג ספרות", sku: "LB-NM-70", priceIls: 420, stock: 7 },
+      { id: "v-n70", label: "שתי ספרות", sku: "LB-NM-70", priceIls: 320, stock: 7 },
     ],
   },
   {
@@ -150,7 +175,7 @@ export const products: Product[] = [
     featured: true,
     shape: "number",
     variants: [
-      { id: "v-n40", label: "זוג ספרות", sku: "LB-NM-40", priceIls: 390, stock: 8 },
+      { id: "v-n40", label: "שתי ספרות", sku: "LB-NM-40", priceIls: 320, stock: 8 },
     ],
   },
   {
@@ -166,18 +191,19 @@ export const products: Product[] = [
     featured: false,
     shape: "number",
     variants: [
-      { id: "v-n22", label: "זוג ספרות", sku: "LB-NM-22", priceIls: 380, stock: 7 },
+      { id: "v-n22", label: "שתי ספרות", sku: "LB-NM-22", priceIls: 320, stock: 7 },
     ],
   },
 
   // —— עוגות מעוצבות ——
+  // עגולה מעוצבת עם דף סוכר · קוטר 22 · גובה 14 ס״מ · 400
   {
     id: "p-des-king",
     slug: "gold-crown-king",
     title: "עוגה מעוצבת · כתר זהב",
-    shortDescription: "עגולה לבנה · כתר זהב · «מזל טוב למלך של הבית».",
+    shortDescription: "עגולה · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
     description:
-      "העוגה שסוגרת רגע גדול — קרם חלק, עלי זהב אכילים, וכתר זהב במרכז. מושלמת לגיבור של הבית.",
+      "העוגה שסוגרת רגע גדול — קרם חלק, דף סוכר, עלי זהב אכילים, וכתר זהב במרכז. קוטר 22 ס״מ, גובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["luxury", "bestseller"],
     image: "/cakes/meutzavot/gold-crown-king.jpg",
@@ -185,16 +211,22 @@ export const products: Product[] = [
     featured: true,
     shape: "round",
     variants: [
-      { id: "v-king", label: "קוטר סטנדרט", sku: "LB-MZ-GK01", priceIls: 450, stock: 5 },
-      { id: "v-king-lg", label: "קוטר גדול", sku: "LB-MZ-GK02", priceIls: 520, stock: 3 },
+      {
+        id: "v-king",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-GK01",
+        priceIls: 400,
+        stock: 5,
+      },
     ],
   },
   {
     id: "p-des-topaz",
     slug: "topaz-15",
     title: "עוגה מעוצבת · טופז 15",
-    shortDescription: "לבן־שחור · סרטי סאטן · מראה מינימליסטי יוקרתי.",
-    description: "עיצוב נקי עם סרטים שחורים ואותיות כהות — ליום הולדת 15 ומעלה.",
+    shortDescription: "לבן־שחור · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "עיצוב נקי עם סרטים שחורים ואותיות כהות — עגולה מעוצבת עם דף סוכר, קוטר 22 ס״מ וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["luxury"],
     image: "/cakes/meutzavot/topaz-15.jpg",
@@ -202,15 +234,22 @@ export const products: Product[] = [
     featured: false,
     shape: "round",
     variants: [
-      { id: "v-topaz", label: "גבוהה", sku: "LB-MZ-TP15", priceIls: 480, stock: 4 },
+      {
+        id: "v-topaz",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-TP15",
+        priceIls: 400,
+        stock: 4,
+      },
     ],
   },
   {
     id: "p-des-tamar",
     slug: "tamar-18",
     title: "עוגה מעוצבת · תמר 18",
-    shortDescription: "וינטג׳ לבן · סרטים ירוקים · טקסט ירוק.",
-    description: "עיצוב אלגנטי לבת מצווה / 18 עם פייפינג קלאסי וסרטי בד.",
+    shortDescription: "וינטג׳ לבן · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "עיצוב אלגנטי לבת מצווה / 18 עם פייפינג קלאסי — עגולה מעוצבת עם דף סוכר, קוטר 22 וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["luxury", "custom"],
     image: "/cakes/meutzavot/tamar-18.jpg",
@@ -218,15 +257,22 @@ export const products: Product[] = [
     featured: false,
     shape: "round",
     variants: [
-      { id: "v-tamar", label: "שתי שכבות", sku: "LB-MZ-TM18", priceIls: 490, stock: 4 },
+      {
+        id: "v-tamar",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-TM18",
+        priceIls: 400,
+        stock: 4,
+      },
     ],
   },
   {
     id: "p-des-mama",
     slug: "mama-70-gold",
     title: "עוגה מעוצבת · Happy Birthday Mama",
-    shortDescription: "לבן וזהב · פרחים לבנים · ספרה 70.",
-    description: "עוגה גבוהה עם אותיות זהב תלת־ממד ופרחים — לאימהות וסבתות.",
+    shortDescription: "לבן וזהב · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "עוגה גבוהה עם אותיות זהב ופרחים — עגולה מעוצבת עם דף סוכר, קוטר 22 ס״מ וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["luxury", "bestseller"],
     image: "/cakes/meutzavot/mama-70-gold.jpg",
@@ -234,15 +280,22 @@ export const products: Product[] = [
     featured: true,
     shape: "round",
     variants: [
-      { id: "v-mama", label: "גבוהה", sku: "LB-MZ-MM70", priceIls: 510, stock: 4 },
+      {
+        id: "v-mama",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-MM70",
+        priceIls: 400,
+        stock: 4,
+      },
     ],
   },
   {
     id: "p-des-hk",
     slug: "hello-kitty-3",
     title: "עוגה מעוצבת · Hello Kitty",
-    shortDescription: "ורוד בייבי · ספרה 3 · שם בעברית על הצד.",
-    description: "עוגת ילדות צבעונית עם טופרים, פנינים ושם מודגש.",
+    shortDescription: "ורוד בייבי · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "עוגת ילדות צבעונית עם טופרים ופנינים — עגולה מעוצבת עם דף סוכר, קוטר 22 ס״מ וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["kids", "new"],
     image: "/cakes/meutzavot/hello-kitty-3.jpg",
@@ -250,15 +303,22 @@ export const products: Product[] = [
     featured: true,
     shape: "round",
     variants: [
-      { id: "v-hk", label: "עגולה", sku: "LB-MZ-HK03", priceIls: 420, stock: 6 },
+      {
+        id: "v-hk",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-HK03",
+        priceIls: 400,
+        stock: 6,
+      },
     ],
   },
   {
     id: "p-des-minnie-t",
     slug: "minnie-tiered-1",
     title: "עוגה מעוצבת · מיני שתי קומות",
-    shortDescription: "ורוד · פפיון · ספרה 1 · דמות מיני.",
-    description: "שתי קומות ורודות עם פפיונים וטופרים — ליום הולדת ראשון.",
+    shortDescription: "ורוד · פפיון · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "עיצוב מיני עם פפיונים וטופרים — עגולה מעוצבת עם דף סוכר, קוטר 22 ס״מ וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["kids", "bestseller"],
     image: "/cakes/meutzavot/minnie-tiered-1.jpg",
@@ -266,15 +326,22 @@ export const products: Product[] = [
     featured: true,
     shape: "round",
     variants: [
-      { id: "v-mt", label: "שתי קומות", sku: "LB-MZ-MT01", priceIls: 550, stock: 4 },
+      {
+        id: "v-mt",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-MT01",
+        priceIls: 400,
+        stock: 4,
+      },
     ],
   },
   {
     id: "p-des-minnie-d",
     slug: "minnie-drip-1",
     title: "עוגה מעוצבת · מיני Drip",
-    shortDescription: "ורוד ולבן · דריפת שוקולד · כתר זהב.",
-    description: "עיצוב פרימיום עם כתר זהב ודמות מיני — על בסיס שיש שחור.",
+    shortDescription: "ורוד ולבן · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "עיצוב פרימיום עם כתר זהב ודמות מיני — עגולה מעוצבת עם דף סוכר, קוטר 22 ס״מ וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["kids", "luxury"],
     image: "/cakes/meutzavot/minnie-drip-1.jpg",
@@ -282,15 +349,22 @@ export const products: Product[] = [
     featured: false,
     shape: "round",
     variants: [
-      { id: "v-md", label: "עגולה גבוהה", sku: "LB-MZ-MD01", priceIls: 480, stock: 5 },
+      {
+        id: "v-md",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-MD01",
+        priceIls: 400,
+        stock: 5,
+      },
     ],
   },
   {
     id: "p-des-cookie",
     slug: "minnie-cookie-princess",
     title: "עוגת קרם · צורת מיני",
-    shortDescription: "בסיס ביסקוויט · קרם · נשיקות מרנג · «להולדת הנסיכה».",
-    description: "קרם־טרט בצורת ראש מיני — ורוד־לבן לחגיגת נסיכה.",
+    shortDescription: "בסיס ביסקוויט · קרם · דף סוכר · קוטר 22 · גובה 14 ס״מ.",
+    description:
+      "קרם־טרט בצורת ראש מיני — עגולה מעוצבת עם דף סוכר, קוטר 22 ס״מ וגובה 14 ס״מ.",
     category: "meutzavot",
     tags: ["kids", "new"],
     image: "/cakes/meutzavot/minnie-cookie-princess.jpg",
@@ -298,7 +372,13 @@ export const products: Product[] = [
     featured: false,
     shape: "shaped",
     variants: [
-      { id: "v-cookie", label: "צורת מיני", sku: "LB-MZ-MC01", priceIls: 360, stock: 6 },
+      {
+        id: "v-cookie",
+        label: "Ø22 · גובה 14 ס״מ · דף סוכר",
+        sku: "LB-MZ-MC01",
+        priceIls: 400,
+        stock: 6,
+      },
     ],
   },
 ];
@@ -308,7 +388,7 @@ export const collections: Collection[] = [
     id: "c-gan",
     slug: "gan",
     title: "עוגות גן",
-    description: "מלבניות לחיתוך קל — תמונה, דמות או קולאז׳ אישי.",
+    description: "מלבניות לחיתוך קל — תמונה, דמות או קולאז׳ אישי. קטנה ₪220 · גדולה ₪250.",
     productIds: products.filter((p) => p.category === "gan").map((p) => p.id),
     coverImage: "/cakes/gan/photo-libby-8.jpg",
   },
@@ -316,7 +396,7 @@ export const collections: Collection[] = [
     id: "c-misparim",
     slug: "misparim",
     title: "עוגות מספרים",
-    description: "ספרות עם קרם, פירות, שוקולדים ופלאקים בעברית.",
+    description: "ספרה אחת ₪250 · שתי ספרות ₪320 — עם קרם, פירות ופלאקים בעברית.",
     productIds: products.filter((p) => p.category === "misparim").map((p) => p.id),
     coverImage: "/cakes/misparim/number-70-gold.jpg",
   },
@@ -324,7 +404,7 @@ export const collections: Collection[] = [
     id: "c-meutzavot",
     slug: "meutzavot",
     title: "עוגות מעוצבות",
-    description: "עגולות ושכבות עם טופרים, כתרים ועיצוב תלת־ממדי.",
+    description: "עגולה מעוצבת עם דף סוכר · קוטר 22 · גובה 14 ס״מ · ₪400.",
     productIds: products.filter((p) => p.category === "meutzavot").map((p) => p.id),
     coverImage: "/cakes/meutzavot/gold-crown-king.jpg",
   },

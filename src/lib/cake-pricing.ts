@@ -35,7 +35,7 @@ export type CakePriceQuote = {
   breakdownHe: string[];
 };
 
-const BASE_BY_CAT = { gan: 250, misparim: 320, meutzavot: 420 } as const;
+const BASE_BY_CAT = { gan: 220, misparim: 250, meutzavot: 400 } as const;
 const PIPING_FEE = { smooth: 0, lambeth: 45, shell: 25, drip: 35 } as const;
 const ACCENT_FEE = {
   none: 0,
